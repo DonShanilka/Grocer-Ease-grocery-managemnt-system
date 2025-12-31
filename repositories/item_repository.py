@@ -39,9 +39,9 @@ class ItemRepository:
         conn.close()
 
 
-# Update item function
+class ItemRepository:
     @staticmethod
-    def update(item_id, item):
+    def update(item_id, item: Item):
         conn = get_db()
         cursor = conn.cursor()
         cursor.execute("""
