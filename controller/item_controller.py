@@ -39,8 +39,17 @@ def update_item(item_id):
     except ValueError as e:
         return jsonify({"error": str(e)}), 404
     
-    
 
+# DELETE
+@item_bp.route("/items/<int:item_id>", methods=["DELETE"])
+def delete_item(item_id):
+    try:
+        ItemService.delete_item(item_id)
+        return jsonify({"message": "Item deleted successfully"}), 200
+    except ValueError as e:
+        return jsonify({"error": str(e)}), 404
+        
+# GET ALL ITEMS
 @item_bp.route("/items", methods=["GET"])
 def get_items():
     items = ItemService.get_items()
