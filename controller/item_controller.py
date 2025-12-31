@@ -6,11 +6,28 @@ item_bp = Blueprint("item_bp", __name__)
 @item_bp.route("/items", methods=["POST"])
 def add_item():
     try:
-        data = request.json
-        ItemService.add_item(data.get("name"))
-        return jsonify({"message": "Item saved successfully"}), 201
+        data = request.get_json()
+
+        item = ItemService.add_item(data)
+
+        return jsonify({
+            "message": "Item saved successfully",
+            "item": {
+                "name": item.name,
+                "category": item.category,
+                "price": item.price,
+                "quantity": item.quantity,
+                "unit": item.unit,
+                "status": item.status
+            }
+        }), 201
+
     except ValueError as e:
         return jsonify({"error": str(e)}), 400
+
+    except Exception as e:
+        return jsonify({"error": "Internal server error"}), 500
+
 
 
 @item_bp.route("/items", methods=["GET"])
