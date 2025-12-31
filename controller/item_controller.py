@@ -1,9 +1,11 @@
 from flask import Blueprint, request, jsonify
 from services.item_service import ItemService
+from flask_cors import cross_origin
 
 item_bp = Blueprint("item_bp", __name__)
 
 @item_bp.route("/items", methods=["POST"])
+@cross_origin()
 def add_item():
     try:
         data = request.get_json()
@@ -32,6 +34,7 @@ def add_item():
 
 # UPDATE
 @item_bp.route("/items/<int:item_id>", methods=["PUT"])
+@cross_origin()
 def update_item(item_id):
     try:
         data = request.json
@@ -43,6 +46,7 @@ def update_item(item_id):
 
 # DELETE
 @item_bp.route("/items/<int:item_id>", methods=["DELETE"])
+@cross_origin()
 def delete_item(item_id):
     try:
         ItemService.delete_item(item_id)
@@ -52,6 +56,7 @@ def delete_item(item_id):
         
 # GET ALL ITEMS
 @item_bp.route("/items", methods=["GET"])
+@cross_origin()
 def get_items():
     items = ItemService.get_items()
     return jsonify([dict(item) for item in items])
