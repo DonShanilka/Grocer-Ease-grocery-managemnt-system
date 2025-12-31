@@ -5,21 +5,23 @@ class ItemService:
 
     @staticmethod
     def add_item(data):
-        if not data.get("name"):
+        if not data or not data.get("name"):
             raise ValueError("Item name is required")
 
         item = Item(
-            name = data.get("name"),
-            category = data.get("category"),
-            price = data.get("price"),
-            quantity = data.get("quantity"),
-            unit = data.get("unit"),
-            description = data.get("description"),
-            supplier = data.get("supplier"),
-            status = data.get("status", "available"),
-            added_date = data.get("added_date")
+            name=data.get("name"),
+            category=data.get("category"),
+            price=data.get("price"),
+            quantity=data.get("quantity"),
+            unit=data.get("unit"),
+            description=data.get("description"),
+            supplier=data.get("supplier"),
+            status=data.get("status", "available"),
+            added_date=data.get("added_date")
         )
+
         ItemRepository.save(item)
+        return item  
 
 
     # Update item function

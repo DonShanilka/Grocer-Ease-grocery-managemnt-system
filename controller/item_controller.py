@@ -9,6 +9,8 @@ def add_item():
         data = request.get_json()
 
         item = ItemService.add_item(data)
+        
+        print(item)
 
         return jsonify({
             "message": "Item saved successfully",
