@@ -43,6 +43,14 @@ class ItemService:
         if updated == 0:
             raise ValueError("Item not found")
 
+
+    # Delete item function
+    @staticmethod
+    def delete_item(item_id):
+        deleted = ItemRepository.delete(item_id)
+        if deleted == 0:
+            raise ValueError("Item not found")
+
     @staticmethod
     def get_items():
         return ItemRepository.find_all()
