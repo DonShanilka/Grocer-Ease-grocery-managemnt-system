@@ -9,7 +9,7 @@ class ItemRepository:
         cursor.execute("""
             CREATE TABLE IF NOT EXISTS items (
                 id INT AUTO_INCREMENT PRIMARY KEY,
-                name VARCHAR(255) NOT NULL
+                name VARCHAR(255) NOT NULL,
                 category VARCHAR(255),
                 price DECIMAL(10, 2),
                 quantity INT,
@@ -18,6 +18,7 @@ class ItemRepository:
                 supplier VARCHAR(255),
                 status VARCHAR(50),
                 added_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            )
         """)
         conn.commit()
         cursor.close()
