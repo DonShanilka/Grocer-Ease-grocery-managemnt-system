@@ -33,25 +33,30 @@ def add_item():
 
 
 # UPDATE
-@item_bp.route("/items/<int:item_id>", methods=["PUT"])
-@cross_origin()
-def update_item_route(item_id):
+@item_bp.route("/items/<int:id>", methods=["PUT"])
+def update_item(id):
     try:
-        data = request.json
-        ItemService.update_item(item_id, data)
+        data = request.get_json()
+
+        affected = ItemService.update_item(id, data)
+
+        if affected == 0:
+            return jsonify({"error": "Item not found"}), 404
+
         return jsonify({"message": "Item updated successfully"}), 200
-    except ValueError as e:
-        return jsonify({"error": str(e)}), 404
+
     except Exception as e:
-        return jsonify({"error": "Forbidden or server error"}), 403
+        print(e)
+        return jsonify({"error": "Internal server error"}), 500
+
     
 
 # DELETE
-@item_bp.route("/items/<int:item_id>", methods=["DELETE"])
+@item_bp.route("/items/<int:id>", methods=["DELETE"])
 @cross_origin()
-def delete_item(item_id):
+def delete_item(id):
     try:
-        ItemService.delete_item(item_id)
+        ItemService.delete_item(id)
         return jsonify({"message": "Item deleted successfully"}), 200
     except ValueError as e:
         return jsonify({"error": str(e)}), 404
