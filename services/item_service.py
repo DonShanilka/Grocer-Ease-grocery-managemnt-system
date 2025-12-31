@@ -21,6 +21,28 @@ class ItemService:
         )
         ItemRepository.save(item)
 
+
+    # Update item function
+    @staticmethod
+    def update_item(item_id, data):
+        if not data.get("name"):
+            raise ValueError("Item name is required")
+
+        item = Item(
+            name=data.get("name"),
+            category=data.get("category"),
+            price=data.get("price"),
+            quantity=data.get("quantity"),
+            unit=data.get("unit"),
+            description=data.get("description"),
+            supplier=data.get("supplier"),
+            status=data.get("status")
+        )
+
+        updated = ItemRepository.update(item_id, item)
+        if updated == 0:
+            raise ValueError("Item not found")
+
     @staticmethod
     def get_items():
         return ItemRepository.find_all()
