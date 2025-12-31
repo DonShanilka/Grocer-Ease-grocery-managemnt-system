@@ -2,6 +2,7 @@ from database.db import get_db
 
 class ItemRepository:
 
+# Create table
     @staticmethod
     def create_table():
         conn = get_db()
@@ -24,6 +25,7 @@ class ItemRepository:
         cursor.close()
         conn.close()
 
+# Save item function
     @staticmethod
     def save(item):
         conn = get_db()
@@ -35,6 +37,49 @@ class ItemRepository:
         conn.commit()
         cursor.close()
         conn.close()
+
+
+# Update item function
+    @staticmethod
+    def update(item_id, item):
+        conn = get_db()
+        cursor = conn.cursor()
+        cursor.execute("""
+            UPDATE items SET
+                name=%s,
+                category=%s,
+                price=%s,
+                quantity=%s,
+                unit=%s,
+                description=%s,
+                supplier=%s,
+                status=%s
+            WHERE id=%s
+        """, (
+            item.name, item.category, item.price,
+            item.quantity, item.unit,
+            item.description, item.supplier,
+            item.status, item_id
+        ))
+        conn.commit()
+        affected = cursor.rowcount
+        cursor.close()
+        conn.close()
+        return affected
+    
+    
+# Delete item function
+    @staticmethod
+    def delete(item_id):
+        conn = get_db()
+        cursor = conn.cursor()
+        cursor.execute("DELETE FROM items WHERE id=%s", (item_id,))
+        conn.commit()
+        affected = cursor.rowcount
+        cursor.close()
+        conn.close()
+        return affected
+
 
     @staticmethod
     def find_all():
