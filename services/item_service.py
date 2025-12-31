@@ -24,7 +24,6 @@ class ItemService:
         return item  
 
 
-    # Update item function
     @staticmethod
     def update_item(item_id, data):
         if not data.get("name"):
