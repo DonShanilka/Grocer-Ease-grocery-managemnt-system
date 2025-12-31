@@ -1,4 +1,5 @@
 from database.db import get_db
+from models.item_model import Item
 
 class ItemRepository:
 

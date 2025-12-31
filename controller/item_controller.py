@@ -35,13 +35,15 @@ def add_item():
 # UPDATE
 @item_bp.route("/items/<int:item_id>", methods=["PUT"])
 @cross_origin()
-def update_item(item_id):
+def update_item_route(item_id):
     try:
         data = request.json
         ItemService.update_item(item_id, data)
         return jsonify({"message": "Item updated successfully"}), 200
     except ValueError as e:
         return jsonify({"error": str(e)}), 404
+    except Exception as e:
+        return jsonify({"error": "Forbidden or server error"}), 403
     
 
 # DELETE
