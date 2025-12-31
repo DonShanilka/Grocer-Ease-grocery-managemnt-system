@@ -9,8 +9,6 @@ def add_item():
         data = request.get_json()
 
         item = ItemService.add_item(data)
-        
-        print(item)
 
         return jsonify({
             "message": "Item saved successfully",
@@ -28,6 +26,7 @@ def add_item():
         return jsonify({"error": str(e)}), 400
 
     except Exception as e:
+        print("SERVER ERROR:", e) 
         return jsonify({"error": "Internal server error"}), 500
 
 
