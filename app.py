@@ -1,15 +1,19 @@
 from flask import Flask
 from controller.item_controller import item_bp
+from controller.customer_controller import customer_bp
 from repositories.item_repository import ItemRepository
+from repositories.customer_repository import CustomerRepository
 
 def create_app():
     app = Flask(__name__)
 
     # Register Blueprint
     app.register_blueprint(item_bp)
+    app.register_blueprint(customer_bp)
 
     # Create DB table once at startup
     ItemRepository.create_table()
+    CustomerRepository.create_table()
 
     return app
 
