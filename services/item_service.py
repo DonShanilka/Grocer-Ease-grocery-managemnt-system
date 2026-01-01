@@ -52,6 +52,22 @@ class ItemService:
         if deleted == 0:
             raise ValueError("Item not found")
 
+
+    # Get item by ID function
+    @staticmethod
+    def get_item_by_id(item_id):
+        if not item_id:
+            raise ValueError("Item ID is required")
+
+        item = ItemRepository.find_by_id(item_id)
+
+        if not item:
+            return None
+
+        return item
+
+
+    # Get all items function
     @staticmethod
     def get_items():
         return ItemRepository.find_all()
