@@ -14,7 +14,7 @@ class CustomerRepository:
                 name VARCHAR(255) NOT NULL,
                 email VARCHAR(255) UNIQUE,
                 phone VARCHAR(50) UNIQUE,
-                address TEXT UNIQUE,
+                address TEXT,
                 item_name VARCHAR(255),
                 qty INT,
                 registered_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
@@ -23,6 +23,7 @@ class CustomerRepository:
         conn.commit()
         cursor.close()
         conn.close()
+
         
     # Save Customer
     @staticmethod
