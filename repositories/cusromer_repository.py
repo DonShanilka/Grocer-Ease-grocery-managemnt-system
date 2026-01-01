@@ -43,3 +43,33 @@ class CustomerRepository:
         conn.commit()
         cursor.close()
         conn.close()
+        
+        
+    # Update Customer
+    @staticmethod
+    def update(id, customer: Customer):
+        conn = get_db()
+        cursor = conn.cursor()
+        cursor.execute("""
+            UPDATE customers SET
+                name=%s,
+                email=%s,
+                phone=%s,
+                address=%s,
+                item_name=%s,
+                qty=%s
+            WHERE id=%s
+        """, (
+            customer.name,
+            customer.email,
+            customer.phone,
+            customer.address,
+            customer.item_name,
+            customer.qty,
+            id
+        ))
+        conn.commit()
+        affected = cursor.rowcount
+        cursor.close()
+        conn.close()
+        return affected
