@@ -94,6 +94,25 @@ class ItemRepository:
         conn.close()
         return affected
 
+
+    @staticmethod
+    def find_by_id(item_id):
+        conn = get_db()
+        cursor = conn.cursor(dictionary=True)
+
+        cursor.execute(
+            "SELECT * FROM items WHERE id = %s",
+            (item_id,)
+        )
+
+        item = cursor.fetchone()
+
+        cursor.close()
+        conn.close()
+
+        return item
+    
+
     # ✅ Find all items
     @staticmethod
     def find_all():
