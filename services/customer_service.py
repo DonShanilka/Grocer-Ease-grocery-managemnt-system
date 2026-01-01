@@ -57,3 +57,9 @@ class CustomerService:
             raise ValueError("Customer not found")
 
         return customer
+
+
+    # Get all customers
+    @staticmethod
+    def get_all_customers():
+        return CustomerRepository.find_all()
