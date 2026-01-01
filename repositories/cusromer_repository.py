@@ -1,5 +1,5 @@
 from database.db import get_db
-from models.item_model import Item
+from models.customer_model import Customer
 
 class CustomerRepository:
     
@@ -20,6 +20,26 @@ class CustomerRepository:
                 registered_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             )
         """)
+        conn.commit()
+        cursor.close()
+        conn.close()
+        
+    # Save Customer
+    @staticmethod
+    def save(customer: Customer):
+        conn = get_db()
+        cursor = conn.cursor()
+        cursor.execute("""
+            INSERT INTO customers
+            (name, email, phone, address, item_name, qty)
+            VALUES (%s, %s, %s, %s, %s, %s) """, (
+                customer.name,
+                customer.email,
+                customer.phone,
+                customer.address,
+                customer.item_name,
+                customer.qty
+            ))
         conn.commit()
         cursor.close()
         conn.close()
