@@ -49,3 +49,20 @@ def update_customer(id):
     except Exception as e:
         print(e)
         return jsonify({"error": "Internal server error"}), 500
+    
+    
+# DELETE
+@customer_bp.route("/customers/<int:id>", methods=["DELETE"])
+@cross_origin()
+def delete_customer(id):
+    try:
+        affected = CustomerService.delete_customer(id)
+
+        if affected == 0:
+            return jsonify({"error": "Customer not found"}), 404
+
+        return jsonify({"message": "Customer deleted successfully"}), 200
+
+    except Exception as e:
+        print(e)
+        return jsonify({"error": "Internal server error"}), 500
