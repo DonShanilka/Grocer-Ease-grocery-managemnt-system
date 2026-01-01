@@ -38,3 +38,10 @@ class CustomerService:
         updated = CustomerRepository.update(customer_id, customer)
         if updated == 0:
             raise ValueError("Customer not found")
+        
+    
+    @staticmethod
+    def delete_customer(customer_id):
+        deleted = CustomerRepository.delete(customer_id)
+        if deleted == 0:
+            raise ValueError("Customer not found")
