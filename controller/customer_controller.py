@@ -28,3 +28,24 @@ def add_customer():
     except Exception as e:
         print("SERVER ERROR:", e)
         return jsonify({"error": "Internal server error"}), 500
+    
+    
+# UPDATE
+@customer_bp.route("/customers/<int:id>", methods=["PUT"])
+def update_customer(id):
+    try:
+        data = request.get_json()
+
+        affected = CustomerService.update_customer(id, data)
+
+        if affected == 0:
+            return jsonify({"error": "Customer not found"}), 404
+
+        return jsonify({"message": "Customer updated successfully"}), 200
+
+    except ValueError as e:
+        return jsonify({"error": str(e)}), 404
+
+    except Exception as e:
+        print(e)
+        return jsonify({"error": "Internal server error"}), 500
