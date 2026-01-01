@@ -50,7 +50,6 @@ def update_item(id):
         return jsonify({"error": "Internal server error"}), 500
 
     
-
 # DELETE
 @item_bp.route("/items/<int:id>", methods=["DELETE"])
 @cross_origin()
@@ -60,6 +59,37 @@ def delete_item(id):
         return jsonify({"message": "Item deleted successfully"}), 200
     except ValueError as e:
         return jsonify({"error": str(e)}), 404
+    
+
+# GET ITEM BY ID
+@item_bp.route("/items/<int:id>", methods=["GET"])
+def get_item_by_id(id):
+    try:
+        item = ItemService.get_item_by_id(id)
+
+        if not item:
+            return jsonify({"error": "Item not found"}), 404
+
+        return jsonify({
+            "id": item["id"],
+            "name": item["name"],
+            "category": item["category"],
+            "price": float(item["price"]),
+            "quantity": item["quantity"],
+            "unit": item["unit"],
+            "description": item["description"],
+            "supplier": item["supplier"],
+            "status": item["status"],
+            "added_date": item["added_date"]
+        }), 200
+
+    except ValueError as e:
+        return jsonify({"error": str(e)}), 400
+
+    except Exception as e:
+        print(e)
+        return jsonify({"error": "Internal server error"}), 500
+
         
 # GET ALL ITEMS
 @item_bp.route("/items", methods=["GET"])
