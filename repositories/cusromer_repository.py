@@ -86,3 +86,35 @@ class CustomerRepository:
         cursor.close()
         conn.close()
         return affected
+    
+    
+    # Find Customer by ID
+    @staticmethod
+    def find_by_id(id):
+        conn = get_db()
+        cursor = conn.cursor(dictionary=True)
+        
+        cursor.execute("SELECT * FROM customers WHERE id=%s", (id,))
+        
+        customer = cursor.fetchone()
+        
+        cursor.close()
+        conn.close()
+        
+        return customer
+    
+    
+    # Get All Customers
+    @staticmethod
+    def find_all():
+        conn = get_db()
+        cursor = conn.cursor(dictionary=True)
+        
+        cursor.execute("SELECT * FROM customers")
+        
+        customers = cursor.fetchall()
+        
+        cursor.close()
+        conn.close()
+        
+        return customers

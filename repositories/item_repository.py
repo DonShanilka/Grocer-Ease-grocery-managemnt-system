@@ -118,8 +118,12 @@ class ItemRepository:
     def find_all():
         conn = get_db()
         cursor = conn.cursor(dictionary=True)
+        
         cursor.execute("SELECT * FROM items")
+        
         items = cursor.fetchall()
+        
         cursor.close()
         conn.close()
+        
         return items
