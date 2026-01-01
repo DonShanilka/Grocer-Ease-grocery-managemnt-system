@@ -19,3 +19,22 @@ class CustomerService:
         
         CustomerRepository.save(customer)
         return customer
+    
+    
+    @staticmethod
+    def update_customer(customer_id, data):
+        if not data.get("name"):
+            raise ValueError("Customer name is required")
+        
+        customer = Customer(
+            name = data.get("name"),
+            email = data.get("email"),
+            phone = data.get("phone"),
+            address = data.get("address"),
+            item_name = data.get("item_name"),
+            qty = data.get("qty")
+        )
+        
+        updated = CustomerRepository.update(customer_id, customer)
+        if updated == 0:
+            raise ValueError("Customer not found")
