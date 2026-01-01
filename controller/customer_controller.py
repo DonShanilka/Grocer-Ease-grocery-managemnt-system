@@ -93,3 +93,12 @@ def get_customer_by_id(id):
     except Exception as e:
         print(e)
         return jsonify({"error": "Internal server error"}), 500
+    
+    
+    
+# GET ALL Customers
+@customer_bp.route("/customers", methods=["GET"])
+@cross_origin()
+def get_customers():
+    customers = CustomerService.get_all_customers()
+    return jsonify([dict(customer) for customer in customers])
