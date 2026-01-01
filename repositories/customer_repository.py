@@ -12,9 +12,9 @@ class CustomerRepository:
             CREATE TABLE IF NOT EXISTS customers (
                 id INT AUTO_INCREMENT PRIMARY KEY,
                 name VARCHAR(255) NOT NULL,
-                email VARCHAR(255),
-                phone VARCHAR(50),
-                address TEXT,
+                email VARCHAR(255) UNIQUE,
+                phone VARCHAR(50) UNIQUE,
+                address TEXT UNIQUE,
                 item_name VARCHAR(255),
                 qty INT,
                 registered_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
