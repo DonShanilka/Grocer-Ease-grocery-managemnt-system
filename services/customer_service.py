@@ -45,3 +45,15 @@ class CustomerService:
         deleted = CustomerRepository.delete(customer_id)
         if deleted == 0:
             raise ValueError("Customer not found")
+        
+        
+    @staticmethod
+    def get_customer_by_id(customer_id):
+        if not customer_id:
+            raise ValueError("Customer ID is required")
+
+        customer = CustomerRepository.find_by_id(customer_id)
+        if not customer:
+            raise ValueError("Customer not found")
+
+        return customer
