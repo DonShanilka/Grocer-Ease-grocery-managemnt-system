@@ -73,3 +73,16 @@ class CustomerRepository:
         cursor.close()
         conn.close()
         return affected
+    
+    
+    # Delete Customer
+    @staticmethod
+    def delete(id):
+        conn = get_db()
+        cursor = conn.cursor()
+        cursor.execute("DELETE FROM customers WHERE id=%s", (id,))
+        conn.commit()
+        affected = cursor.rowcount
+        cursor.close()
+        conn.close()
+        return affected
