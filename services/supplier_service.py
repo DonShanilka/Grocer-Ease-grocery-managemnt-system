@@ -49,3 +49,15 @@ class SupplierService:
         deleted = SupplierRepository.delete(supplier_id)
         if deleted == 0:
             raise ValueError("Supplier not found")
+        
+        
+    @staticmethod
+    def get_supplier_by_id(supplier_id):
+        if not supplier_id:
+            raise ValueError("Supplier ID is required")
+
+        supplier = SupplierRepository.find_by_id(supplier_id)
+        if not supplier:
+            raise ValueError("Supplier not found")
+
+        return supplier
