@@ -61,3 +61,8 @@ class SupplierService:
             raise ValueError("Supplier not found")
 
         return supplier
+    
+    
+    @staticmethod
+    def get_all_suppliers():
+        return SupplierRepository.find_all()
