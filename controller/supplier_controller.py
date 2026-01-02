@@ -30,3 +30,24 @@ def add_supplier():
     except Exception as e:
         print("SERVER ERROR:", e)
         return jsonify({"error": "Internal server error"}), 500
+    
+    
+# UPDATE
+@supplier_bp.route("/suppliers/<int:id>", methods=["PUT"])
+def update_supplier(id):
+    try:
+        data = request.get_json()
+
+        affected = SupplierService.update_supplier(id, data)
+
+        if affected == 0:
+            return jsonify({"error": "Supplier not found"}), 404
+
+        return jsonify({"message": "Supplier updated successfully"}), 200
+
+    except ValueError as e:
+        return jsonify({"error": str(e)}), 404
+
+    except Exception as e:
+        print(e)
+        return jsonify({"error": "Internal server error"}), 500
