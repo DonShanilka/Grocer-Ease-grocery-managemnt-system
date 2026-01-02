@@ -51,3 +51,20 @@ def update_supplier(id):
     except Exception as e:
         print(e)
         return jsonify({"error": "Internal server error"}), 500
+    
+    
+# DELETE
+@supplier_bp.route("/suppliers/<int:id>", methods=["DELETE"])
+@cross_origin()
+def delete_supplier(id):
+    try:
+        affected = SupplierService.delete_supplier(id)
+        
+        if affected == 0:
+            return jsonify({"error": "Supplier not found"}), 404
+        
+        return jsonify({"message": "Supplier deleted successfully"}), 200
+    
+    except Exception as e:
+        print(e)
+        return jsonify({"error": "Internal server error"}), 500
