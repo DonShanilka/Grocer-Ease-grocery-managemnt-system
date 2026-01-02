@@ -47,3 +47,37 @@ class SupplierRepository:
         conn.commit()
         cursor.close()
         conn.close()
+        
+    
+    # Update Supplier
+    @staticmethod
+    def update(id, supplier: Supplier):
+        conn = get_db()
+        cursor = conn.cursor()
+        cursor.execute("""
+            UPDATE suppliers SET
+                name=%s,
+                phone=%s,
+                email=%s,
+                address=%s,
+                supplied_items=%s,
+                price_per_unit=%s,
+                qty=%s,
+                status=%s
+            WHERE id=%s
+        """, (
+            supplier.name,
+            supplier.phone,
+            supplier.email,
+            supplier.address,
+            supplier.supplied_items,
+            supplier.price_per_unit,
+            supplier.qty,
+            supplier.status,
+            id
+        ))
+        conn.commit()
+        affected = cursor.rowcount
+        cursor.close()
+        conn.close()
+        return affected
