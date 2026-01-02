@@ -94,3 +94,34 @@ class SupplierRepository:
         cursor.close()
         conn.close()
         return affected
+    
+    
+    # Find Supplier by ID
+    @staticmethod
+    def find_by_id(id):
+        conn = get_db()
+        cursor = conn.cursor(dictionary=True)
+        cursor.execute("SELECT * FROM suppliers WHERE id=%s", (id,))
+        
+        supplier = cursor.fetchone()
+        
+        cursor.close()
+        conn.close()
+        
+        return supplier
+    
+    
+    # Find all Suppliers
+    @staticmethod
+    def find_all():
+        conn = get_db()
+        cursor = conn.cursor(dictionary=True)
+        
+        cursor.execute("SELECT * FROM suppliers")
+        
+        suppliers = cursor.fetchall()
+        
+        cursor.close()
+        conn.close()
+        
+        return suppliers
