@@ -68,3 +68,32 @@ def delete_supplier(id):
     except Exception as e:
         print(e)
         return jsonify({"error": "Internal server error"}), 500
+    
+    
+# GET Supplier by ID
+@supplier_bp.route("/suppliers/<int:id>", methods=["GET"])
+def get_supplier_by_id(id):
+    try:
+        supplier = SupplierService.get_supplier_by_id(id)
+
+        if not supplier:
+            return jsonify({"error": "Supplier not found"}), 404
+
+        return jsonify({
+            "id": supplier["id"],
+            "name": supplier["name"],
+            "phone": supplier["phone"],
+            "email": supplier["email"],
+            "address": supplier["address"],
+            "supplied_items": supplier["supplied_items"],
+            "price_per_unit": supplier["price_per_unit"],
+            "qty": supplier["qty"],
+            "status": supplier["status"]
+        }), 200
+        
+    except ValueError as e:
+        return jsonify({"error": str(e)}), 400
+
+    except Exception as e:
+        print(e)
+        return jsonify({"error": "Internal server error"}), 500
