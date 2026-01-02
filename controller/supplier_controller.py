@@ -97,3 +97,11 @@ def get_supplier_by_id(id):
     except Exception as e:
         print(e)
         return jsonify({"error": "Internal server error"}), 500
+    
+    
+# GET ALL Suppliers
+@supplier_bp.route("/suppliers", methods=["GET"])
+@cross_origin()
+def get_suppliers():
+    suppliers = SupplierService.get_all_suppliers()
+    return jsonify([dict(supplier) for supplier in suppliers])
