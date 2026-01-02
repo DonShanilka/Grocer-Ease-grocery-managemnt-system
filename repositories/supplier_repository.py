@@ -24,3 +24,26 @@ class SupplierRepository:
         conn.commit()
         cursor.close()
         conn.close()
+        
+        
+    # Save Supplier
+    @staticmethod
+    def save(supplier: Supplier):
+        conn = get_db()
+        cursor = conn.cursor()
+        cursor.execute("""
+            INSERT INTO suppliers
+            (name, phone, email, address, supplied_items, price_per_unit, qty, status)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?) """, (
+                supplier.name,
+                supplier.phone,
+                supplier.email,
+                supplier.address,
+                supplier.supplied_items,
+                supplier.price_per_unit,
+                supplier.qty,
+                supplier.status
+            ))
+        conn.commit()
+        cursor.close()
+        conn.close()
