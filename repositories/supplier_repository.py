@@ -81,3 +81,16 @@ class SupplierRepository:
         cursor.close()
         conn.close()
         return affected
+    
+    
+    #Delete Supplier
+    @staticmethod
+    def delete(id):
+        conn = get_db()
+        cursor = conn.cursor()
+        cursor.execute("DELETE FROM suppliers WHERE id=%s", (id,))
+        conn.commit()
+        affected = cursor.rowcount
+        cursor.close()
+        conn.close()
+        return affected
