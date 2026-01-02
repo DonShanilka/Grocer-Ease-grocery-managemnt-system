@@ -3,27 +3,28 @@ from models.Supplier_model import Supplier
 
 class SupplierRepository:
     
-    # Create Table
     @staticmethod
     def create_table():
         conn = get_db()
         cursor = conn.cursor()
         cursor.execute("""
             CREATE TABLE IF NOT EXISTS suppliers (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                name TEXT NOT NULL,
-                phone TEXT NOT NULL,
-                email TEXT NOT NULL,
+                id INT AUTO_INCREMENT PRIMARY KEY,
+                name VARCHAR(255) NOT NULL,
+                phone VARCHAR(50) NOT NULL,
+                email VARCHAR(255) NOT NULL,
                 address TEXT NOT NULL,
-                supplied_items TEXT NOT NULL,
-                price_per_unit REAL NOT NULL,
-                qty TEXT NOT NULL,
-                status TEXT NOT NULL
+                supplied_items VARCHAR(255) NOT NULL,
+                price_per_unit DECIMAL(10,2) NOT NULL,
+                qty INT NOT NULL,
+                status VARCHAR(50) NOT NULL,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             )
         """)
         conn.commit()
         cursor.close()
         conn.close()
+
         
         
     # Save Supplier
