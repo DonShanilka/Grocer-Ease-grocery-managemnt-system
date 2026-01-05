@@ -26,7 +26,6 @@ class SupplierRepository:
         conn.close()
 
         
-        
     # Save Supplier
     @staticmethod
     def save(supplier: Supplier):
@@ -35,7 +34,7 @@ class SupplierRepository:
         cursor.execute("""
             INSERT INTO suppliers
             (name, phone, email, address, supplied_items, price_per_unit, qty, status)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?) """, (
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s) """, (
                 supplier.name,
                 supplier.phone,
                 supplier.email,
