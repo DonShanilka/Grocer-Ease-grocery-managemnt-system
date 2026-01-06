@@ -33,7 +33,6 @@ export default function GrocerySidebar() {
     { id: 'reports', label: 'Reports & Analytics', icon: <BarChart3 size={20} />, href: '/reports' },
     { id: 'settings', label: 'Settings', icon: <Settings size={20} />, href: '/settings' },
     { id: 'account', label: 'My Account', icon: <UserCircle size={20} />, href: '/account' },
-    { id: 'support', label: 'Help & Support', icon: <HelpCircle size={20} />, href: '/support' },
   ];
 
   const handleNavigation = (id: string) => {
@@ -76,21 +75,11 @@ export default function GrocerySidebar() {
           ))}
         </nav>
 
-        {/* Upgrade Section */}
-        <div className="p-4 m-4 bg-gradient-to-br from-blue-600 to-blue-700 rounded-xl text-white">
-          <h3 className="font-semibold text-sm mb-1">Upgrade to Pro</h3>
-          <p className="text-xs text-blue-100 mb-3">Maximize your sales with our pro plan</p>
-          <button className="w-full bg-white text-blue-600 py-2 px-4 rounded-lg text-sm font-medium hover:bg-blue-50 transition-colors flex items-center justify-center gap-1">
-            <span>↑</span>
-            <span>Upgrade to Pro</span>
-          </button>
-        </div>
-
         {/* Logout */}
         <div className="p-4 border-t border-gray-200">
           <button className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-50 hover:text-gray-900 transition-colors">
-            <LogOut size={20} className="text-gray-500" />
-            <span>Log Out</span>
+            <LogOut size={20} className="text-red-500" />
+            <span className='text-red-500'>Log Out</span>
           </button>
         </div>
       </div>
