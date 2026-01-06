@@ -17,7 +17,7 @@ import {
 interface NavItem {
   id: string;
   label: string;
-  icon: JSX.Element;
+  icon: string | React.ReactNode;
   href: string;
 }
 
