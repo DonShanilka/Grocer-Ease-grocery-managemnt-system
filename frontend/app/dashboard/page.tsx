@@ -1,19 +1,10 @@
 'use client';
 
 import { useState } from 'react';
-import {
-  LayoutDashboard,
-  ShoppingCart,
-  Package,
-  Truck,
-  Users,
-  BarChart3,
-  Settings,
-  UserCircle,
-  LogOut,
-  Search,
-  Bell,
-  ChevronDown,
+import { 
+  Search, 
+  Bell, 
+  ChevronDown, 
   Download,
   TrendingUp,
   TrendingDown,
@@ -24,33 +15,10 @@ import {
   Filter
 } from 'lucide-react';
 
-interface NavItem {
-  id: string;
-  label: string;
-  icon: JSX.Element;
-  href: string;
-}
-
-export default function GroceryManagementSystem() {
-  const [activePage, setActivePage] = useState('dashboard');
+export default function GroceryDashboard() {
   const [selectedMonth, setSelectedMonth] = useState('This Month');
 
-  const navItems: NavItem[] = [
-    { id: 'dashboard', label: 'Dashboard', icon: <LayoutDashboard size={20} />, href: '/dashboard' },
-    { id: 'orders', label: 'Orders', icon: <ShoppingCart size={20} />, href: '/orders' },
-    { id: 'inventory', label: 'Inventory Management', icon: <Package size={20} />, href: '/inventory' },
-    { id: 'deliveries', label: 'Deliveries', icon: <Truck size={20} />, href: '/deliveries' },
-    { id: 'customers', label: 'Customers', icon: <Users size={20} />, href: '/customers' },
-    { id: 'reports', label: 'Reports & Analytics', icon: <BarChart3 size={20} />, href: '/reports' },
-    { id: 'settings', label: 'Settings', icon: <Settings size={20} />, href: '/settings' },
-    { id: 'account', label: 'My Account', icon: <UserCircle size={20} />, href: '/account' }
-  ];
-
-  const handleNavigation = (id: string) => {
-    setActivePage(id);
-  };
-
-  const renderDashboard = () => (
+  return (
     <div className="min-h-screen bg-gray-50 p-3 sm:p-4 lg:p-6">
       {/* Header */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-4 gap-3">
@@ -108,6 +76,7 @@ export default function GroceryManagementSystem() {
 
       {/* Stats Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 mb-4">
+        {/* Total Orders */}
         <div className="bg-white p-4 rounded-lg border border-gray-200">
           <div className="flex items-start justify-between mb-3">
             <div>
@@ -127,6 +96,7 @@ export default function GroceryManagementSystem() {
           </div>
         </div>
 
+        {/* Orders Completed */}
         <div className="bg-white p-4 rounded-lg border border-gray-200">
           <div className="flex items-start justify-between mb-3">
             <div>
@@ -146,6 +116,7 @@ export default function GroceryManagementSystem() {
           </div>
         </div>
 
+        {/* Orders Cancelled */}
         <div className="bg-white p-4 rounded-lg border border-gray-200">
           <div className="flex items-start justify-between mb-3">
             <div>
@@ -165,6 +136,7 @@ export default function GroceryManagementSystem() {
           </div>
         </div>
 
+        {/* Orders Pending */}
         <div className="bg-gradient-to-br from-blue-500 to-cyan-400 p-4 rounded-lg text-white">
           <div className="flex items-start justify-between mb-3">
             <div>
@@ -246,6 +218,7 @@ export default function GroceryManagementSystem() {
           </div>
           
           <div className="bg-gray-100 rounded-lg h-40 mb-3 relative overflow-hidden">
+            <img src="https://api.placeholder.com/600x400?text=Map+View" alt="Map" className="w-full h-full object-cover opacity-50" />
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
               <div className="w-10 h-10 bg-red-500 rounded-full shadow-lg flex items-center justify-center">
                 <MapPin size={20} className="text-white" />
@@ -298,6 +271,7 @@ export default function GroceryManagementSystem() {
           </div>
         </div>
 
+        {/* Bar Chart */}
         <div className="h-40 flex items-end justify-between gap-1 mb-4">
           {['Milk', 'Rice', 'Beef', 'Eggs', 'Tuna', 'Salt', 'Corn', 'Soup', 'Kale', 'Pork', 'Lamb', 'Beans'].map((item, index) => {
             const heights = [75, 65, 70, 45, 80, 85, 50, 75, 80, 60, 55, 40];
@@ -372,86 +346,6 @@ export default function GroceryManagementSystem() {
           </table>
         </div>
       </div>
-    </div>
-  );
-
-  const renderOtherPages = () => (
-    <div className="flex items-center justify-center h-full">
-      <div className="text-center">
-        <div className="w-20 h-20 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
-          {navItems.find(item => item.id === activePage)?.icon}
-        </div>
-        <h2 className="text-2xl font-bold text-gray-800 mb-2">
-          {navItems.find(item => item.id === activePage)?.label}
-        </h2>
-        <p className="text-gray-600">
-          This page is under construction
-        </p>
-      </div>
-    </div>
-  );
-
-  return (
-    <div className="flex h-screen bg-gray-50">
-      {/* Sidebar */}
-      <aside className="w-64 bg-white border-r border-gray-200 flex flex-col">
-        {/* Logo */}
-        <div className="p-6 border-b border-gray-200">
-          <div className="flex items-center gap-2">
-            <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
-              <ShoppingCart size={20} className="text-white" />
-            </div>
-            <span className="text-xl font-bold text-gray-800">GrocerEase</span>
-          </div>
-        </div>
-
-        {/* Navigation */}
-        <nav className="flex-1 p-4 space-y-1 overflow-y-auto">
-          {navItems.map((item) => {
-            const isActive = activePage === item.id;
-
-            return (
-              <button
-                key={item.id}
-                onClick={() => handleNavigation(item.id)}
-                className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-colors
-                  ${isActive
-                    ? 'bg-blue-50 text-blue-600'
-                    : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'}
-                `}
-              >
-                <span className={isActive ? 'text-blue-600' : 'text-gray-500'}>
-                  {item.icon}
-                </span>
-                <span>{item.label}</span>
-              </button>
-            );
-          })}
-        </nav>
-
-        {/* Upgrade Section */}
-        <div className="p-4 m-4 bg-gradient-to-br from-blue-600 to-blue-700 rounded-xl text-white">
-          <h3 className="font-semibold text-sm mb-1">Upgrade to Pro</h3>
-          <p className="text-xs text-blue-100 mb-3">Maximize your sales with our pro plan</p>
-          <button className="w-full bg-white text-blue-600 py-2 px-4 rounded-lg text-sm font-medium hover:bg-blue-50 transition-colors flex items-center justify-center gap-1">
-            <span>↑</span>
-            <span>Upgrade to Pro</span>
-          </button>
-        </div>
-
-        {/* Logout */}
-        <div className="p-4 border-t border-gray-200">
-          <button className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium text-red-600 hover:bg-red-50 transition-colors">
-            <LogOut size={20} />
-            <span>Log Out</span>
-          </button>
-        </div>
-      </aside>
-
-      {/* Main Content */}
-      <main className="flex-1 overflow-y-auto">
-        {activePage === 'dashboard' ? renderDashboard() : renderOtherPages()}
-      </main>
     </div>
   );
 }
