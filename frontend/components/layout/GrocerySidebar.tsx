@@ -1,5 +1,6 @@
 'use client';
 
+import { ReactNode } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 import {
   LayoutDashboard,
@@ -20,7 +21,11 @@ interface NavItem {
   href: string;
 }
 
-export default function GrocerySidebar() {
+interface GrocerySidebarProps {
+  children: ReactNode;
+}
+
+export default function GrocerySidebar({ children }: GrocerySidebarProps) {
   const pathname = usePathname();
   const router = useRouter();
 
@@ -29,7 +34,7 @@ export default function GrocerySidebar() {
     { id: 'orders', label: 'Orders', icon: <ShoppingCart size={20} />, href: '/orders' },
     { id: 'inventory', label: 'Inventory Management', icon: <Package size={20} />, href: '/inventory' },
     { id: 'deliveries', label: 'Deliveries', icon: <Truck size={20} />, href: '/deliveries' },
-    { id: 'customers', label: 'Customers', icon: <Users size={20} />, href: '/customers' },
+    { id: 'customer', label: 'Customer', icon: <Users size={20} />, href: '/customer' },
     { id: 'reports', label: 'Reports & Analytics', icon: <BarChart3 size={20} />, href: '/reports' },
     { id: 'settings', label: 'Settings', icon: <Settings size={20} />, href: '/settings' },
     { id: 'account', label: 'My Account', icon: <UserCircle size={20} />, href: '/account' }
@@ -74,6 +79,16 @@ export default function GrocerySidebar() {
           })}
         </nav>
 
+        {/* Upgrade Section */}
+        <div className="p-4 m-4 bg-gradient-to-br from-blue-600 to-blue-700 rounded-xl text-white">
+          <h3 className="font-semibold text-sm mb-1">Upgrade to Pro</h3>
+          <p className="text-xs text-blue-100 mb-3">Maximize your sales with our pro plan</p>
+          <button className="w-full bg-white text-blue-600 py-2 px-4 rounded-lg text-sm font-medium hover:bg-blue-50 transition-colors flex items-center justify-center gap-1">
+            <span>↑</span>
+            <span>Upgrade to Pro</span>
+          </button>
+        </div>
+
         {/* Logout */}
         <div className="p-4 border-t border-gray-200">
           <button
@@ -87,15 +102,8 @@ export default function GrocerySidebar() {
       </aside>
 
       {/* Page Content */}
-      <main className="flex-1 p-8 overflow-y-auto">
-        <div className="max-w-6xl mx-auto">
-          <h1 className="text-3xl font-bold text-gray-800 capitalize">
-            {pathname.replace('/', '') || 'dashboard'}
-          </h1>
-          <p className="text-gray-600 mt-2">
-            Manage your grocery system efficiently
-          </p>
-        </div>
+      <main className="flex-1 overflow-y-auto">
+        {children}
       </main>
     </div>
   );
