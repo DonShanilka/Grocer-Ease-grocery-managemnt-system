@@ -94,7 +94,7 @@ export default function GrocerySidebar() {
             You're currently viewing the {navItems.find(item => item.id === activeItem)?.label.toLowerCase()} section
           </p>
           
-          <div className="bg-white rounded-xl border border-gray-200 p-8">
+          <div className="bg-white rounded-xl p-8">
             <div className="text-center py-12">
               <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
                 <span className="text-3xl">
