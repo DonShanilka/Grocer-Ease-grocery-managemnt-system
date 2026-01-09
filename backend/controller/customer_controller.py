@@ -31,6 +31,7 @@ def add_customer():
     
 # UPDATE
 @customer_bp.route("/customers/<int:id>", methods=["PUT"])
+@cross_origin()
 def update_customer(id):
     try:
         data = request.get_json()
@@ -69,6 +70,7 @@ def delete_customer(id):
     
 # GET Customer by ID
 @customer_bp.route("/customers/<int:id>", methods=["GET"])
+@cross_origin()
 def get_customer_by_id(id):
     try:
         customer = CustomerService.get_customer_by_id(id)

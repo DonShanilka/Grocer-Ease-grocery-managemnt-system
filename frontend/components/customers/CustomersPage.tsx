@@ -5,7 +5,7 @@ import CustomersHeader from './CustomersHeader';
 import CustomersTable from './CustomersTable';
 import CustomerModal from './CustomerModal';
 
-const API_BASE = 'http://localhost:5000';
+const API_BASE = 'http://127.0.0.1:5000';
 
 export default function CustomersPage() {
   const [customers, setCustomers] = useState<any[]>([]);
