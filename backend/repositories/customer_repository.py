@@ -15,8 +15,7 @@ class CustomerRepository:
                 email VARCHAR(255) UNIQUE,
                 phone VARCHAR(50) UNIQUE,
                 address TEXT,
-                item_name VARCHAR(255),
-                qty INT,
+                status VARCHAR(255),
                 registered_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             )
         """)
@@ -32,14 +31,13 @@ class CustomerRepository:
         cursor = conn.cursor()
         cursor.execute("""
             INSERT INTO customers
-            (name, email, phone, address, item_name, qty)
-            VALUES (%s, %s, %s, %s, %s, %s) """, (
+            (name, email, phone, address, status)
+            VALUES (%s, %s, %s, %s, %s) """, (
                 customer.name,
                 customer.email,
                 customer.phone,
                 customer.address,
-                customer.item_name,
-                customer.qty
+                customer.status,
             ))
         conn.commit()
         cursor.close()
@@ -57,16 +55,14 @@ class CustomerRepository:
                 email=%s,
                 phone=%s,
                 address=%s,
-                item_name=%s,
-                qty=%s
+                status=%s
             WHERE id=%s
         """, (
             customer.name,
             customer.email,
             customer.phone,
             customer.address,
-            customer.item_name,
-            customer.qty,
+            customer.status,
             id
         ))
         conn.commit()
