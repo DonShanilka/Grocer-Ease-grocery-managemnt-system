@@ -13,8 +13,7 @@ class CustomerService:
             email = data.get("email"),
             phone = data.get("phone"),
             address = data.get("address"),
-            item_name = data.get("item_name"),
-            qty = data.get("qty")
+            status = data.get("status")
         )
         
         CustomerRepository.save(customer)
@@ -31,8 +30,7 @@ class CustomerService:
             email = data.get("email"),
             phone = data.get("phone"),
             address = data.get("address"),
-            item_name = data.get("item_name"),
-            qty = data.get("qty")
+            status = data.get("status")
         )
         
         updated = CustomerRepository.update(customer_id, customer)
