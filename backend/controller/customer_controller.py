@@ -18,8 +18,7 @@ def add_customer():
                 "email": customer.email,    
                 "phone": customer.phone,
                 "address": customer.address,
-                "item_name": customer.item_name,
-                "qty": customer.qty
+                "status": customer.status
             } 
         }), 201
         
@@ -83,8 +82,7 @@ def get_customer_by_id(id):
             "email": customer["email"],
             "phone": customer["phone"],
             "address": customer["address"],
-            "item_name": customer["item_name"],
-            "qty": customer["qty"],
+            "status": customer["status"],
             "registered_date": customer["registered_date"]
         }), 200
         
