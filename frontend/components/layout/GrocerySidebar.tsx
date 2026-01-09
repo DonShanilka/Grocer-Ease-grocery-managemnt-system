@@ -37,7 +37,6 @@ export default function GrocerySidebar({ children }: GrocerySidebarProps) {
     { id: 'customer', label: 'Customer', icon: <Users size={20} />, href: '/customer' },
     { id: 'reports', label: 'Reports & Analytics', icon: <BarChart3 size={20} />, href: '/reports' },
     { id: 'settings', label: 'Settings', icon: <Settings size={20} />, href: '/settings' },
-    { id: 'account', label: 'My Account', icon: <UserCircle size={20} />, href: '/account' }
   ];
 
   return (
