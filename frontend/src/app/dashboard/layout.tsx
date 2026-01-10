@@ -1,4 +1,4 @@
-import GrocerySidebar from "@/components/layout/GrocerySidebar";
+import GrocerySidebar from "@/src/components/layout/GrocerySidebar";
 
 export default function DashboardLayout({
   children,

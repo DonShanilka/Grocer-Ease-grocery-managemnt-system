@@ -1,6 +1,6 @@
 'use client';
 
-import CustomersPage from '@/components/customers/CustomersPage';
+import CustomersPage from '@/src/components/customers/CustomersPage';
 import React from 'react'
 
 function page() {
