@@ -13,7 +13,7 @@ export default function SupplierTable({ suppliers, onView, onEdit, onDelete }: P
       <table className="w-full">
         <thead className="bg-white">
           <tr className="border-b border-gray-200">
-            {["Name", "Phone", "Item", "Qty", "Price", "Status", "Actions"].map(h => (
+            {["Name", "Phone", "Email" ,"Item", "Qty", "Price", "Status", "Actions"].map(h => (
               <th key={h} className="text-left px-4 py-3 text-xs font-bold text-gray-600">{h}</th>
             ))}
           </tr>
@@ -23,6 +23,7 @@ export default function SupplierTable({ suppliers, onView, onEdit, onDelete }: P
             <tr key={s.id} className="border-b hover:bg-gray-50">
               <td className="px-4 py-3 text-black text-xs">{s.name}</td>
               <td className="px-4 py-3 text-black text-xs">{s.phone}</td>
+              <td className="px-4 py-3 text-black text-xs">{s.email}</td>
               <td className="px-4 py-3 text-black text-xs">{s.supplied_items}</td>
               <td className="px-4 py-3 text-black text-xs">{s.qty}</td>
               <td className="px-4 py-3 text-black text-xs">${s.price_per_unit}</td>
