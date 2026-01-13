@@ -21,7 +21,7 @@ export const InventoryTable = ({ items, onView, onEdit, onDelete }: Props) => {
   };
 
   return (
-    <div className="bg-white w-7/12 rounded-lg border border-gray-200 overflow-hidden px-6 mb-6">
+    <div className="bg-white w-7/12 rounded-lg border border-gray-50 overflow-hidden px-6 mb-6">
       <div className="overflow-x-scroll">
         <table className="w-full">
           <thead className="bg-white">

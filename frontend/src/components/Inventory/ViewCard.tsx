@@ -10,7 +10,7 @@ interface Props {
 export const ViewCard = ({ item, onClose }: Props) => {
   const getStatusColor = (status: string) => {
     switch (status.toLowerCase()) {
-      case 'in stock': return 'bg-green-100 text-green-700';
+      case 'available' : return 'bg-green-100 text-green-700';
       case 'low stock': return 'bg-yellow-100 text-yellow-700';
       case 'out of stock': return 'bg-red-100 text-red-700';
       case 'reorder needed': return 'bg-orange-100 text-orange-700';

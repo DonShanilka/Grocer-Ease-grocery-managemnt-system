@@ -23,7 +23,7 @@ export const CategoryPieChart = ({ inventory }: Props) => {
   const COLORS = ['#4f46e5', '#10b981', '#f59e0b', '#ef4444', '#3b82f6', '#8b5cf6'];
 
   return (
-    <div className="bg-white rounded-lg border border-gray-200 p-6 mb-6 w-5/12">
+    <div className="bg-white rounded-lg border border-gray-50 p-6 mb-6 w-5/12">
       <h3 className="text-gray-800 font-bold mb-4 text-sm">Inventory Distribution by Category</h3>
       {data.length === 0 ? (
         <p className="text-gray-500 text-sm text-center">No inventory data</p>
