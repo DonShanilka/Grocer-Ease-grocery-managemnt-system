@@ -21,12 +21,12 @@ export const InventoryTable = ({ items, onView, onEdit, onDelete }: Props) => {
   };
 
   return (
-    <div className="bg-white rounded-lg border border-gray-200 overflow-hidden px-6 mb-6">
-      <div className="overflow-x-auto">
+    <div className="bg-white w-7/12 rounded-lg border border-gray-200 overflow-hidden px-6 mb-6">
+      <div className="overflow-x-scroll">
         <table className="w-full">
           <thead className="bg-gray-50">
             <tr className="border-b border-gray-200">
-              {['Name', 'Stock', 'Category', 'Price', 'Supplier', 'Status', 'Added', 'Actions'].map(h => (
+              {['Name', 'Stock', 'Category', 'Price', 'Status', 'Actions'].map(h => (
                 <th key={h} className="text-left py-3 px-4 text-xs font-semibold text-gray-600">{h}</th>
               ))}
             </tr>
@@ -34,17 +34,17 @@ export const InventoryTable = ({ items, onView, onEdit, onDelete }: Props) => {
           <tbody>
             {items.map((item) => (
               <tr key={item.id} className="border-b border-gray-100 hover:bg-gray-50">
-                <td className="py-3 px-4 text-sm font-medium text-gray-800">{item.name}</td>
-                <td className="py-3 px-4 text-sm text-gray-800">{item.quantity} {item.unit}</td>
-                <td className="py-3 px-4 text-sm text-gray-800">{item.category}</td>
-                <td className="py-3 px-4 text-sm font-medium text-gray-800">${item.price}</td>
-                <td className="py-3 px-4 text-sm text-gray-800">{item.supplier}</td>
+                <td className="py-3 px-4 text-xs font-medium text-gray-800">{item.name}</td>
+                <td className="py-3 px-4 text-xs text-gray-800">{item.quantity} {item.unit}</td>
+                <td className="py-3 px-4 text-xs text-gray-800">{item.category}</td>
+                <td className="py-3 px-4 text-xs font-medium text-gray-800">${item.price}</td>
+                {/* <td className="py-3 px-4 text-xs text-gray-800">{item.supplier}</td> */}
                 <td className="py-3 px-4">
                   <span className={`px-3 py-1 rounded-full text-xs font-medium ${getStatusColor(item.status)}`}>
                     {item.status}
                   </span>
                 </td>
-                <td className="py-3 px-4 text-sm text-gray-800">{item.added_date}</td>
+                {/* <td className="py-3 px-4 text-sm text-gray-800">{item.added_date}</td> */}
                 <td className="py-3 px-4 flex gap-2">
                   <button onClick={() => onView(item)} className="text-blue-600 hover:underline text-sm">View</button>
                   <button onClick={() => onEdit(item)} className="text-green-600 hover:underline text-sm">Edit</button>

@@ -79,14 +79,14 @@ export default function GrocerySidebar({ children }: GrocerySidebarProps) {
         </nav>
 
         {/* Upgrade Section */}
-        <div className="p-4 m-4 bg-gradient-to-br from-blue-600 to-blue-700 rounded-xl text-white">
+        {/* <div className="p-4 m-4 bg-gradient-to-br from-blue-600 to-blue-700 rounded-xl text-white">
           <h3 className="font-semibold text-sm mb-1">Upgrade to Pro</h3>
           <p className="text-xs text-blue-100 mb-3">Maximize your sales with our pro plan</p>
           <button className="w-full bg-white text-blue-600 py-2 px-4 rounded-lg text-sm font-medium hover:bg-blue-50 transition-colors flex items-center justify-center gap-1">
             <span>↑</span>
             <span>Upgrade to Pro</span>
           </button>
-        </div>
+        </div> */}
 
         {/* Logout */}
         <div className="p-4 border-t border-gray-200">

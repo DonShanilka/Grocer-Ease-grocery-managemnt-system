@@ -44,7 +44,7 @@ export const ViewCard = ({ item, onClose }: Props) => {
               <div key={idx}>
                 <p className="text-xs text-gray-600 mb-1">{field}</p>
                 <p className="text-sm font-medium text-gray-800">
-                  {field === 'Price' ? `$${item.price.toFixed(2)}` :
+                  {field === 'Price' ? `$${item.price}` :
                    field === 'Quantity' ? `${item.quantity} ${item.unit}` :
                    field === 'Description' ? item.description || 'No description' :
                    (item as any)[field.replace(' ', '_').toLowerCase()]}
