@@ -34,6 +34,7 @@ def add_item():
 
 # UPDATE
 @item_bp.route("/items/<int:id>", methods=["PUT"])
+@cross_origin()
 def update_item(id):
     try:
         data = request.get_json()
@@ -63,6 +64,7 @@ def delete_item(id):
 
 # GET ITEM BY ID
 @item_bp.route("/items/<int:id>", methods=["GET"])
+@cross_origin()
 def get_item_by_id(id):
     try:
         item = ItemService.get_item_by_id(id)

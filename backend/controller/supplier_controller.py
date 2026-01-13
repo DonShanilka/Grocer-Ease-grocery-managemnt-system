@@ -34,6 +34,7 @@ def add_supplier():
     
 # UPDATE
 @supplier_bp.route("/suppliers/<int:id>", methods=["PUT"])
+@cross_origin()
 def update_supplier(id):
     try:
         data = request.get_json()
@@ -72,6 +73,7 @@ def delete_supplier(id):
     
 # GET Supplier by ID
 @supplier_bp.route("/suppliers/<int:id>", methods=["GET"])
+@cross_origin()
 def get_supplier_by_id(id):
     try:
         supplier = SupplierService.get_supplier_by_id(id)

@@ -6,6 +6,7 @@ import { StatsCards } from "../../components/Inventory/StatsCards";
 import { InventoryTable } from "../../components/Inventory/InventoryTable";
 import { ViewCard } from "../../components/Inventory/ViewCard";
 import { ItemForm } from "../../components/Inventory/ItemForm";
+import { CategoryPieChart } from "@/src/components/Inventory/CategoryPieChart";
 
 const API_BASE_URL = "http://127.0.0.1:5000";
 
@@ -118,7 +119,9 @@ export default function InventoryPage() {
         setSearchQuery={setSearchQuery}
       />
       <StatsCards inventory={inventory} />
-      {loading ? (
+
+      <div className="flex flex-col lg:flex-row gap-6 px-6">
+        {loading ? (
         <p className="px-6">Loading...</p>
       ) : (
         <InventoryTable
@@ -128,6 +131,9 @@ export default function InventoryPage() {
           onDelete={handleDelete}
         />
       )}
+      <CategoryPieChart inventory={inventory} />
+      </div>
+      
       {showModal && modalMode === "view" && selectedItem && (
         <ViewCard item={selectedItem} onClose={() => setShowModal(false)} />
       )}
@@ -139,6 +145,7 @@ export default function InventoryPage() {
           onSubmit={handleFormSubmit}
         />
       )}
+      
     </div>
   );
 }

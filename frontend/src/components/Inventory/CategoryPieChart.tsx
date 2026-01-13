@@ -1,6 +1,7 @@
 'use client';
 import { PieChart, Pie, Cell, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { InventoryItem } from '../../types/item';
+import { text } from 'stream/consumers';
 
 interface Props {
   inventory: InventoryItem[];
@@ -22,8 +23,8 @@ export const CategoryPieChart = ({ inventory }: Props) => {
   const COLORS = ['#4f46e5', '#10b981', '#f59e0b', '#ef4444', '#3b82f6', '#8b5cf6'];
 
   return (
-    <div className="bg-white rounded-lg border border-gray-200 p-6 mb-6">
-      <h3 className="text-gray-800 font-bold mb-4 text-lg">Inventory Distribution by Category</h3>
+    <div className="bg-white rounded-lg border border-gray-200 p-6 mb-6 w-5/12">
+      <h3 className="text-gray-800 font-bold mb-4 text-sm">Inventory Distribution by Category</h3>
       {data.length === 0 ? (
         <p className="text-gray-500 text-sm text-center">No inventory data</p>
       ) : (
@@ -36,13 +37,14 @@ export const CategoryPieChart = ({ inventory }: Props) => {
               cx="50%"
               cy="50%"
               outerRadius={80}
-              label={({ name, percent }) => `${name}: ${(percent*100).toFixed(0)}%`}
+              label={({ name, percent }) => (`${name}: ${((percent as any)*100).toFixed(0)}%`)}
+              className=''
             >
               {data.map((_, index) => (
                 <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
               ))}
             </Pie>
-            <Tooltip formatter={(value: number) => `${value} items`} />
+            <Tooltip formatter ={(value: any) => `${value} items`} />
             <Legend />
           </PieChart>
         </ResponsiveContainer>

@@ -26,7 +26,7 @@ export const InventoryTable = ({ items, onView, onEdit, onDelete }: Props) => {
         <table className="w-full">
           <thead className="bg-gray-50">
             <tr className="border-b border-gray-200">
-              {['Name', 'Stock', 'Category', 'Price', 'Status', 'Actions'].map(h => (
+              {['Name', 'Category', 'Price', 'Status', 'Actions'].map(h => (
                 <th key={h} className="text-left py-3 px-4 text-xs font-semibold text-gray-600">{h}</th>
               ))}
             </tr>
@@ -35,7 +35,7 @@ export const InventoryTable = ({ items, onView, onEdit, onDelete }: Props) => {
             {items.map((item) => (
               <tr key={item.id} className="border-b border-gray-100 hover:bg-gray-50">
                 <td className="py-3 px-4 text-xs font-medium text-gray-800">{item.name}</td>
-                <td className="py-3 px-4 text-xs text-gray-800">{item.quantity} {item.unit}</td>
+                {/* <td className="py-3 px-4 text-xs text-gray-800">{item.quantity} {item.unit}</td> */}
                 <td className="py-3 px-4 text-xs text-gray-800">{item.category}</td>
                 <td className="py-3 px-4 text-xs font-medium text-gray-800">${item.price}</td>
                 {/* <td className="py-3 px-4 text-xs text-gray-800">{item.supplier}</td> */}
