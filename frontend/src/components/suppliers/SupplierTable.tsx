@@ -1,4 +1,3 @@
-// components/suppliers/SupplierTable.tsx
 import { Supplier } from "@/src/types/Supplier";
 
 interface Props {
