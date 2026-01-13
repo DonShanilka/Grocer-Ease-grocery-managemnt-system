@@ -1,6 +1,6 @@
 'use client';
 import { Package, TrendingDown, AlertTriangle } from 'lucide-react';
-import { InventoryItem } from '../../types';
+import { InventoryItem } from '../../types/item';
 
 interface Props { inventory: InventoryItem[] }
 
