@@ -1,6 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
-import { InventoryItem } from "../../types/item";
+import { InventoryItem } from "../../types/Items";
 import { InventoryHeader } from "../../components/Inventory/InventoryHeader";
 import { StatsCards } from "../../components/Inventory/StatsCards";
 import { InventoryTable } from "../../components/Inventory/InventoryTable";
@@ -133,7 +133,7 @@ export default function InventoryPage() {
       )}
       <CategoryPieChart inventory={inventory} />
       </div>
-      
+
       {showModal && modalMode === "view" && selectedItem && (
         <ViewCard item={selectedItem} onClose={() => setShowModal(false)} />
       )}

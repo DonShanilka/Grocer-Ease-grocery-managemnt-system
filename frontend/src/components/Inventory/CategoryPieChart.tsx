@@ -1,6 +1,6 @@
 'use client';
 import { PieChart, Pie, Cell, Tooltip, Legend, ResponsiveContainer } from 'recharts';
-import { InventoryItem } from '../../types/item';
+import { InventoryItem } from '../../types/Items';
 import { text } from 'stream/consumers';
 
 interface Props {

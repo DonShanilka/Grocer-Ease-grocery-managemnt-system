@@ -1,6 +1,6 @@
 'use client';
 import { X, Package } from 'lucide-react';
-import { InventoryItem } from '../../types/item';
+import { InventoryItem } from '../../types/Items';
 
 interface Props {
   item: InventoryItem;
