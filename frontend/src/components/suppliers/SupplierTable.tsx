@@ -9,23 +9,23 @@ interface Props {
 
 export default function SupplierTable({ suppliers, onView, onEdit, onDelete }: Props) {
   return (
-    <div className="bg-white rounded-lg border border-gray-200 overflow-x-auto">
+    <div className="bg-white rounded-lg w-full px-6 border-gray-200 overflow-x-auto">
       <table className="w-full">
-        <thead className="bg-gray-50">
-          <tr>
+        <thead className="bg-white">
+          <tr className="border-b border-gray-200">
             {["Name", "Phone", "Item", "Qty", "Price", "Status", "Actions"].map(h => (
-              <th key={h} className="text-left px-4 py-3 text-xs font-semibold text-gray-600">{h}</th>
+              <th key={h} className="text-left px-4 py-3 text-xs font-bold text-gray-600">{h}</th>
             ))}
           </tr>
         </thead>
         <tbody>
           {suppliers.map(s => (
             <tr key={s.id} className="border-b hover:bg-gray-50">
-              <td className="px-4 py-3 font-medium">{s.name}</td>
-              <td className="px-4 py-3">{s.phone}</td>
-              <td className="px-4 py-3">{s.supplied_items}</td>
-              <td className="px-4 py-3">{s.qty}</td>
-              <td className="px-4 py-3">${s.price_per_unit}</td>
+              <td className="px-4 py-3 text-black text-xs">{s.name}</td>
+              <td className="px-4 py-3 text-black text-xs">{s.phone}</td>
+              <td className="px-4 py-3 text-black text-xs">{s.supplied_items}</td>
+              <td className="px-4 py-3 text-black text-xs">{s.qty}</td>
+              <td className="px-4 py-3 text-black text-xs">${s.price_per_unit}</td>
               <td className="px-4 py-3">
                 <span className="px-2 py-1 rounded text-xs bg-green-100 text-green-700">
                   {s.status}

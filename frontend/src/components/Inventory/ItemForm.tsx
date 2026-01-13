@@ -24,7 +24,7 @@ export const ItemForm = ({ mode, item, onClose, onSubmit }: Props) => {
 
   const categories = ['Fresh Produce', 'Dairy Products', 'Bakery Products', 'Grocery Products', 'Beverages', 'Frozen Items'];
   const units = ['kg', 'liters', 'pieces', 'boxes', 'bags', 'bottles', 'grams'];
-  const statuses = ['In Stock', 'Low Stock', 'Out of Stock', 'Reorder Needed'];
+  const statuses = ['available', 'Low Stock', 'Out of Stock', 'Reorder Needed'];
 
   const handleSubmit = () => {
     if (!formData.name || !formData.category || !formData.price || !formData.quantity) {

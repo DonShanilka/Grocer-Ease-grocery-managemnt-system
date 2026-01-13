@@ -18,7 +18,7 @@ export const StatsCards = ({ inventory }: Props) => {
   ];
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6 px-6">
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-4 px-6">
       {cards.map((card) => (
         <div key={card.title} className="bg-white p-4 rounded-lg border border-gray-50">
           <div className="flex items-start justify-between ">

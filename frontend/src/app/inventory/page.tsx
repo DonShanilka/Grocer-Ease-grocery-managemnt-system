@@ -7,6 +7,7 @@ import { InventoryTable } from "../../components/Inventory/InventoryTable";
 import { ViewCard } from "../../components/Inventory/ViewCard";
 import { ItemForm } from "../../components/Inventory/ItemForm";
 import { CategoryPieChart } from "@/src/components/Inventory/CategoryPieChart";
+import SupplierSection from "@/src/components/suppliers/ SupplierSection";
 
 const API_BASE_URL = "http://127.0.0.1:5000";
 
@@ -145,6 +146,8 @@ export default function InventoryPage() {
           onSubmit={handleFormSubmit}
         />
       )}
+
+      <SupplierSection />
       
     </div>
   );

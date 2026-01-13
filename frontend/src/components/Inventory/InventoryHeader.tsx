@@ -9,7 +9,7 @@ interface Props {
 
 export const InventoryHeader = ({ onAddNew, searchQuery, setSearchQuery }: Props) => (
   <div className="bg-gray-50 px-6 py-4">
-    <div className="flex items-center justify-between mb-2">
+    <div className="flex items-center justify-between">
       <div className="relative flex-1 max-w-md">
         <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
         <input
