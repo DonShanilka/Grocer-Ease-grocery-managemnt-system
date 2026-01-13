@@ -24,10 +24,10 @@ export const InventoryTable = ({ items, onView, onEdit, onDelete }: Props) => {
     <div className="bg-white w-7/12 rounded-lg border border-gray-200 overflow-hidden px-6 mb-6">
       <div className="overflow-x-scroll">
         <table className="w-full">
-          <thead className="bg-gray-50">
+          <thead className="bg-white">
             <tr className="border-b border-gray-200">
               {['Name', 'Category', 'Price', 'Status', 'Actions'].map(h => (
-                <th key={h} className="text-left py-3 px-4 text-xs font-semibold text-gray-600">{h}</th>
+                <th key={h} className="text-left py-3 px-4 text-xs font-semibold text-black">{h}</th>
               ))}
             </tr>
           </thead>
@@ -37,7 +37,7 @@ export const InventoryTable = ({ items, onView, onEdit, onDelete }: Props) => {
                 <td className="py-3 px-4 text-xs font-medium text-gray-800">{item.name}</td>
                 {/* <td className="py-3 px-4 text-xs text-gray-800">{item.quantity} {item.unit}</td> */}
                 <td className="py-3 px-4 text-xs text-gray-800">{item.category}</td>
-                <td className="py-3 px-4 text-xs font-medium text-gray-800">${item.price}</td>
+                <td className="py-3 px-4 text-xs font-medium text-gray-800">{item.price}</td>
                 {/* <td className="py-3 px-4 text-xs text-gray-800">{item.supplier}</td> */}
                 <td className="py-3 px-4">
                   <span className={`px-3 py-1 rounded-full text-xs font-medium ${getStatusColor(item.status)}`}>

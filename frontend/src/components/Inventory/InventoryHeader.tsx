@@ -8,8 +8,8 @@ interface Props {
 }
 
 export const InventoryHeader = ({ onAddNew, searchQuery, setSearchQuery }: Props) => (
-  <div className="bg-white border-b  px-6 py-4">
-    <div className="flex items-center justify-between mb-4">
+  <div className="bg-gray-50 px-6 py-4">
+    <div className="flex items-center justify-between mb-2">
       <div className="relative flex-1 max-w-md">
         <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
         <input
@@ -17,7 +17,7 @@ export const InventoryHeader = ({ onAddNew, searchQuery, setSearchQuery }: Props
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
           placeholder="Search something here..."
-          className="pl-10 pr-4 py-2 w-full border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="pl-10 pr-4 py-2 w-full border border-gray-200 rounded-lg text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
       </div>
       <button
