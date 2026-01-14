@@ -49,4 +49,19 @@ class OrderRepository:
 
         return order_id
 
-    
+
+    @staticmethod
+    def update_order(order_id, status):
+        conn = get_db()
+        cursor = conn.cursor()
+
+        cursor.execute("""
+            UPDATE orders SET status=%s WHERE id=%s
+        """, (status.value, order_id))
+
+        conn.commit()
+        affected = cursor.rowcount
+        cursor.close()
+        conn.close()
+
+        return affected
