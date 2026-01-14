@@ -1,4 +1,6 @@
 from datetime import datetime
+from enum.order_enums import OrderType, PaymentType, OrderStatus
+from models.orderItem_model import OrderItem 
 
 class Order:
     def __init__(
@@ -7,7 +9,7 @@ class Order:
         customer_name,
         order_type: OrderType,
         payment_type: PaymentType,
-        items: list[OrderItem]
+        items: list[OrderItem],
     ):
         self.order_id = order_id
         self.customer_name = customer_name
