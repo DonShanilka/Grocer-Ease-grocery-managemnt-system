@@ -43,14 +43,37 @@ class DeliveryRepository:
         conn.close()
 
     @staticmethod
-    def update_status(order_id, status):
+    def update_status(order_id, data: dict):
+        """
+        Update delivery info including:
+        - delivery_status
+        - delivery_address
+        - contact_phone
+        - assigned_driver
+        """
         conn = get_db()
         cursor = conn.cursor()
-        cursor.execute("UPDATE deliveries SET delivery_status=%s WHERE order_id=%s", (status, order_id))
+
+        cursor.execute("""
+            UPDATE deliveries
+            SET delivery_status=%s,
+                delivery_address=%s,
+                contact_phone=%s,
+                assigned_driver=%s
+            WHERE order_id=%s
+        """, (
+            data.get("delivery_status"),
+            data.get("delivery_address"),
+            data.get("contact_phone"),
+            data.get("assigned_driver"),
+            order_id
+        ))
+
         conn.commit()
         affected = cursor.rowcount
         cursor.close()
         conn.close()
+
         return affected
 
     @staticmethod
