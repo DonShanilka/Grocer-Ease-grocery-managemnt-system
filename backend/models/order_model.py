@@ -1,22 +1,14 @@
 from datetime import datetime
 from enums.order_enums import OrderType, PaymentType, OrderStatus
-from models.orderItem_model import OrderItem 
+from models.orderItem_model import OrderItem
 
 class Order:
-    def __init__(
-        self,
-        order_id,
-        customer_name,
-        order_type: OrderType,
-        payment_type: PaymentType,
-        items: list[OrderItem],
-    ):
+    def __init__(self, order_id, customer_name, order_type: OrderType, payment_type: PaymentType, items: list[OrderItem]):
         self.order_id = order_id
         self.customer_name = customer_name
         self.order_type = order_type
         self.payment_type = payment_type
         self.items = items
-
         self.status = OrderStatus.PENDING
         self.total_amount = self.calculate_total()
         self.created_at = datetime.now()
