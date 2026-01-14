@@ -1,218 +1,198 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
-export default function CustomerModal({
-  mode,
-  customer,
-  onClose,
-  onSubmit
-}: any) {
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    phone: '',
-    address: '',
-    status: 'Active'
-  });
+interface OrderItem {
+  product_id: number;
+  item_name: string;
+  quantity: number;
+  price: number;
+}
 
-  useEffect(() => {
-    if (customer && mode !== 'create') {
-      setFormData({
-        name: customer.name,
-        email: customer.email,
-        phone: customer.phone,
-        address: customer.address,
-        status: customer.status
-      });
+interface Props {
+  onSubmit: (data: any) => void;
+}
+
+const emptyItem: OrderItem = {
+  product_id: 0,
+  item_name: '',
+  quantity: 1,
+  price: 0
+};
+
+export default function OrderForm({ onSubmit }: Props) {
+  const [customerName, setCustomerName] = useState('');
+  const [orderType, setOrderType] = useState('DELIVERY');
+  const [paymentType, setPaymentType] = useState('CASH');
+
+  const [items, setItems] = useState<OrderItem[]>([emptyItem]);
+
+  const updateItem = (
+    index: number,
+    field: keyof OrderItem,
+    value: any
+  ) => {
+    const updated = [...items];
+    updated[index] = { ...updated[index], [field]: value };
+
+    setItems(() => {
+      // if last row is being edited and becomes non-empty → add new row
+      const isLast = index === items.length - 1;
+      const hasData =
+        updated[index].item_name ||
+        updated[index].product_id ||
+        updated[index].price > 0;
+
+      if (isLast && hasData) {
+        return [...updated, emptyItem];
+      }
+
+      return updated;
+    });
+  };
+
+  const removeItem = (index: number) => {
+    const filtered = items.filter((_, i) => i !== index);
+    setItems(filtered.length ? filtered : [emptyItem]);
+  };
+
+  const handleSubmit = () => {
+    const validItems = items.filter(
+      (i) => i.item_name && i.quantity > 0 && i.price > 0
+    );
+
+    if (!customerName || validItems.length === 0) {
+      alert('Customer name and at least one item are required');
+      return;
     }
-  }, [customer, mode]);
+
+    onSubmit({
+      customer_name: customerName,
+      order_type: orderType,
+      payment_type: paymentType,
+      items: validItems
+    });
+  };
+
+  const total = items.reduce(
+    (sum, i) => sum + i.quantity * i.price,
+    0
+  );
 
   return (
-    <div className="fixed inset-0 bg-black/70 transition-opacity flex items-center justify-center z-50 p-4">
-      <div className="bg-white rounded-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto">
-        <div className="p-6">
-          {/* Header */}
-          <div className="flex items-center justify-between mb-6">
-            <h2 className="text-xl font-bold text-gray-800">
-              {mode === 'create' && 'Add New Customer'}
-              {mode === 'edit' && 'Edit Customer'}
-              {mode === 'view' && 'Customer Details'}
-            </h2>
-            <button
-              onClick={onClose}
-              className="text-gray-400 hover:text-gray-600"
-            >
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-              </svg>
-            </button>
-          </div>
+    <div className="max-w-4xl mx-auto p-6 bg-white rounded-lg shadow text-black">
 
-          {/* VIEW MODE */}
-          {mode === 'view' ? (
-            <div className="space-y-4">
-              <div className="flex items-center gap-4 pb-4 border-b">
-                <div className="w-20 h-20 bg-gradient-to-br from-blue-500 to-purple-500 rounded-full flex items-center justify-center text-white font-bold text-2xl">
-                  {customer.name.split(' ').map((n: string) => n[0]).join('')}
-                </div>
-                <div>
-                  <h3 className="text-xl font-bold text-gray-800">
-                    {customer.name}
-                  </h3>
-                  <span
-                    className={`inline-block px-3 py-1 rounded-full text-xs font-medium mt-1 ${
-                      customer.status === 'Active'
-                        ? 'bg-green-100 text-green-700'
-                        : 'bg-gray-100 text-gray-700'
-                    }`}
-                  >
-                    {customer.status}
-                  </span>
-                </div>
-              </div>
+      <h2 className="text-2xl font-bold mb-6">
+        Create New Order
+      </h2>
 
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <p className="text-xs text-gray-600 mb-1">Email</p>
-                  <p className="text-sm font-medium text-gray-800">
-                    {customer.email}
-                  </p>
-                </div>
-
-                <div>
-                  <p className="text-xs text-gray-600 mb-1">Phone</p>
-                  <p className="text-sm font-medium text-gray-800">
-                    {customer.phone}
-                  </p>
-                </div>
-
-                <div className="col-span-2">
-                  <p className="text-xs text-gray-600 mb-1">Address</p>
-                  <p className="text-sm font-medium text-gray-800">
-                    {customer.address}
-                  </p>
-                </div>
-
-                <div>
-                  <p className="text-xs text-gray-600 mb-1">Total Orders</p>
-                  <p className="text-sm font-medium text-gray-800">
-                    {customer.totalOrders}
-                  </p>
-                </div>
-
-                <div>
-                  <p className="text-xs text-gray-600 mb-1">Total Spent</p>
-                  <p className="text-sm font-medium text-gray-800">
-                    {customer.totalSpent}
-                  </p>
-                </div>
-
-                <div>
-                  <p className="text-xs text-gray-600 mb-1">Joined Date</p>
-                  <p className="text-sm font-medium text-gray-800">
-                    {customer.joinedDate}
-                  </p>
-                </div>
-              </div>
-            </div>
-          ) : (
-            /* CREATE & EDIT MODE */
-            <div className="space-y-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Full Name *
-                </label>
-                <input
-                  type="text"
-                  value={formData.name}
-                  onChange={(e) =>
-                    setFormData({ ...formData, name: e.target.value })
-                  }
-                  className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500"
-                  placeholder="Enter customer name"
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Email Address *
-                </label>
-                <input
-                  type="email"
-                  value={formData.email}
-                  onChange={(e) =>
-                    setFormData({ ...formData, email: e.target.value })
-                  }
-                  className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500"
-                  placeholder="customer@email.com"
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Phone Number *
-                </label>
-                <input
-                  type="tel"
-                  value={formData.phone}
-                  onChange={(e) =>
-                    setFormData({ ...formData, phone: e.target.value })
-                  }
-                  className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500"
-                  placeholder="+1 (555) 123-4567"
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Address *
-                </label>
-                <textarea
-                  rows={3}
-                  value={formData.address}
-                  onChange={(e) =>
-                    setFormData({ ...formData, address: e.target.value })
-                  }
-                  className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500"
-                  placeholder="Enter full address"
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Status
-                </label>
-                <select
-                  value={formData.status}
-                  onChange={(e) =>
-                    setFormData({ ...formData, status: e.target.value })
-                  }
-                  className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500"
-                >
-                  <option value="Active">Active</option>
-                  <option value="Inactive">Inactive</option>
-                </select>
-              </div>
-
-              <div className="flex gap-3 pt-4">
-                <button
-                  onClick={onClose}
-                  className="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 font-medium"
-                >
-                  Cancel
-                </button>
-                <button
-                  onClick={() => onSubmit(formData)}
-                  className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-medium"
-                >
-                  {mode === 'create' ? 'Add Customer' : 'Save Changes'}
-                </button>
-              </div>
-            </div>
-          )}
-        </div>
+      {/* CUSTOMER NAME */}
+      <div className="mb-4">
+        <label className="block text-sm font-medium mb-2">
+          Customer Name *
+        </label>
+        <input
+          type="text"
+          value={customerName}
+          onChange={(e) => setCustomerName(e.target.value)}
+          className="w-full px-4 py-2 border rounded-lg"
+        />
       </div>
+
+      {/* ORDER TYPE & PAYMENT */}
+      <div className="grid grid-cols-2 gap-4 mb-6">
+        <select
+          value={orderType}
+          onChange={(e) => setOrderType(e.target.value)}
+          className="px-4 py-2 border rounded-lg"
+        >
+          <option value="DINE_IN">Dine In</option>
+          <option value="TAKE_AWAY">Take Away</option>
+          <option value="DELIVERY">Delivery</option>
+        </select>
+
+        <select
+          value={paymentType}
+          onChange={(e) => setPaymentType(e.target.value)}
+          className="px-4 py-2 border rounded-lg"
+        >
+          <option value="CASH">Cash</option>
+          <option value="CARD">Card</option>
+          <option value="ONLINE">Online</option>
+        </select>
+      </div>
+
+      {/* ITEMS */}
+      <h3 className="text-lg font-semibold mb-3">Order Items</h3>
+
+      {items.map((item, index) => (
+        <div key={index} className="grid grid-cols-5 gap-3 mb-3">
+
+          <input
+            type="number"
+            placeholder="Product ID"
+            value={item.product_id || ''}
+            onChange={(e) =>
+              updateItem(index, 'product_id', Number(e.target.value))
+            }
+            className="border px-3 py-2 rounded"
+          />
+
+          <input
+            placeholder="Item name"
+            value={item.item_name}
+            onChange={(e) =>
+              updateItem(index, 'item_name', e.target.value)
+            }
+            className="col-span-2 border px-3 py-2 rounded"
+          />
+
+          <input
+            type="number"
+            value={item.quantity}
+            min={1}
+            onChange={(e) =>
+              updateItem(index, 'quantity', Number(e.target.value))
+            }
+            className="border px-3 py-2 rounded"
+          />
+
+          <div className="flex gap-2">
+            <input
+              type="number"
+              value={item.price}
+              onChange={(e) =>
+                updateItem(index, 'price', Number(e.target.value))
+              }
+              className="border px-3 py-2 rounded w-full"
+            />
+
+            {items.length > 1 && (
+              <button
+                onClick={() => removeItem(index)}
+                className="text-red-600 px-2"
+              >
+                ✕
+              </button>
+            )}
+          </div>
+        </div>
+      ))}
+
+      {/* TOTAL */}
+      <div className="flex justify-between font-semibold text-lg my-6">
+        <span>Total</span>
+        <span>Rs. {total.toFixed(2)}</span>
+      </div>
+
+      {/* SUBMIT */}
+      <button
+        onClick={handleSubmit}
+        className="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700"
+      >
+        Create Order
+      </button>
+
     </div>
   );
 }
