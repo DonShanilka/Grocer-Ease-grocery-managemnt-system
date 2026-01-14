@@ -21,7 +21,7 @@ def get_delivery(order_id):
 
 
 # ================= UPDATE DELIVERY STATUS =================
-@delivery_bp.route("/deliveries/order/<int:order_id>/status", methods=["PUT"])
+@delivery_bp.route("/deliveries/order/<int:order_id>/update", methods=["PUT"])
 @cross_origin()
 def update_delivery_status(order_id):
     try:

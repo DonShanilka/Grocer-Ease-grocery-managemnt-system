@@ -10,8 +10,11 @@ class DeliveryService:
         return delivery
 
     @staticmethod
-    def update_delivery_status(order_id, status):
-        affected = DeliveryRepository.update_status(order_id, status)
+    def update_delivery_status(order_id, data: dict):
+        """
+        Update delivery info including status, address, phone, and driver.
+        """
+        affected = DeliveryRepository.update_status(order_id, data)
         if affected == 0:
             raise ValueError("Delivery not found")
         return affected
