@@ -7,7 +7,6 @@ class OrderRepository:
     def create_table():
         conn = get_db()
         cursor = conn.cursor()
-
         cursor.execute("""
             CREATE TABLE IF NOT EXISTS orders (
                 id INT AUTO_INCREMENT PRIMARY KEY,
@@ -19,17 +18,14 @@ class OrderRepository:
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             )
         """)
-
         conn.commit()
         cursor.close()
         conn.close()
-
 
     @staticmethod
     def save(order: Order):
         conn = get_db()
         cursor = conn.cursor()
-
         cursor.execute("""
             INSERT INTO orders
             (customer_name, order_type, payment_type, status, total_amount)
@@ -41,70 +37,50 @@ class OrderRepository:
             order.status.value,
             order.total_amount
         ))
-
         conn.commit()
         order_id = cursor.lastrowid
         cursor.close()
         conn.close()
-
         return order_id
-
 
     @staticmethod
     def update_order(order_id, status):
         conn = get_db()
         cursor = conn.cursor()
-
-        cursor.execute("""
-            UPDATE orders SET status=%s WHERE id=%s
-        """, (status.value, order_id))
-
+        cursor.execute("UPDATE orders SET status=%s WHERE id=%s", (status.value, order_id))
         conn.commit()
         affected = cursor.rowcount
         cursor.close()
         conn.close()
-
         return affected
-    
-    
+
     @staticmethod
     def delete(order_id):
         conn = get_db()
         cursor = conn.cursor()
-
         cursor.execute("DELETE FROM orders WHERE id=%s", (order_id,))
         conn.commit()
-
         affected = cursor.rowcount
         cursor.close()
         conn.close()
-
         return affected
-
 
     @staticmethod
     def find_by_id(order_id):
         conn = get_db()
         cursor = conn.cursor(dictionary=True)
-
         cursor.execute("SELECT * FROM orders WHERE id=%s", (order_id,))
         order = cursor.fetchone()
-
         cursor.close()
         conn.close()
-
         return order
-    
-    
+
     @staticmethod
     def find_all():
         conn = get_db()
         cursor = conn.cursor(dictionary=True)
-
         cursor.execute("SELECT * FROM orders ORDER BY created_at DESC")
         orders = cursor.fetchall()
-
         cursor.close()
         conn.close()
-
         return orders
