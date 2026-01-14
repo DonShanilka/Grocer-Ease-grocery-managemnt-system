@@ -25,3 +25,28 @@ class OrderRepository:
         conn.close()
 
 
+    @staticmethod
+    def save(order: Order):
+        conn = get_db()
+        cursor = conn.cursor()
+
+        cursor.execute("""
+            INSERT INTO orders
+            (customer_name, order_type, payment_type, status, total_amount)
+            VALUES (%s, %s, %s, %s, %s)
+        """, (
+            order.customer_name,
+            order.order_type.value,
+            order.payment_type.value,
+            order.status.value,
+            order.total_amount
+        ))
+
+        conn.commit()
+        order_id = cursor.lastrowid
+        cursor.close()
+        conn.close()
+
+        return order_id
+
+    
