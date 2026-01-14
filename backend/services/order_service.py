@@ -4,7 +4,7 @@ from repositories.delivery_repository import DeliveryRepository
 
 from models.order_model import Order
 from models.delivery_model import Delivery
-from enum.order_enums import OrderType, OrderStatus, PaymentType
+from enums.order_enums import OrderType, OrderStatus, PaymentType
 
 
 class OrderService:

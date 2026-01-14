@@ -1,5 +1,5 @@
 from datetime import datetime
-from enum.order_enums import OrderType, PaymentType, OrderStatus
+from enums.order_enums import OrderType, PaymentType, OrderStatus
 from models.orderItem_model import OrderItem 
 
 class Order:
