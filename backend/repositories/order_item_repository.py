@@ -50,3 +50,18 @@ class OrderItemRepository:
         cursor.close()
         conn.close()
         return items
+    
+    
+    @staticmethod
+    def find_all():
+        conn = get_db()
+        cursor = conn.cursor(dictionary=True)
+        
+        cursor.execute("SELECT * FROM order_items")
+        
+        order_items = cursor.fetchall()
+        
+        cursor.close()
+        conn.close()
+        
+        return order_items

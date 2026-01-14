@@ -43,7 +43,7 @@ class DeliveryRepository:
         conn.close()
 
     @staticmethod
-    def update_status(order_id, data: dict):
+    def update_status(id, data: dict):
         """
         Update delivery info including:
         - delivery_status
@@ -60,13 +60,13 @@ class DeliveryRepository:
                 delivery_address=%s,
                 contact_phone=%s,
                 assigned_driver=%s
-            WHERE order_id=%s
+            WHERE id=%s
         """, (
             data.get("delivery_status"),
             data.get("delivery_address"),
             data.get("contact_phone"),
             data.get("assigned_driver"),
-            order_id
+            id
         ))
 
         conn.commit()
@@ -85,3 +85,18 @@ class DeliveryRepository:
         cursor.close()
         conn.close()
         return delivery
+    
+    
+    @staticmethod
+    def find_all():
+        conn = get_db()
+        cursor = conn.cursor(dictionary=True)
+        
+        cursor.execute("SELECT * FROM deliveries")
+        
+        deliveries = cursor.fetchall()
+        
+        cursor.close()
+        conn.close()
+        
+        return deliveries
