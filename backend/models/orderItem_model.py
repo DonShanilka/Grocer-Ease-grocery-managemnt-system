@@ -1,6 +1,6 @@
 class OrderItem:
-    def __init__(self, item_id, name, price, quantity):
-        self.item_id = item_id
+    def __init__(self, product_id, name, price, quantity):
+        self.product_id = product_id
         self.name = name
         self.price = price
         self.quantity = quantity

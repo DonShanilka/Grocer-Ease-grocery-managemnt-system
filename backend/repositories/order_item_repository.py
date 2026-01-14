@@ -32,7 +32,7 @@ class OrderItemRepository:
             VALUES (%s, %s, %s, %s, %s)
         """, (
             order_id,
-            item.item_id,
+            item.product_id,
             item.name,
             item.price,
             item.quantity

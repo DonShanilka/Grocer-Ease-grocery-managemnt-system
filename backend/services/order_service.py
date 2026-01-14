@@ -17,7 +17,7 @@ class OrderService:
 
         items = []
         for i in data["items"]:
-            items.append(OrderItem(i.get("item_id"), i["item_name"], i["price"], i["quantity"]))
+            items.append(OrderItem(i.get("product_id"), i["item_name"], i["price"], i["quantity"]))
 
         order = Order(None, data["customer_name"], OrderType(data["order_type"]), PaymentType(data["payment_type"]), items)
         order_id = OrderRepository.save(order)
