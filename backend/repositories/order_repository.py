@@ -65,3 +65,18 @@ class OrderRepository:
         conn.close()
 
         return affected
+    
+    
+    @staticmethod
+    def delete(order_id):
+        conn = get_db()
+        cursor = conn.cursor()
+
+        cursor.execute("DELETE FROM orders WHERE id=%s", (order_id,))
+        conn.commit()
+
+        affected = cursor.rowcount
+        cursor.close()
+        conn.close()
+
+        return affected
