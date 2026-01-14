@@ -94,3 +94,17 @@ class OrderRepository:
         conn.close()
 
         return order
+    
+    
+    @staticmethod
+    def find_all():
+        conn = get_db()
+        cursor = conn.cursor(dictionary=True)
+
+        cursor.execute("SELECT * FROM orders ORDER BY created_at DESC")
+        orders = cursor.fetchall()
+
+        cursor.close()
+        conn.close()
+
+        return orders
