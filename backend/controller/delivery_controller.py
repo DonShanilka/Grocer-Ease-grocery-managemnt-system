@@ -35,3 +35,10 @@ def update_delivery_status(id):
     except Exception as e:
         print(e)
         return jsonify({"error": "Internal server error"}), 500
+
+
+@delivery_bp.route("/items", methods=["GET"])
+@cross_origin()
+def get_devlivery():
+    data = DeliveryService.get_deliverys()
+    return jsonify([dict(data) for data in data])

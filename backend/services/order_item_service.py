@@ -5,3 +5,7 @@ class OrderItemService:
     @staticmethod
     def get_items_by_order(order_id):
         return OrderItemRepository.find_by_order(order_id)
+    
+    @staticmethod
+    def get_order_items():
+        return OrderItemRepository.find_all()

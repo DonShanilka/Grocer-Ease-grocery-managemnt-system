@@ -18,3 +18,8 @@ class DeliveryService:
         if affected == 0:
             raise ValueError("Delivery not found")
         return affected
+
+
+    @staticmethod
+    def get_deliverys():
+        return DeliveryRepository.find_all()
