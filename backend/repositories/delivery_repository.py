@@ -3,12 +3,10 @@ from models.delivery_model import Delivery
 
 class DeliveryRepository:
 
-
     @staticmethod
     def create_table():
         conn = get_db()
         cursor = conn.cursor()
-
         cursor.execute("""
             CREATE TABLE IF NOT EXISTS deliveries (
                 id INT AUTO_INCREMENT PRIMARY KEY,
@@ -21,17 +19,14 @@ class DeliveryRepository:
                 FOREIGN KEY (order_id) REFERENCES orders(id) ON DELETE CASCADE
             )
         """)
-
         conn.commit()
         cursor.close()
         conn.close()
-
 
     @staticmethod
     def save(delivery: Delivery):
         conn = get_db()
         cursor = conn.cursor()
-
         cursor.execute("""
             INSERT INTO deliveries
             (order_id, delivery_address, contact_phone, delivery_status, assigned_driver)
@@ -43,40 +38,27 @@ class DeliveryRepository:
             delivery.delivery_status,
             delivery.delivery_person
         ))
-
         conn.commit()
         cursor.close()
         conn.close()
-
 
     @staticmethod
     def update_status(order_id, status):
         conn = get_db()
         cursor = conn.cursor()
-
-        cursor.execute("""
-            UPDATE deliveries SET delivery_status=%s WHERE order_id=%s
-        """, (status, order_id))
-
+        cursor.execute("UPDATE deliveries SET delivery_status=%s WHERE order_id=%s", (status, order_id))
         conn.commit()
         affected = cursor.rowcount
         cursor.close()
         conn.close()
-
         return affected
-
 
     @staticmethod
     def find_by_order(order_id):
         conn = get_db()
         cursor = conn.cursor(dictionary=True)
-
-        cursor.execute("""
-            SELECT * FROM deliveries WHERE order_id=%s
-        """, (order_id,))
-
+        cursor.execute("SELECT * FROM deliveries WHERE order_id=%s", (order_id,))
         delivery = cursor.fetchone()
         cursor.close()
         conn.close()
-
         return delivery
