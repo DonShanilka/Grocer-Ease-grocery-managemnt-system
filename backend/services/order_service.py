@@ -5,6 +5,8 @@ from repositories.delivery_repository import DeliveryRepository
 from models.order_model import Order
 from models.delivery_model import Delivery
 from enums.order_enums import OrderType, OrderStatus, PaymentType
+from models.orderItem_model import OrderItem  
+
 
 
 class OrderService:
@@ -23,20 +25,31 @@ class OrderService:
         if not data.get("items") or len(data["items"]) == 0:
             raise ValueError("Order items are required")
 
+        # Convert dicts to OrderItem objects
+        items = []
+        for i in data["items"]:
+            item = OrderItem(
+                item_id=i.get("item_id"),
+                name=i["item_name"],
+                price=i["price"],
+                quantity=i["quantity"]
+            )
+            items.append(item)
+
         # -------- Create Order Object --------
         order = Order(
             order_id=None,
             customer_name=data["customer_name"],
             order_type=OrderType(data["order_type"]),
             payment_type=PaymentType(data["payment_type"]),
-            items=data["items"]
+            items=items
         )
 
         # -------- Save Order --------
         order_id = OrderRepository.save(order)
 
         # -------- Save Order Items --------
-        for item in data["items"]:
+        for item in items:
             OrderItemRepository.save(order_id, item)
 
         # -------- Create Delivery (Only if DELIVERY) --------
@@ -51,6 +64,7 @@ class OrderService:
             DeliveryRepository.save(delivery)
 
         return order_id
+    
 
     @staticmethod
     def get_orders():

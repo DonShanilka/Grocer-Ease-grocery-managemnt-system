@@ -1,4 +1,5 @@
 from database.db import get_db
+from models.orderItem_model import OrderItem
 
 class OrderItemRepository:
 
@@ -24,7 +25,7 @@ class OrderItemRepository:
         conn.close()
 
     @staticmethod
-    def save(order_id, item):
+    def save(order_id, item: OrderItem):
         conn = get_db()
         cursor = conn.cursor()
 
@@ -34,10 +35,10 @@ class OrderItemRepository:
             VALUES (%s, %s, %s, %s, %s)
         """, (
             order_id,
-            item.product_id,
+            item.item_id,
             item.name,
             item.price,
-            item.qty
+            item.quantity
         ))
 
         conn.commit()
