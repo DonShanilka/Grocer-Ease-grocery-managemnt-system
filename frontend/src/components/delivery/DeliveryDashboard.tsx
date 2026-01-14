@@ -1,15 +1,14 @@
 'use client';
 import React, { useState } from 'react';
-import Header from '@/src/components/delivery/DeliveryHeader';
-import StatsCard, { DeliveryStats } from '@/src/components/delivery/DeliveryStatsCard';
-import ShipmentChart from '@/src/components/delivery/DeliveryShipmentChart';
-import LiveTracking from '@/src/components/delivery/LiveTracking';
-import RevenueCard from '@/src/components/delivery/RevenueCard';
-import ShipmentsTable, { Shipment } from '@/src/components/delivery/ShipmentsTable';
-import { Calendar, Download, ChevronDown } from 'lucide-react';
-import { Package, Truck, XCircle, RotateCcw } from 'lucide-react';
+import Header from './DeliveryHeader';
+import StatsCard, { DeliveryStats } from './DeliveryStatsCard';
+import ShipmentChart from './DeliveryShipmentChart';
+import LiveTracking from './LiveTracking';
+import RevenueCard from './RevenueCard';
+import ShipmentsTable, { Shipment } from './ShipmentsTable';
+import { Calendar, Download, ChevronDown, ChevronLeft, ChevronRight } from 'lucide-react';
 
-function DeliveryPage() {
+const DeliveryDashboard: React.FC = () => {
   const [timeFilter, setTimeFilter] = useState('This Month');
 
   const stats: DeliveryStats[] = [
@@ -44,28 +43,23 @@ function DeliveryPage() {
             </div>
           </div>
 
-          {/* Stats */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
             {stats.map((stat) => <StatsCard key={stat.label} {...stat} />)}
           </div>
 
-          {/* Shipment chart & Live tracking */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
             <ShipmentChart />
             <LiveTracking />
           </div>
 
-          {/* Shipments Table & Revenue */}
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
-            <div className="lg:col-span-2">
-              <ShipmentsTable shipments={shipments} />
-            </div>
+            <div className="lg:col-span-2"><ShipmentsTable shipments={shipments} /></div>
             <RevenueCard />
           </div>
         </div>
       </main>
     </div>
   );
-}
+};
 
-export default DeliveryPage;
+export default DeliveryDashboard;
