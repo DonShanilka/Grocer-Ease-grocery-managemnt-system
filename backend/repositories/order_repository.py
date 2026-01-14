@@ -80,3 +80,17 @@ class OrderRepository:
         conn.close()
 
         return affected
+
+
+    @staticmethod
+    def find_by_id(order_id):
+        conn = get_db()
+        cursor = conn.cursor(dictionary=True)
+
+        cursor.execute("SELECT * FROM orders WHERE id=%s", (order_id,))
+        order = cursor.fetchone()
+
+        cursor.close()
+        conn.close()
+
+        return order
