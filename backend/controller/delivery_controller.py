@@ -20,15 +20,14 @@ def get_delivery(order_id):
         return jsonify({"error": "Internal server error"}), 500
 
 
-# ================= UPDATE DELIVERY STATUS =================
 @delivery_bp.route("/deliveries/order/<int:order_id>/update", methods=["PUT"])
 @cross_origin()
 def update_delivery_status(order_id):
     try:
-        status = request.json.get("status")
-        DeliveryService.update_delivery_status(order_id, status)
+        data = request.get_json()
+        DeliveryService.update_delivery_status(order_id, data)
 
-        return jsonify({"message": "Delivery status updated successfully"}), 200
+        return jsonify({"message": "Delivery updated successfully"}), 200
 
     except ValueError as e:
         return jsonify({"error": str(e)}), 404
