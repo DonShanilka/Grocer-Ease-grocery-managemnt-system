@@ -51,11 +51,22 @@ function DeliveryPage() {
     setShowModal(true);
   }
 
-  // const shipments: Shipment[] = [
-  //   { orderId: '#JT-938-424', category: 'Electronics', shipperDate: '08/07/2024', departure: 'California', destination: 'New York', weight: '12.3 Kg', status: 'Delivered' },
-  //   { orderId: '#JT-234-653', category: 'Toys & Game', shipperDate: '10/07/2024', departure: 'San Francisco', destination: 'California', weight: '24.5 Kg', status: 'Pending' }
-  // ];
-
+  const handleFormSubmit = async () => {
+    try {
+      if (modalMode === 'edit' && selectedDelivery) {
+        await fetch(`${apiUrl}/deliveries/${selectedDelivery.id}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(selectedDelivery),
+        });
+      } 
+    } catch (error) {
+      console.error('Error submitting form:', error);
+    } finally {
+      setShowModal(false);
+      fetchDeliveries();
+      }
+  }
 
   return (
     <div className="min-h-screen bg-gray-50">
