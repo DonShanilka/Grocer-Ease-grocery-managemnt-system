@@ -7,14 +7,13 @@ import LiveTracking from '@/src/components/delivery/LiveTracking';
 import RevenueCard from '@/src/components/delivery/RevenueCard';
 import ShipmentsTable, { Shipment } from '@/src/components/delivery/ShipmentsTable';
 import { Calendar, Download, ChevronDown } from 'lucide-react';
-import { Package, Truck, XCircle, RotateCcw } from 'lucide-react';
 import { Delivery } from '../../types/Delivery';
 
 const apiUrl = "http://127.0.0.1:5000";
 
 function DeliveryPage() {
   const [timeFilter, setTimeFilter] = useState('This Month');
-  const [deliveryStatus, setDeliveryStatus] = useState<Delivery[]>([]);
+  const [delivery, setDelivery] = useState<Delivery[]>([]);
   const [showModal , setShowModal] = useState(false);
   const [modalMode, setModalMode] = useState<'edit' | 'view'>('view');
 
@@ -27,7 +26,7 @@ function DeliveryPage() {
       setLoading(true);
       const res = await fetch(`${apiUrl}/deliveries`);
       const data = await res.json();
-      setDeliveryStatus(data);
+      setDelivery(data);
     } catch (error) {
       console.error('Error fetching delivery status:', error);
     } finally {
@@ -52,19 +51,11 @@ function DeliveryPage() {
     setShowModal(true);
   }
 
-  const stats: DeliveryStats[] = [
-    { label: 'Total Delivered', value: '200,913', change: '+2.00%', isPositive: true, icon: <Package className="w-6 h-6 text-white" />, color: 'bg-blue-500' },
-    { label: 'On Delivery', value: '5,290', change: '-11.08%', isPositive: false, icon: <Truck className="w-6 h-6 text-white" />, color: 'bg-green-500' },
-    { label: 'Cancel Delivery', value: '2,220', change: '+10.05%', isPositive: true, icon: <XCircle className="w-6 h-6 text-white" />, color: 'bg-pink-500' },
-    { label: 'Return Delivery', value: '4,495', change: '-0.03%', isPositive: false, icon: <RotateCcw className="w-6 h-6 text-white" />, color: 'bg-yellow-400' }
-  ];
-
   const shipments: Shipment[] = [
     { orderId: '#JT-938-424', category: 'Electronics', shipperDate: '08/07/2024', departure: 'California', destination: 'New York', weight: '12.3 Kg', status: 'Delivered' },
     { orderId: '#JT-234-653', category: 'Toys & Game', shipperDate: '10/07/2024', departure: 'San Francisco', destination: 'California', weight: '24.5 Kg', status: 'Pending' }
   ];
 
-  
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -88,7 +79,7 @@ function DeliveryPage() {
 
           {/* Stats */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
-            {deliveryStatus.map((stat) => <StatsCard key={stat.order_id} {...stat} />)}
+             <StatsCard delivery={delivery} />
           </div>
 
           {/* Shipment chart & Live tracking */}
