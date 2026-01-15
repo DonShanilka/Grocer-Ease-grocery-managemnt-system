@@ -9,7 +9,7 @@ interface Props {
   onClose: () => void;
 }
 
-const DeliveryViewCard: React.FC<Props> = ({ delivery, onClose }) => {
+export const DeliveryViewCard = ({ delivery, onClose } : Props) => {
   const getStatusColor = (status: string): string => {
     switch (status) {
       case "COMPLETED":
@@ -89,4 +89,4 @@ const DeliveryViewCard: React.FC<Props> = ({ delivery, onClose }) => {
   );
 };
 
-export default DeliveryViewCard;
+

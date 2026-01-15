@@ -20,10 +20,10 @@ export const ShipmentsTable = ({ shipments, onView, onEdit }: Props) => {
         <tr className="border-b border-gray-200">
           {[
             'ID',
-            'Address',
             'Phone ',
             'Status',
             'Assigned Driver',
+            'Actions',
           ].map((h) => (
             <th
               key={h}
@@ -48,9 +48,9 @@ export const ShipmentsTable = ({ shipments, onView, onEdit }: Props) => {
                 <td className="py-3 px-4 text-xs font-medium text-gray-800">
                 {shipment.id}
               </td>
-              <td className="py-3 px-4 text-xs font-medium text-gray-800">
+              {/* <td className="py-3 px-4 text-xs font-medium text-gray-800">
                 {shipment.delivery_address}
-              </td>
+              </td> */}
 
               <td className="py-3 px-4 text-xs text-gray-800">
                 {shipment.contact_phone}
