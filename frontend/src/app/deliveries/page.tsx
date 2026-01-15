@@ -11,6 +11,7 @@ import { Package, Truck, XCircle, RotateCcw } from 'lucide-react';
 
 function DeliveryPage() {
   const [timeFilter, setTimeFilter] = useState('This Month');
+  const [deliveryData, setDevliveryData] = useState<
 
   const stats: DeliveryStats[] = [
     { label: 'Total Delivered', value: '200,913', change: '+2.00%', isPositive: true, icon: <Package className="w-6 h-6 text-white" />, color: 'bg-blue-500' },
