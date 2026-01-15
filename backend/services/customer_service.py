@@ -15,7 +15,7 @@ class CustomerService:
             address = data.get("address"),
             status = data.get("status")
         )
-        
+        print("Adding customer in service:", customer)
         CustomerRepository.save(customer)
         return customer
     

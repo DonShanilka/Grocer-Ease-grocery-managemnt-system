@@ -37,8 +37,8 @@ def update_delivery_status(id):
         return jsonify({"error": "Internal server error"}), 500
 
 
-@delivery_bp.route("/items", methods=["GET"])
+@delivery_bp.route("/deliveries", methods=["GET"])
 @cross_origin()
-def get_devlivery():
+def get_deliveries():
     data = DeliveryService.get_deliverys()
     return jsonify([dict(data) for data in data])
