@@ -46,6 +46,12 @@ function DeliveryPage() {
     setShowModal(true);
   }
 
+  const handleView = (delivery: Delivery) => {
+    setModalMode('view');
+    setSelectedDelivery(delivery);
+    setShowModal(true);
+  }
+
   const stats: DeliveryStats[] = [
     { label: 'Total Delivered', value: '200,913', change: '+2.00%', isPositive: true, icon: <Package className="w-6 h-6 text-white" />, color: 'bg-blue-500' },
     { label: 'On Delivery', value: '5,290', change: '-11.08%', isPositive: false, icon: <Truck className="w-6 h-6 text-white" />, color: 'bg-green-500' },
