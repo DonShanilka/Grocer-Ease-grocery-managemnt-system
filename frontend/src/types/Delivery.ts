@@ -1,4 +1,5 @@
 export interface Delivery {
+  id: number;
   order_id: number;
   delivery_address: string | null;
   contact_phone: string | null;

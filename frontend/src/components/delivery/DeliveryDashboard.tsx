@@ -5,8 +5,8 @@ import StatsCard, { DeliveryStats } from './DeliveryStatsCard';
 import ShipmentChart from './DeliveryShipmentChart';
 import LiveTracking from './LiveTracking';
 import RevenueCard from './RevenueCard';
-import ShipmentsTable, { Shipment } from './ShipmentsTable';
 import { Calendar, Download, ChevronDown, ChevronLeft, ChevronRight } from 'lucide-react';
+import { ShipmentsTable } from './ShipmentsTable';
 
 const DeliveryDashboard: React.FC = () => {
   const [timeFilter, setTimeFilter] = useState('This Month');
@@ -18,10 +18,10 @@ const DeliveryDashboard: React.FC = () => {
     { label: 'Return Delivery', value: '4,495', change: '-0.03%', isPositive: false, icon: <RotateCcw className="w-6 h-6 text-white" />, color: 'bg-yellow-400' }
   ];
 
-  const shipments: Shipment[] = [
-    { orderId: '#JT-938-424', category: 'Electronics', shipperDate: '08/07/2024', departure: 'California', destination: 'New York', weight: '12.3 Kg', status: 'Delivered' },
-    { orderId: '#JT-234-653', category: 'Toys & Game', shipperDate: '10/07/2024', departure: 'San Francisco', destination: 'California', weight: '24.5 Kg', status: 'Pending' }
-  ];
+//   const shipments: Shipment[] = [
+//     { orderId: '#JT-938-424', category: 'Electronics', shipperDate: '08/07/2024', departure: 'California', destination: 'New York', weight: '12.3 Kg', status: 'Delivered' },
+//     { orderId: '#JT-234-653', category: 'Toys & Game', shipperDate: '10/07/2024', departure: 'San Francisco', destination: 'California', weight: '24.5 Kg', status: 'Pending' }
+//   ];
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -44,7 +44,7 @@ const DeliveryDashboard: React.FC = () => {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
-            {stats.map((stat) => <StatsCard key={stat.label} {...stat} />)}
+            {/* {stats.map((stat) => <StatsCard key={stat.label} {...stat} />)} */}
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
@@ -52,10 +52,10 @@ const DeliveryDashboard: React.FC = () => {
             <LiveTracking />
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
+          {/* <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
             <div className="lg:col-span-2"><ShipmentsTable shipments={shipments} /></div>
             <RevenueCard />
-          </div>
+          </div> */}
         </div>
       </main>
     </div>

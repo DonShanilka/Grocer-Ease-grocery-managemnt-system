@@ -5,9 +5,9 @@ import StatsCard, { DeliveryStats } from '@/src/components/delivery/DeliveryStat
 import ShipmentChart from '@/src/components/delivery/DeliveryShipmentChart';
 import LiveTracking from '@/src/components/delivery/LiveTracking';
 import RevenueCard from '@/src/components/delivery/RevenueCard';
-import ShipmentsTable, { Shipment } from '@/src/components/delivery/ShipmentsTable';
 import { Calendar, Download, ChevronDown } from 'lucide-react';
 import { Delivery } from '../../types/Delivery';
+import { ShipmentsTable } from '@/src/components/delivery/ShipmentsTable';
 
 const apiUrl = "http://127.0.0.1:5000";
 
@@ -51,10 +51,10 @@ function DeliveryPage() {
     setShowModal(true);
   }
 
-  const shipments: Shipment[] = [
-    { orderId: '#JT-938-424', category: 'Electronics', shipperDate: '08/07/2024', departure: 'California', destination: 'New York', weight: '12.3 Kg', status: 'Delivered' },
-    { orderId: '#JT-234-653', category: 'Toys & Game', shipperDate: '10/07/2024', departure: 'San Francisco', destination: 'California', weight: '24.5 Kg', status: 'Pending' }
-  ];
+  // const shipments: Shipment[] = [
+  //   { orderId: '#JT-938-424', category: 'Electronics', shipperDate: '08/07/2024', departure: 'California', destination: 'New York', weight: '12.3 Kg', status: 'Delivered' },
+  //   { orderId: '#JT-234-653', category: 'Toys & Game', shipperDate: '10/07/2024', departure: 'San Francisco', destination: 'California', weight: '24.5 Kg', status: 'Pending' }
+  // ];
 
 
   return (
@@ -69,13 +69,17 @@ function DeliveryPage() {
           {/* Shipment chart & Live tracking */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
             <ShipmentChart />
-            <LiveTracking />
+            
+            {loading ? (<p>Loading ....</p>) : (
+              <ShipmentsTable shipments={delivery} onView={handleView} onEdit={handleEdit}/>
+            )}
+            
           </div>
 
           {/* Shipments Table & Revenue */}
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
             <div className="lg:col-span-2">
-              <ShipmentsTable shipments={shipments} />
+              <LiveTracking />
             </div>
             <RevenueCard />
           </div>
