@@ -62,25 +62,9 @@ function DeliveryPage() {
       <Header />
       <main className="p-6">
         <div className="max-w-7xl mx-auto">
-          <div className="flex items-center justify-between mb-6">
-            <h1 className="text-2xl font-bold text-gray-900">Deliveries</h1>
-            <div className="flex items-center gap-3">
-              <button className="flex items-center gap-2 px-4 py-2 border border-gray-200 rounded-lg hover:bg-gray-50">
-                <Calendar className="w-4 h-4" />
-                {timeFilter}
-                <ChevronDown className="w-4 h-4" />
-              </button>
-              <button className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
-                <Download className="w-4 h-4" />
-                Export
-              </button>
-            </div>
-          </div>
-
-          {/* Stats */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
+          
+          
              <StatsCard delivery={delivery} />
-          </div>
 
           {/* Shipment chart & Live tracking */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">

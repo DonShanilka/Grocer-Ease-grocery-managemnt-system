@@ -7,6 +7,7 @@ import {
   RotateCcw,
   TrendingUp,
   TrendingDown,
+  Watch
 } from "lucide-react";
 import { Delivery } from "../../types/Delivery";
 
@@ -29,8 +30,8 @@ const DeliveryStatsCard = ({ delivery }: Props) => {
   const completed = delivery.filter(
     (d: any) => d.delivery_status === "COMPLETED"
   ).length;
-  const onDelivery = delivery.filter(
-    (d: any) => d.delivery_status === "OUT_FOR_DELIVERY"
+  const pending = delivery.filter(
+    (d: any) => d.delivery_status === "PENDING"
   ).length;
   const cancelDelivery = delivery.filter(
     (d: any) => d.delivery_status === "CANCELLED"
@@ -49,12 +50,20 @@ const DeliveryStatsCard = ({ delivery }: Props) => {
       color: "bg-blue-500",
     },
     {
-      label: "On Delivery",
-      value: onDelivery,
+      label: "Compleeted",
+      value: completed,
       change: "-11.08%",
       isPositive: false,
       icon: <Truck className="w-6 h-6 text-white" />,
       color: "bg-green-500",
+    },
+    {
+      label: "Pending Delivery",
+      value: pending,
+      change: "-0.03%",
+      isPositive: false,
+      icon: <Watch className="w-6 h-6 text-white" />,
+      color: "bg-yellow-300",
     },
     {
       label: "Cancel Delivery",
@@ -70,43 +79,46 @@ const DeliveryStatsCard = ({ delivery }: Props) => {
       change: "-0.03%",
       isPositive: false,
       icon: <RotateCcw className="w-6 h-6 text-white" />,
-      color: "bg-yellow-400",
+      color: "bg-orange-400",
     },
   ];
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-4 px-6">
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-2 mb-4 ">
       {status.map((stat) => (
         <div
           key={stat.label}
           className="bg-white p-4 rounded-lg border border-gray-50"
         >
           <div className="flex items-start justify-between">
-            <p className="text-gray-500 text-sm mb-1">{stat.label}</p>
-            <p className="text-3xl font-bold text-gray-900">{stat.value}</p>
-
-            <div className="flex items-center gap-1 mt-2">
-              {stat.isPositive ? (
-                <TrendingUp className="w-4 h-4 text-green-500" />
-              ) : (
-                <TrendingDown className="w-4 h-4 text-red-500" />
-              )}
-              <span
-                className={`text-sm font-medium ${
-                  stat.isPositive ? "text-green-500" : "text-red-500"
-                }`}
-              >
-                {stat.change}
-              </span>
-              <span className="text-gray-500 text-sm">vs last month</span>
+            <div>
+              <p className="text-gray-500 text-xs mb-1">{stat.label}</p>
+              <p className="text-3xl font-bold text-gray-900">{stat.value}</p>
+              
             </div>
 
             <div
-              className={`w-12 h-12 ${stat.color} rounded-full flex items-center justify-center mt-4`}
+              className={`w-12 h-12 ${stat.color} rounded-full flex items-center justify-center`}
             >
               {stat.icon}
             </div>
+            
           </div>
+          <div className="mt-1 flex items-center gap-2">
+                {stat.isPositive ? (
+                  <TrendingUp className="w-4 h-4 text-green-500" />
+                ) : (
+                  <TrendingDown className="w-4 h-4 text-red-500" />
+                )}
+                <p
+                  className={`text-xs font-medium ${
+                    stat.isPositive ? "text-green-500" : "text-red-500"
+                  }`}
+                >
+                  {stat.change}
+                </p>
+                <p className="text-gray-500 text-xs">vs last month</p>
+              </div>
         </div>
       ))}
     </div>
