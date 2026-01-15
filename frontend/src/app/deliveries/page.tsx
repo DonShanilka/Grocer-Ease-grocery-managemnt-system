@@ -17,18 +17,21 @@ function DeliveryPage() {
   const [deliveryStatus, setDeliveryStatus] = useState<Delivery[]>([]);
   const [showModal , setShowModal] = useState(false);
   const [modalMode, setModalMode] = useState<'edit' | 'view'>('view');
-  
+
   const [selectedDelivery, setSelectedDelivery] = useState<Delivery | null>(null);
   const [searchTerm, setSearchTerm] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const fetchDeliveries = async () => {
     try {
+      setLoading(true);
       const res = await fetch(`${apiUrl}/deliveries`);
       const data = await res.json();
       setDeliveryStatus(data);
     } catch (error) {
       console.error('Error fetching delivery status:', error);
     } finally {
+      setLoading(false);
       console.log('Fetch delivery status attempt finished.');
     }
   }
@@ -36,6 +39,12 @@ function DeliveryPage() {
   useEffect(() => {
     fetchDeliveries();
   }, [])
+
+  const handleEdit = (delivery: Delivery) => {
+    setModalMode('edit');
+    setSelectedDelivery(delivery);
+    setShowModal(true);
+  }
 
   const stats: DeliveryStats[] = [
     { label: 'Total Delivered', value: '200,913', change: '+2.00%', isPositive: true, icon: <Package className="w-6 h-6 text-white" />, color: 'bg-blue-500' },
