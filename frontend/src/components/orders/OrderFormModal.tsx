@@ -28,7 +28,7 @@ export default function OrderForm({ onSubmit }: Props) {
 
   const updateItem = (index: number, field: keyof OrderItem, value: any) => {
     const updated = [...items];
-    updated[index][field] = value;
+    updated[index][field] as any == value;
     setItems(updated);
   };
 

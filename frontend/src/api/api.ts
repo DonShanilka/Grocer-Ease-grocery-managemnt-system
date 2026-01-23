@@ -17,7 +17,6 @@ export const deleteOrder = async (id: number) => {
   await fetch(`${BASE_URL}/orders/${id}`, { method: 'DELETE' });
 };
 
-
 export interface InventoryItem {
   id: number;
   name: string;

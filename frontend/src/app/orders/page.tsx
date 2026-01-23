@@ -7,14 +7,14 @@ import { OrdersHeader } from '../../components/orders/OrdersHeader';
 import { OrdersTable } from '../../components/orders/OrdersTable';
 import { ViewOrderCard } from '../../components/orders/ViewOrderCard';
 import { UpdateStatusModal } from '../../components/orders/UpdateStatusModal';
-import OrderForm from '@/src/components/orders/OrderFormModal'; 
+import OrderForm from '@/src/components/orders/OrderFormModal';
 
 export default function OrdersPage() {
   const [orders, setOrders] = useState<Order[]>([]);
   const [search, setSearch] = useState('');
   const [view, setView] = useState<Order | null>(null);
   const [edit, setEdit] = useState<Order | null>(null);
-  const [showCreate, setShowCreate] = useState(false);
+  const [showCreate, setShowCreate] = useState(true);
 
   useEffect(() => {
     load();
@@ -32,37 +32,47 @@ export default function OrdersPage() {
       <OrdersHeader
         search={search}
         setSearch={setSearch}
-        onAddNew={() => setShowCreate((prev) => !prev)} // toggle
+        onAddNew={() => setShowCreate((prev) => !prev)}
       />
 
-      {/* CREATE ORDER FORM (NORMAL, NOT MODAL) */}
-      {showCreate && (
-        <OrderForm
-          onSubmit={async (data) => {
-            await fetch('http://127.0.0.1:5000/orders', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify(data),
-            });
+      {/* MAIN CONTENT */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
 
-            setShowCreate(false);
-            load();
-          }}
-        />
-      )}
+        {/* LEFT SIDE - CREATE ORDER FORM */}
+        <div className="lg:col-span-1 bg-white border rounded-xl p-4 shadow-sm">
+          <h2 className="text-lg font-semibold mb-4">Create Order</h2>
 
-      {/* ORDERS TABLE */}
-      <OrdersTable
-        orders={orders.filter((o) =>
-          o.customer_name.toLowerCase().includes(search.toLowerCase())
-        )}
-        onView={setView}
-        onUpdate={setEdit}
-        onDelete={async (id) => {
-          await deleteOrder(id);
-          load();
-        }}
-      />
+          {showCreate && (
+            <OrderForm
+              onSubmit={async (data) => {
+                await fetch('http://127.0.0.1:5000/orders', {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify(data),
+                });
+
+                setShowCreate(false);
+                load();
+              }}
+            />
+          )}
+        </div>
+
+        {/* RIGHT SIDE - ORDERS TABLE */}
+        <div className="lg:col-span-2 bg-white border rounded-xl p-4 shadow-sm">
+          <OrdersTable
+            orders={orders.filter((o) =>
+              o.customer_name.toLowerCase().includes(search.toLowerCase())
+            )}
+            onView={setView}
+            onUpdate={setEdit}
+            onDelete={async (id) => {
+              await deleteOrder(id);
+              load();
+            }}
+          />
+        </div>
+      </div>
 
       {/* VIEW ORDER */}
       {view && (
@@ -72,7 +82,7 @@ export default function OrdersPage() {
         />
       )}
 
-      {/* UPDATE STATUS */}
+      {/* UPDATE STATUS MODAL */}
       {edit && (
         <UpdateStatusModal
           order={edit}
