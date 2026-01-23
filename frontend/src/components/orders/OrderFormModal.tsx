@@ -30,6 +30,19 @@ export default function OrderForm({ onSubmit }: Props) {
   const updateItem = (index: number, field: keyof OrderItem, value: any) => {
     const updated = [...items];
     updated[index][field] = value;
+
+    // 🔹 Auto-fill name & price when product_id changes
+    if (field === 'product_id') {
+      const product = products.find((p:any) => p.id === Number(value));
+      if (product) {
+        updated[index].item_name = product.name;
+        updated[index].price = product.price;
+      } else {
+        updated[index].item_name = '';
+        updated[index].price = 0;
+      }
+    }
+
     setItems(updated);
   };
 
