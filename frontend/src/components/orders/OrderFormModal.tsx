@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { ShoppingCart, Trash2, Plus, User, CreditCard, Package } from 'lucide-react';
 
 interface OrderItem {
@@ -34,6 +34,13 @@ export default function OrderForm({ onSubmit }: Props) {
   const addItem = () => {
     setItems([...items, { product_id: 0, item_name: '', quantity: 1, price: 0 }]);
   };
+
+  useEffect(() => {
+    fetch('http://127.0.0.1:5000/products')
+      .then(res => res.json())
+      .then(data => setProducts(data))
+      .catch(err => console.error('Failed to load products', err));
+  }, []);
 
   const updateItem = (index: number, field: keyof OrderItem, value: any) => {
     const updated = [...items];
