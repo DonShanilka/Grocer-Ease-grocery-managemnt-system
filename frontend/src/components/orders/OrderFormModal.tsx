@@ -1,7 +1,14 @@
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
-import { ShoppingCart, Trash2, Plus, User, CreditCard, Package } from 'lucide-react';
+import { useState, useEffect } from "react";
+import {
+  ShoppingCart,
+  Trash2,
+  Plus,
+  User,
+  CreditCard,
+  Package,
+} from "lucide-react";
 
 interface OrderItem {
   product_id: number;
@@ -21,44 +28,43 @@ interface Props {
 }
 
 export default function OrderForm({ onSubmit }: Props) {
-  const [customerName, setCustomerName] = useState('');
-  const [orderType, setOrderType] = useState('DELIVERY');
-  const [paymentType, setPaymentType] = useState('CASH');
+  const [customerName, setCustomerName] = useState("");
+  const [orderType, setOrderType] = useState("DELIVERY");
+  const [paymentType, setPaymentType] = useState("CASH");
 
   const [items, setItems] = useState<OrderItem[]>([
-    { product_id: 0, item_name: '', quantity: 1, price: 0 }
+    { product_id: 0, item_name: "", quantity: 1, price: 0 },
   ]);
 
   const [products, setProducts] = useState<Product[]>([]);
 
   const addItem = () => {
-    setItems([...items, { product_id: 0, item_name: '', quantity: 1, price: 0 }]);
+    setItems([
+      ...items,
+      { product_id: 0, item_name: "", quantity: 1, price: 0 },
+    ]);
   };
 
   useEffect(() => {
-    fetch('http://127.0.0.1:5000/items')
-      .then(res => res.json())
-      .then(data => setProducts(data))
-      .catch(err => console.error('Failed to load products', err));
+    fetch("http://127.0.0.1:5000/items")
+      .then((res) => res.json())
+      .then((data: Product[]) => setProducts(data))
+      .catch((err) => console.error("Failed to load products", err));
   }, []);
 
-  const updateItem = (
-    index: number,
-    field: keyof OrderItem,
-    value: any
-  ) => {
+  const updateItem = (index: number, field: keyof OrderItem, value: any) => {
     const updated = [...items];
     updated[index] = { ...updated[index], [field]: value };
 
     // ✅ AUTO FILL NAME & PRICE
-    if (field === 'product_id') {
-      const product = products.find(p => p.id === Number(value));
+    if (field === "product_id") {
+      const product = products.find((p) => p.id === Number(value));
 
       if (product) {
         updated[index].item_name = product.name;
         updated[index].price = product.price;
       } else {
-        updated[index].item_name = '';
+        updated[index].item_name = "";
         updated[index].price = 0;
       }
     }
@@ -72,15 +78,26 @@ export default function OrderForm({ onSubmit }: Props) {
 
   const handleSubmit = () => {
     if (!customerName || items.length === 0) {
-      alert('Customer name and items are required');
+      alert("Customer name and items are required");
       return;
     }
+
+    if (items.some(i => i.product_id === 0)) {
+  alert('Invalid product ID');
+  return;
+}
+
 
     onSubmit({
       customer_name: customerName,
       order_type: orderType,
       payment_type: paymentType,
-      items
+      items: items.map((i) => ({
+        product_id: Number(i.product_id),
+        item_name: i.item_name, 
+        quantity: Number(i.quantity),
+        price: Number(i.price),
+      })),
     });
   };
 
@@ -102,9 +119,11 @@ export default function OrderForm({ onSubmit }: Props) {
             <div className="bg-white rounded-2xl p-6">
               <div className="flex items-center gap-2 mb-4">
                 <User className="w-5 h-5 text-indigo-600" />
-                <h2 className="text-xl font-semibold text-gray-800">Customer Information</h2>
+                <h2 className="text-xl font-semibold text-gray-800">
+                  Customer Information
+                </h2>
               </div>
-              
+
               <div className="space-y-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -160,7 +179,9 @@ export default function OrderForm({ onSubmit }: Props) {
               <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center gap-2">
                   <ShoppingCart className="w-5 h-5 text-indigo-600" />
-                  <h2 className="text-xl font-semibold text-gray-800">Order Items</h2>
+                  <h2 className="text-xl font-semibold text-gray-800">
+                    Order Items
+                  </h2>
                 </div>
                 <button
                   onClick={addItem}
@@ -176,44 +197,68 @@ export default function OrderForm({ onSubmit }: Props) {
                   <div key={index} className="p-4 rounded-xl border">
                     <div className="grid grid-cols-12 gap-3 items-center">
                       <div className="col-span-2">
-                        <label className="block text-xs text-gray-600 mb-1">ID</label>
+                        <label className="block text-xs text-gray-600 mb-1">
+                          ID
+                        </label>
                         <input
                           type="number"
                           placeholder="ID"
                           value={item.product_id || 0}
-                          onChange={(e) => updateItem(index, 'product_id', Number(e.target.value))}
+                          onChange={(e) =>
+                            updateItem(
+                              index,
+                              "product_id",
+                              Number(e.target.value)
+                            )
+                          }
                           className="w-full px-3 py-2 border border-gray-300 rounded-lg text-gray-800 text-sm focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
                         />
                       </div>
 
                       <div className="col-span-4">
-                        <label className="block text-xs text-gray-600 mb-1">Item Name</label>
+                        <label className="block text-xs text-gray-600 mb-1">
+                          Item Name
+                        </label>
                         <input
                           placeholder="Item name"
                           value={item.item_name}
-                          onChange={(e) => updateItem(index, 'item_name', e.target.value)}
+                          onChange={(e) =>
+                            updateItem(index, "item_name", e.target.value)
+                          }
                           className="w-full px-3 py-2 border border-gray-300 rounded-lg text-gray-800 text-sm focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
                         />
                       </div>
 
                       <div className="col-span-2">
-                        <label className="block text-xs text-gray-600 mb-1">Qty</label>
+                        <label className="block text-xs text-gray-600 mb-1">
+                          Qty
+                        </label>
                         <input
                           type="number"
                           min="1"
                           value={item.quantity}
-                          onChange={(e) => updateItem(index, 'quantity', Number(e.target.value))}
+                          onChange={(e) =>
+                            updateItem(
+                              index,
+                              "quantity",
+                              Number(e.target.value)
+                            )
+                          }
                           className="w-full px-3 py-2 border border-gray-300 rounded-lg text-gray-800 text-sm focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
                         />
                       </div>
 
                       <div className="col-span-3">
-                        <label className="block text-xs text-gray-600 mb-1">Price</label>
+                        <label className="block text-xs text-gray-600 mb-1">
+                          Price
+                        </label>
                         <input
                           type="number"
                           placeholder="0.00"
-                          value={item.price || ''}
-                          onChange={(e) => updateItem(index, 'price', Number(e.target.value))}
+                          value={item.price || ""}
+                          onChange={(e) =>
+                            updateItem(index, "price", Number(e.target.value))
+                          }
                           className="w-full px-3 py-2 border border-gray-300 rounded-lg text-gray-800 text-sm focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
                         />
                       </div>
@@ -246,7 +291,7 @@ export default function OrderForm({ onSubmit }: Props) {
                 <div className=" rounded-lg p-3 border border-gray-100">
                   <div className="text-sm text-gray-600">Customer Name</div>
                   <div className="font-semibold text-gray-800 truncate">
-                    {customerName || 'Not specified'}
+                    {customerName || "Not specified"}
                   </div>
                 </div>
 
@@ -254,33 +299,44 @@ export default function OrderForm({ onSubmit }: Props) {
                   <div className="rounded-lg p-3 border border-gray-100">
                     <div className="text-xs text-gray-600">Order Type</div>
                     <div className="font-semibold text-sm text-gray-800">
-                      {orderType.replace('_', ' ')}
+                      {orderType.replace("_", " ")}
                     </div>
                   </div>
                   <div className="rounded-lg p-3 border border-gray-100">
                     <div className="text-xs text-gray-600">Payment</div>
-                    <div className="font-semibold text-sm text-gray-800">{paymentType}</div>
+                    <div className="font-semibold text-sm text-gray-800">
+                      {paymentType}
+                    </div>
                   </div>
                 </div>
               </div>
 
               <div className="border-t border-gray-200 pt-4 mb-4">
-                <h3 className="font-semibold text-gray-800 mb-3">Items ({items.length})</h3>
+                <h3 className="font-semibold text-gray-800 mb-3">
+                  Items ({items.length})
+                </h3>
                 <div className="space-y-2 max-h-[300px] overflow-y-auto">
-                  {items.filter(i => i.item_name).map((item, index) => (
-                    <div key={index} className="flex justify-between items-start text-sm bg-gray-50 p-3 rounded-lg">
-                      <div className="flex-1">
-                        <div className="font-medium text-gray-800">{item.item_name}</div>
-                        <div className="text-xs text-gray-500">
-                          {item.quantity} × Rs. {item.price.toFixed(2)}
+                  {items
+                    .filter((i) => i.item_name)
+                    .map((item, index) => (
+                      <div
+                        key={index}
+                        className="flex justify-between items-start text-sm bg-gray-50 p-3 rounded-lg"
+                      >
+                        <div className="flex-1">
+                          <div className="font-medium text-gray-800">
+                            {item.item_name}
+                          </div>
+                          <div className="text-xs text-gray-500">
+                            {item.quantity} × Rs. {item.price}
+                          </div>
+                        </div>
+                        <div className="font-semibold text-gray-800">
+                          Rs. {item.quantity * item.price}
                         </div>
                       </div>
-                      <div className="font-semibold text-gray-800">
-                        Rs. {(item.quantity * item.price).toFixed(2)}
-                      </div>
-                    </div>
-                  ))}
-                  {items.filter(i => i.item_name).length === 0 && (
+                    ))}
+                  {items.filter((i) => i.item_name).length === 0 && (
                     <div className="text-center text-gray-400 py-8 text-sm">
                       No items added yet
                     </div>
@@ -291,7 +347,7 @@ export default function OrderForm({ onSubmit }: Props) {
               <div className="border-t border-gray-200 pt-4 space-y-2 mb-6">
                 <div className="flex justify-between text-sm text-gray-600">
                   <span>Subtotal</span>
-                  <span>Rs. {total.toFixed(2)}</span>
+                  <span>Rs. {total}</span>
                 </div>
                 <div className="flex justify-between text-sm text-gray-600">
                   <span>Total Items</span>
@@ -299,7 +355,7 @@ export default function OrderForm({ onSubmit }: Props) {
                 </div>
                 <div className="flex justify-between text-lg font-bold text-gray-800 pt-2 border-t">
                   <span>Total</span>
-                  <span className="text-indigo-600">Rs. {total.toFixed(2)}</span>
+                  <span className="text-indigo-600">Rs. {total}</span>
                 </div>
               </div>
 

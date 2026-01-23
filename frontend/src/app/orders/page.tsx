@@ -35,21 +35,32 @@ export default function OrdersPage() {
         onAddNew={() => setShowCreate((prev) => !prev)} // toggle
       />
 
-      {/* CREATE ORDER FORM (NORMAL, NOT MODAL) */}
-      {showCreate && (
-        <OrderForm
-          onSubmit={async (data) => {
-            await fetch('http://127.0.0.1:5000/orders', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify(data),
-            });
+      <OrderForm
+  onSubmit={async (data) => {
+    try {
+      const res = await fetch('http://127.0.0.1:5000/orders', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+      });
 
-            setShowCreate(false);
-            load();
-          }}
-        />
-      )}
+      if (!res.ok) {
+        const text = await res.text();
+        console.error("Backend error:", text);
+        alert("Error: " + text);
+        return;
+      }
+
+      alert("Order created successfully!");
+      setShowCreate(false);
+      load();
+    } catch (err) {
+      console.error("Network or fetch error:", err);
+      alert("Network error: " + err);
+    }
+  }}
+/>
+
 
       {/* ORDERS TABLE */}
       <OrdersTable

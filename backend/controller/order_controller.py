@@ -4,12 +4,13 @@ from services.order_service import OrderService
 
 order_bp = Blueprint("order_bp", __name__)
 
-# ================= PLACE ORDER =================
 @order_bp.route("/orders", methods=["POST"])
 @cross_origin()
 def place_order():
     try:
-        order_id = OrderService.create_order(request.json)
+        data = request.json
+        print("Incoming order data:", data)  # <-- add this
+        order_id = OrderService.create_order(data)
         return jsonify({
             "message": "Order placed successfully",
             "order_id": order_id
@@ -20,7 +21,8 @@ def place_order():
 
     except Exception as e:
         print("SERVER ERROR:", e)
-        return jsonify({"error": "Internal server error"}), 500
+        return jsonify({"error": str(e)}), 500  # <-- temporarily show full error
+
 
 
 # ================= GET ALL ORDERS =================
