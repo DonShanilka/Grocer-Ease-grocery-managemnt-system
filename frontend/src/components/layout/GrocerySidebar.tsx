@@ -31,11 +31,10 @@ export default function GrocerySidebar({ children }: GrocerySidebarProps) {
 
   const navItems: NavItem[] = [
     { id: 'dashboard', label: 'Dashboard', icon: <LayoutDashboard size={20} />, href: '/dashboard' },
-    { id: 'orders', label: 'Orders', icon: <ShoppingCart size={20} />, href: '/orders' },
     { id: 'inventory', label: 'Inventory Management', icon: <Package size={20} />, href: '/inventory' },
     { id: 'deliveries', label: 'Deliveries', icon: <Truck size={20} />, href: '/deliveries' },
     { id: 'customer', label: 'Customer', icon: <Users size={20} />, href: '/customer' },
-    { id: 'reports', label: 'Reports & Analytics', icon: <BarChart3 size={20} />, href: '/reports' },
+    { id: 'orders', label: 'Orders', icon: <ShoppingCart size={20} />, href: '/orders' },
     { id: 'settings', label: 'Settings', icon: <Settings size={20} />, href: '/settings' },
   ];
 
