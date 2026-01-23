@@ -36,19 +36,24 @@ export default function OrderForm({ onSubmit }: Props) {
   };
 
   useEffect(() => {
-    fetch('http://127.0.0.1:5000/products')
+    fetch('http://127.0.0.1:5000/items')
       .then(res => res.json())
       .then(data => setProducts(data))
       .catch(err => console.error('Failed to load products', err));
   }, []);
 
-  const updateItem = (index: number, field: keyof OrderItem, value: any) => {
+  const updateItem = (
+    index: number,
+    field: keyof OrderItem,
+    value: any
+  ) => {
     const updated = [...items];
-    updated[index][field] = value;
+    updated[index] = { ...updated[index], [field]: value };
 
-    // 🔹 Auto-fill name & price when product_id changes
+    // ✅ AUTO FILL NAME & PRICE
     if (field === 'product_id') {
-      const product = products.find((p:any) => p.product_id === Number(value));
+      const product = products.find(p => p.id === Number(value));
+
       if (product) {
         updated[index].item_name = product.name;
         updated[index].price = product.price;
