@@ -10,6 +10,12 @@ interface OrderItem {
   price: number;
 }
 
+interface Product {
+  id: number;
+  name: string;
+  price: number;
+}
+
 interface Props {
   onSubmit: (data: any) => void;
 }
@@ -23,6 +29,8 @@ export default function OrderForm({ onSubmit }: Props) {
     { product_id: 0, item_name: '', quantity: 1, price: 0 }
   ]);
 
+  const [products, setProducts] = useState<Product[]>([]);
+
   const addItem = () => {
     setItems([...items, { product_id: 0, item_name: '', quantity: 1, price: 0 }]);
   };
@@ -33,7 +41,7 @@ export default function OrderForm({ onSubmit }: Props) {
 
     // 🔹 Auto-fill name & price when product_id changes
     if (field === 'product_id') {
-      const product = products.find((p:any) => p.id === Number(value));
+      const product = products.find((p:any) => p.product_id === Number(value));
       if (product) {
         updated[index].item_name = product.name;
         updated[index].price = product.price;
@@ -153,45 +161,63 @@ export default function OrderForm({ onSubmit }: Props) {
 
               <div className="space-y-3 max-h-[400px] overflow-y-auto pr-2">
                 {items.map((item, index) => (
-                <div key={index} className="grid grid-cols-12 gap-3 mb-3">
-                  <input
-                    type="number"
-                    placeholder="ID"
-                    value={item.product_id || ''}
-                    onChange={(e) => updateItem(index, 'product_id', Number(e.target.value))}
-                    className="col-span-2 px-3 py-2 border rounded-lg"
-                  />
+                  <div key={index} className="p-4 rounded-xl border">
+                    <div className="grid grid-cols-12 gap-3 items-center">
+                      <div className="col-span-2">
+                        <label className="block text-xs text-gray-600 mb-1">ID</label>
+                        <input
+                          type="number"
+                          placeholder="ID"
+                          value={item.product_id || 0}
+                          onChange={(e) => updateItem(index, 'product_id', Number(e.target.value))}
+                          className="w-full px-3 py-2 border border-gray-300 rounded-lg text-gray-800 text-sm focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                        />
+                      </div>
 
-                  <input
-                    value={item.item_name}
-                    disabled
-                    className="col-span-4 px-3 py-2 border rounded-lg bg-gray-100"
-                  />
+                      <div className="col-span-4">
+                        <label className="block text-xs text-gray-600 mb-1">Item Name</label>
+                        <input
+                          placeholder="Item name"
+                          value={item.item_name}
+                          onChange={(e) => updateItem(index, 'item_name', e.target.value)}
+                          className="w-full px-3 py-2 border border-gray-300 rounded-lg text-gray-800 text-sm focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                        />
+                      </div>
 
-                  <input
-                    type="number"
-                    min="1"
-                    value={item.quantity}
-                    onChange={(e) => updateItem(index, 'quantity', Number(e.target.value))}
-                    className="col-span-2 px-3 py-2 border rounded-lg"
-                  />
+                      <div className="col-span-2">
+                        <label className="block text-xs text-gray-600 mb-1">Qty</label>
+                        <input
+                          type="number"
+                          min="1"
+                          value={item.quantity}
+                          onChange={(e) => updateItem(index, 'quantity', Number(e.target.value))}
+                          className="w-full px-3 py-2 border border-gray-300 rounded-lg text-gray-800 text-sm focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                        />
+                      </div>
 
-                  <input
-                    value={item.price}
-                    disabled
-                    className="col-span-3 px-3 py-2 border rounded-lg bg-gray-100"
-                  />
+                      <div className="col-span-3">
+                        <label className="block text-xs text-gray-600 mb-1">Price</label>
+                        <input
+                          type="number"
+                          placeholder="0.00"
+                          value={item.price || ''}
+                          onChange={(e) => updateItem(index, 'price', Number(e.target.value))}
+                          className="w-full px-3 py-2 border border-gray-300 rounded-lg text-gray-800 text-sm focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                        />
+                      </div>
 
-                  <button
-                    onClick={() => removeItem(index)}
-                    className="col-span-1 text-red-600"
-                  >
-                    <Trash2 />
-                  </button>
-                </div>
-              ))}
-            </div>
-          </div>
+                      <div className="col-span-1 flex justify-center pt-5">
+                        <button
+                          onClick={() => removeItem(index)}
+                          className="p-2 text-red-600 hover:bg-red-100 rounded-lg transition-colors"
+                          title="Remove item"
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                ))}
               </div>
             </div>
           </div>
@@ -274,6 +300,7 @@ export default function OrderForm({ onSubmit }: Props) {
             </div>
           </div>
         </div>
-
+      </div>
+    </div>
   );
 }
