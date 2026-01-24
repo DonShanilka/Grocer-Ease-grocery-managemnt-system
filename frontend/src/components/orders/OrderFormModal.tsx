@@ -1,6 +1,8 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { OrdersTable } from "@/src/components/orders/OrdersTable";
+import { Order } from "@/src/types/Order";
 import {
   ShoppingCart,
   Trash2,
@@ -31,12 +33,23 @@ export default function OrderForm({ onSubmit }: Props) {
   const [customerName, setCustomerName] = useState("");
   const [orderType, setOrderType] = useState("DELIVERY");
   const [paymentType, setPaymentType] = useState("CASH");
+  const [showTable, setShowTable] = useState(false);
+  const [orders, setOrders] = useState<Order[]>([]);
 
   const [items, setItems] = useState<OrderItem[]>([
     { product_id: 0, item_name: "", quantity: 1, price: 0 },
   ]);
 
   const [products, setProducts] = useState<Product[]>([]);
+
+  useEffect(() => {
+    if (showTable) {
+      fetch("http://127.0.0.1:5000/orders")
+        .then((res) => res.json())
+        .then((data) => setOrders(data))
+        .catch((err) => console.error("Failed to load orders", err));
+    }
+  }, [showTable]);
 
   const addItem = () => {
     setItems([
@@ -56,7 +69,6 @@ export default function OrderForm({ onSubmit }: Props) {
     const updated = [...items];
     updated[index] = { ...updated[index], [field]: value };
 
-    // ✅ AUTO FILL NAME & PRICE
     if (field === "product_id") {
       const product = products.find((p) => p.id === Number(value));
 
@@ -82,11 +94,10 @@ export default function OrderForm({ onSubmit }: Props) {
       return;
     }
 
-    if (items.some(i => i.product_id === 0)) {
-  alert('Invalid product ID');
-  return;
-}
-
+    if (items.some((i) => i.product_id === 0)) {
+      alert("Invalid product ID");
+      return;
+    }
 
     onSubmit({
       customer_name: customerName,
@@ -94,7 +105,7 @@ export default function OrderForm({ onSubmit }: Props) {
       payment_type: paymentType,
       items: items.map((i) => ({
         product_id: Number(i.product_id),
-        item_name: i.item_name, 
+        item_name: i.item_name,
         quantity: Number(i.quantity),
         price: Number(i.price),
       })),
@@ -277,11 +288,20 @@ export default function OrderForm({ onSubmit }: Props) {
                 ))}
               </div>
             </div>
+            {/* Left: SHOW BUTTON */}
+            <div className="">
+              <button
+                onClick={() => setShowTable(true)}
+                className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
+              >
+                Show All Orders
+              </button>
+            </div>
           </div>
 
           {/* RIGHT SIDE - Order Summary */}
           <div className="lg:col-span-1">
-            <div className="bg-white rounded-2xl shadow-lg p-6 border border-gray-100 sticky top-6">
+            <div className="bg-white rounded-2xl p-6 sticky top-6">
               <h2 className="text-xl font-semibold text-gray-800 mb-4 flex items-center gap-2">
                 <ShoppingCart className="w-5 h-5 text-indigo-600" />
                 Order Summary
@@ -363,12 +383,43 @@ export default function OrderForm({ onSubmit }: Props) {
                 onClick={handleSubmit}
                 className="w-full bg-blue-700 text-white px-4 py-2 rounded-xl font-semibold hover:from-indigo-700 transition-all transform hover:scale-105 shadow-lg"
               >
-                Create Order
+                Place Order
               </button>
             </div>
           </div>
         </div>
       </div>
+
+      {/* SHOW ALL ORDERS MODAL */}
+      {showTable && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+          <div className="bg-white w-11/12 lg:w-4/5 rounded-2xl shadow-xl p-6">
+            <div className="flex justify-between items-center mb-4">
+              <h2 className="text-xl font-semibold">All Orders</h2>
+              <button
+                onClick={() => setShowTable(false)}
+                className="text-gray-500 hover:text-black text-xl"
+              >
+                ✕
+              </button>
+            </div>
+
+            {/* TABLE */}
+            <div className="max-h-[70vh] overflow-y-auto">
+              <OrdersTable
+                orders={orders}
+                onView={(o) => console.log("view", o)}
+                onDelete={async (id) => {
+                  await fetch(`http://127.0.0.1:5000/orders/${id}`, {
+                    method: "DELETE",
+                  });
+                  setOrders((prev) => prev.filter((o) => o.id !== id));
+                }}
+              />
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
