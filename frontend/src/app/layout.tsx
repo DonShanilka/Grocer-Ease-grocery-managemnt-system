@@ -2,6 +2,9 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 
+import Store from "@/src/store/Store";
+import GrocerySidebar from "@/src/components/layout/GrocerySidebar";
+
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -27,7 +30,17 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-gray-50`}
       >
-        {children}
+        <Store>
+          <div className="flex min-h-screen">
+            {/* Sidebar */}
+            <GrocerySidebar />
+
+            {/* Main Content */}
+            <main className="flex-1 overflow-y-auto">
+              {children}
+            </main>
+          </div>
+        </Store>
       </body>
     </html>
   );
