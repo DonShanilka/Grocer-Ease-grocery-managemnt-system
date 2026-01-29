@@ -33,7 +33,7 @@ export default function RootLayout({
         <StoreProvider>
           <div className="flex min-h-screen">
             {/* Sidebar */}
-            <GrocerySidebar />
+            {/* <GrocerySidebar /> */}
 
             {/* Main Content */}
             <main className="flex-1 overflow-y-auto">
