@@ -1,4 +1,5 @@
 from flask import Flask
+
 from controller.item_controller import item_bp
 from controller.customer_controller import customer_bp
 from controller.supplier_controller import supplier_bp
