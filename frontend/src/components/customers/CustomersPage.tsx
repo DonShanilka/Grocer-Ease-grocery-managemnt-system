@@ -7,19 +7,14 @@ import CustomersHeader from './CustomersHeader';
 import CustomersTable from './CustomersTable';
 import CustomerModal from './CustomerModal';
 
-// ────────────────────────────────────────────────
-// Assume these types & redux pieces already exist / will be created
-// ────────────────────────────────────────────────
-import { RootState, AppDispatch } from '@/src/store/Store';           // adjust path
+import { RootState, AppDispatch } from '@/src/store/Store';           
 import {
   fetchCustomers,
   createCustomer,
   updateCustomer,
   deleteCustomer,
-  // optional: setSearchQuery, setFilterStatus if you want them in redux too
-} from '@/src/reducer/CustomersSlice';                   // adjust path
+} from '@/src/reducer/CustomersSlice';                  
 
-// You can define a simple type or use any / unknown for now
 interface Customer {
   id: number;
   name: string;
@@ -40,7 +35,6 @@ export default function CustomersPage() {
     (state: RootState) => state.customers
   );
 
-  // Local UI state (modal + filters)
   const [showModal, setShowModal] = useState(false);
   const [modalMode, setModalMode] = useState<'create' | 'edit' | 'view'>('create');
   const [selectedCustomer, setSelectedCustomer] = useState<Customer | null>(null);
@@ -48,12 +42,10 @@ export default function CustomersPage() {
   const [searchQuery, setSearchQuery] = useState('');
   const [filterStatus, setFilterStatus] = useState('all');
 
-  // Fetch customers on mount
   useEffect(() => {
     dispatch(fetchCustomers());
   }, [dispatch]);
 
-  // ──────────────── Handlers ────────────────
   const handleCreate = () => {
     setModalMode('create');
     setSelectedCustomer(null);
@@ -91,7 +83,6 @@ export default function CustomersPage() {
     setShowModal(false);
   };
 
-  // Client-side filtering (you can move this to redux selector later if needed)
   const filteredCustomers = customers.filter((c: Customer) => {
     const matchSearch =
       c.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
