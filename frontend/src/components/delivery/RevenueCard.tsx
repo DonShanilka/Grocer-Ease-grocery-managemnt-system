@@ -11,7 +11,7 @@ const RevenueCard: React.FC = () => {
   ];
 
   return (
-    <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
+    <div className="bg-white rounded-xl p-6 ">
       <div className="flex items-center justify-between mb-4">
         <h3 className="font-semibold text-gray-900">Shipping Revenue</h3>
         <button className="flex items-center gap-2 px-3 py-1.5 border border-gray-200 rounded-lg text-sm hover:bg-gray-50">

@@ -28,7 +28,7 @@ export default function DeliveryPage() {
   const [modalMode, setModalMode] = useState<"edit" | "view">("view");
   const [selectedDelivery, setSelectedDelivery] = useState<Delivery | null>(null);
 
-  const [timeFilter, setTimeFilter] = useState("This Month");
+  // const [timeFilter, setTimeFilter] = useState("This Month");
   const [searchTerm, setSearchTerm] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -75,11 +75,11 @@ export default function DeliveryPage() {
   );
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 p-6">
       {/* <Header /> */}
 
-      <main className="p-6">
-        <div className="max-w-7xl mx-auto">
+      <main>
+        <div>
           <StatsCard delivery={deliveries} />
 
           {/* Shipment chart & Table */}

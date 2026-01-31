@@ -30,7 +30,6 @@ interface Customer {
 export default function page() {
   const dispatch = useDispatch<AppDispatch>();
 
-  // Redux state
   const { customers, loading, error } = useSelector(
     (state: RootState) => state.customers
   );
@@ -95,7 +94,7 @@ export default function page() {
   });
 
   return (
-    <div className="min-h-screen bg-gray-50 p-4">
+    <div className="min-h-screen bg-gray-50 p-6">
       <CustomersHeader
         customers={customers}
         onAdd={handleCreate}

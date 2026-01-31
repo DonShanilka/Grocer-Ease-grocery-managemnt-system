@@ -4,7 +4,7 @@ import { MoreVertical, MapPin, ChevronDown } from 'lucide-react';
 
 const LiveTracking: React.FC = () => {
   return (
-    <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
+    <div className="bg-white rounded-xl p-6 ">
       <div className="flex items-center justify-between mb-4">
         <h3 className="font-semibold text-gray-900">Live Tracking Delivery</h3>
         <button className="p-2 hover:bg-gray-100 rounded-lg">

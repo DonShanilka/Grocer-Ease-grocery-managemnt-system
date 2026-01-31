@@ -23,12 +23,10 @@ import {
 export default function InventoryPage() {
   const dispatch = useDispatch<AppDispatch>();
 
-  // Redux state 
   const { items, loading } = useSelector(
     (state: RootState) => state.inventory
   );
 
-  // UI state 
   const [showModal, setShowModal] = useState(false);
   const [modalMode, setModalMode] =
     useState<"create" | "edit" | "view">("create");
@@ -36,12 +34,12 @@ export default function InventoryPage() {
     useState<InventoryItem | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
 
-  // Fetch inventory 
+  
   useEffect(() => {
     dispatch(fetchItems());
   }, [dispatch]);
 
-  // Handlers
+  
   const handleAddNew = () => {
     setModalMode("create");
     setSelectedItem(null);
