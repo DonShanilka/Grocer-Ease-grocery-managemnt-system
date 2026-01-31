@@ -1,4 +1,3 @@
-// src/features/customers/customersSlice.ts
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import axios from 'axios';
 
