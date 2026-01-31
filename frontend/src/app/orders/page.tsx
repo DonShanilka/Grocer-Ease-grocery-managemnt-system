@@ -34,6 +34,15 @@ export default function OrdersPage() {
     },
     [dispatch]
   )
+
+  const handleDeleteOrder = useCallback(
+    (id: number) => {
+      if (window.confirm("Are you sure you want to delete this order?")) {
+        dispatch(deleteOrder(id));
+      }
+    },
+    [dispatch]
+  );
   
   return (
     <div>
