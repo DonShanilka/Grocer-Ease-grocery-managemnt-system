@@ -88,3 +88,54 @@ export const deleteOrder = createAsyncThunk(
         }
     }
 )
+
+
+const ordersSlice = createSlice({
+  name: 'orders',
+  initialState,
+  reducers: {},
+  extraReducers: (builder) => {
+    builder
+      .addCase(fetchOrders.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchOrders.fulfilled, (state, action: PayloadAction<Order[]>) => {
+        state.loading = false;
+        state.orders = action.payload;
+      })
+      .addCase(fetchOrders.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string || 'Failed to load orders';
+      });
+
+    
+    builder
+      .addCase(createOrder.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(createOrder.fulfilled, (state, action: PayloadAction<Order>) => {
+        state.loading = false;
+        state.orders.unshift(action.payload); 
+      })
+      .addCase(createOrder.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string || 'Order creation failed';
+      });
+
+    
+    builder
+      .addCase(deleteOrder.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(deleteOrder.fulfilled, (state, action: PayloadAction<number>) => {
+        state.loading = false;
+        state.orders = state.orders.filter((o) => o.id !== action.payload);
+      })
+      .addCase(deleteOrder.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string || 'Delete failed';
+      });
+  },
+});
