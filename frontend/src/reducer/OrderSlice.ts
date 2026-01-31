@@ -74,3 +74,17 @@ export const createOrder = createAsyncThunk(
         }
     }
 )
+
+export const deleteOrder = createAsyncThunk(
+    'orders/deleteOrder',
+    async (id: number, {rejectWithValue}) => {
+        try {
+            await axios.delete(`${API_BASE}/orders/${id}`);
+            return id;
+        } catch (err: any) {
+            return rejectWithValue (
+                err.response?.data?.message || 'Failed to delete order'
+            )
+        }
+    }
+)
