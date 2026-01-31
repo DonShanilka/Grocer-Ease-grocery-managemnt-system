@@ -56,3 +56,21 @@ export const fetchOrders = createAsyncThunk(
         }
     }
 )
+
+export const createOrder = createAsyncThunk(
+    'orders/createOrder',
+    async (orderData: Partial<Order>, {rejectWithValue}) => {
+        try {
+            const response = await axios.post(`${API_BASE}/orders`, orderData, {
+                headers: {'Content-Type': 'application/json'},
+            });
+            return response.data;
+        } catch (err: any) {
+            return rejectWithValue(
+                err.response?.data?.message ||
+                err.response?.data?.error ||
+                'Failed to create order'
+            )
+        }
+    }
+)
