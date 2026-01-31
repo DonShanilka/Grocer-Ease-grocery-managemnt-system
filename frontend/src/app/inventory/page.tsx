@@ -23,23 +23,19 @@ import {
 export default function InventoryPage() {
   const dispatch = useDispatch<AppDispatch>();
 
-  const { items, loading } = useSelector(
-    (state: RootState) => state.inventory
-  );
+  const { items, loading } = useSelector((state: RootState) => state.inventory);
 
   const [showModal, setShowModal] = useState(false);
-  const [modalMode, setModalMode] =
-    useState<"create" | "edit" | "view">("create");
-  const [selectedItem, setSelectedItem] =
-    useState<InventoryItem | null>(null);
+  const [modalMode, setModalMode] = useState<"create" | "edit" | "view">(
+    "create"
+  );
+  const [selectedItem, setSelectedItem] = useState<InventoryItem | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
 
-  
   useEffect(() => {
     dispatch(fetchItems());
   }, [dispatch]);
 
-  
   const handleAddNew = () => {
     setModalMode("create");
     setSelectedItem(null);

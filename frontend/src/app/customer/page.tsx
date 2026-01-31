@@ -1,19 +1,19 @@
-'use client';
+"use client";
 
-import { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
-import CustomersHeader from '../../components/customers/CustomersHeader';
-import CustomersTable from '../../components/customers/CustomersTable';
-import CustomerModal from '../../components/customers/CustomerModal';
+import CustomersHeader from "../../components/customers/CustomersHeader";
+import CustomersTable from "../../components/customers/CustomersTable";
+import CustomerModal from "../../components/customers/CustomerModal";
 
-import { RootState, AppDispatch } from '@/src/store/Store';           
+import { RootState, AppDispatch } from "@/src/store/Store";
 import {
   fetchCustomers,
   createCustomer,
   updateCustomer,
   deleteCustomer,
-} from '@/src/reducer/CustomersSlice';                  
+} from "@/src/reducer/CustomersSlice";
 
 interface Customer {
   id: number;
@@ -35,43 +35,47 @@ export default function page() {
   );
 
   const [showModal, setShowModal] = useState(false);
-  const [modalMode, setModalMode] = useState<'create' | 'edit' | 'view'>('create');
-  const [selectedCustomer, setSelectedCustomer] = useState<Customer | null>(null);
+  const [modalMode, setModalMode] = useState<"create" | "edit" | "view">(
+    "create"
+  );
+  const [selectedCustomer, setSelectedCustomer] = useState<Customer | null>(
+    null
+  );
 
-  const [searchQuery, setSearchQuery] = useState('');
-  const [filterStatus, setFilterStatus] = useState('all');
+  const [searchQuery, setSearchQuery] = useState("");
+  const [filterStatus, setFilterStatus] = useState("all");
 
   useEffect(() => {
     dispatch(fetchCustomers());
   }, [dispatch]);
 
   const handleCreate = () => {
-    setModalMode('create');
+    setModalMode("create");
     setSelectedCustomer(null);
     setShowModal(true);
   };
 
   const handleEdit = (customer: Customer) => {
-    setModalMode('edit');
+    setModalMode("edit");
     setSelectedCustomer(customer);
     setShowModal(true);
   };
 
   const handleView = (customer: Customer) => {
-    setModalMode('view');
+    setModalMode("view");
     setSelectedCustomer(customer);
     setShowModal(true);
   };
 
   const handleDelete = (id: number) => {
-    if (!confirm('Delete this customer?')) return;
+    if (!confirm("Delete this customer?")) return;
     dispatch(deleteCustomer(id));
   };
 
   const handleSubmit = (formData: any) => {
-    if (modalMode === 'create') {
+    if (modalMode === "create") {
       dispatch(createCustomer(formData));
-    } else if (modalMode === 'edit' && selectedCustomer) {
+    } else if (modalMode === "edit" && selectedCustomer) {
       dispatch(
         updateCustomer({
           id: selectedCustomer.id,
@@ -88,7 +92,7 @@ export default function page() {
       c.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
       c.phone.includes(searchQuery);
 
-    const matchStatus = filterStatus === 'all' || c.status === filterStatus;
+    const matchStatus = filterStatus === "all" || c.status === filterStatus;
 
     return matchSearch && matchStatus;
   });

@@ -16,7 +16,6 @@ import { fetchDeliveries, updateDelivery } from "@/src/reducer/DeliverySlice";
 import type { Delivery } from "@/src/types/Delivery";
 import { DeliveryEditModal } from "@/src/components/delivery/DeliveryEditModal";
 
-
 export default function DeliveryPage() {
   const dispatch = useDispatch<AppDispatch>();
 
@@ -26,7 +25,9 @@ export default function DeliveryPage() {
 
   const [showModal, setShowModal] = useState(false);
   const [modalMode, setModalMode] = useState<"edit" | "view">("view");
-  const [selectedDelivery, setSelectedDelivery] = useState<Delivery | null>(null);
+  const [selectedDelivery, setSelectedDelivery] = useState<Delivery | null>(
+    null
+  );
 
   // const [timeFilter, setTimeFilter] = useState("This Month");
   const [searchTerm, setSearchTerm] = useState("");
@@ -36,25 +37,24 @@ export default function DeliveryPage() {
     dispatch(fetchDeliveries());
   }, [dispatch]);
 
-
   const handleFormSubmit = (updatedData: Partial<Delivery>) => {
-  if (modalMode === "edit" && selectedDelivery) {
-    setIsSubmitting(true);
-    dispatch(
-      updateDelivery({
-        id: selectedDelivery.id,
-        data: updatedData,
-      })
-    )
-      .unwrap()
-      .then(() => {
-        setShowModal(false);
-      })
-      .finally(() => {
-        setIsSubmitting(false);
-      });
-  }
-};
+    if (modalMode === "edit" && selectedDelivery) {
+      setIsSubmitting(true);
+      dispatch(
+        updateDelivery({
+          id: selectedDelivery.id,
+          data: updatedData,
+        })
+      )
+        .unwrap()
+        .then(() => {
+          setShowModal(false);
+        })
+        .finally(() => {
+          setIsSubmitting(false);
+        });
+    }
+  };
 
   const handleEdit = (delivery: Delivery) => {
     setModalMode("edit");
@@ -68,7 +68,7 @@ export default function DeliveryPage() {
     setShowModal(true);
   };
 
-  const filteredDeliveries = deliveries.filter((d:any) =>
+  const filteredDeliveries = deliveries.filter((d: any) =>
     `${d.customerName || ""} ${d.status || ""} ${d.trackingNumber || ""}`
       .toLowerCase()
       .includes(searchTerm.toLowerCase())
@@ -114,23 +114,23 @@ export default function DeliveryPage() {
       </main>
 
       {showModal && selectedDelivery && (
-  <>
-    {modalMode === "view" && (
-      <DeliveryViewCard
-        delivery={selectedDelivery}
-        onClose={() => setShowModal(false)}
-      />
-    )}
+        <>
+          {modalMode === "view" && (
+            <DeliveryViewCard
+              delivery={selectedDelivery}
+              onClose={() => setShowModal(false)}
+            />
+          )}
 
-    {modalMode === "edit" && (
-      <DeliveryEditModal
-        delivery={selectedDelivery}
-        onSubmit={handleFormSubmit}
-        onClose={() => setShowModal(false)}
-      />
-    )}
-  </>
-)}
+          {modalMode === "edit" && (
+            <DeliveryEditModal
+              delivery={selectedDelivery}
+              onSubmit={handleFormSubmit}
+              onClose={() => setShowModal(false)}
+            />
+          )}
+        </>
+      )}
     </div>
   );
 }
