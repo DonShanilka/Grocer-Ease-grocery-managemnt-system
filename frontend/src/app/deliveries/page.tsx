@@ -80,7 +80,7 @@ export default function DeliveryPage() {
 
       <main>
         <div>
-          <StatsCard delivery={deliveries} />
+          <StatsCard delivery={deliveries as any} />
 
           {/* Shipment chart & Table */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
@@ -96,7 +96,7 @@ export default function DeliveryPage() {
               </div>
             ) : (
               <ShipmentsTable
-                shipments={filteredDeliveries}
+                shipments={filteredDeliveries as any}
                 onView={handleView}
                 onEdit={handleEdit}
               />
