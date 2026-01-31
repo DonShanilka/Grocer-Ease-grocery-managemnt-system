@@ -23,45 +23,39 @@ export default function OrdersPage() {
   return (
     <div className="p-6">
       {/* PAGE GRID */}
-      <div className="gap-6">
-        
+      <div>
         {/* LEFT: CREATE ORDER */}
 
-          <h2 className="text-lg font-semibold mb-4">Create Order</h2>
+        <h2 className="text-lg font-semibold mb-4">Create Order</h2>
 
-          <OrderForm
-            onSubmit={async (data) => {
-              try {
-                const res = await fetch("http://127.0.0.1:5000/orders", {
-                  method: "POST",
-                  headers: { "Content-Type": "application/json" },
-                  body: JSON.stringify(data),
-                });
+        <OrderForm
+          onSubmit={async (data) => {
+            try {
+              const res = await fetch("http://127.0.0.1:5000/orders", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(data),
+              });
 
-                if (!res.ok) {
-                  const text = await res.text();
-                  console.error("Backend error:", text);
-                  alert("Error: " + text);
-                  return;
-                }
-
-                alert("Order created successfully!");
-                load();
-              } catch (err) {
-                console.error("Network error:", err);
-                alert("Network error");
+              if (!res.ok) {
+                const text = await res.text();
+                console.error("Backend error:", text);
+                alert("Error: " + text);
+                return;
               }
-            }}
-          />
+
+              alert("Order created successfully!");
+              load();
+            } catch (err) {
+              console.error("Network error:", err);
+              alert("Network error");
+            }
+          }}
+        />
       </div>
 
       {/* VIEW ORDER MODAL */}
-      {view && (
-        <ViewOrderCard
-          order={view}
-          onClose={() => setView(null)}
-        />
-      )}
+      {view && <ViewOrderCard order={view} onClose={() => setView(null)} />}
     </div>
   );
 }
