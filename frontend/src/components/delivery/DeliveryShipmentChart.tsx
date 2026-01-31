@@ -29,7 +29,6 @@ const DeliveryShipmentChart: React.FC = () => {
   const [deliveries, setDeliveries] = useState<Delivery[]>([]);
   const [loading, setLoading] = useState(false);
 
-  // 🔹 Fetch deliveries
   const fetchDeliveries = async () => {
     try {
       setLoading(true);
@@ -47,7 +46,6 @@ const DeliveryShipmentChart: React.FC = () => {
     fetchDeliveries();
   }, []);
 
-  // 🔹 Count orders per month
   const monthlyData = months.map((month, index) => {
     const count = deliveries.filter((delivery) => {
       const date = new Date(delivery.created_at);
@@ -57,10 +55,8 @@ const DeliveryShipmentChart: React.FC = () => {
     return { month, count };
   });
 
-  // 🔹 Max Y value
   const maxCount = Math.max(...monthlyData.map((m) => m.count), 5);
 
-  // 🔹 Y-axis ticks
   const yAxisSteps = 5;
   const yAxisValues = Array.from({ length: yAxisSteps + 1 }, (_, i) =>
     Math.round((maxCount / yAxisSteps) * i)
@@ -133,11 +129,6 @@ const DeliveryShipmentChart: React.FC = () => {
 "
                         style={{ height: `${height}%` }}
                       >
-                        {/* {item.count > 0 && (
-                          <span className="absolute -top-6 left-1/2 -translate-x-1/2 text-xs bg-gray-900 text-white px-2 py-1 rounded">
-                            {item.count}
-                          </span>
-                        )} */}
                       </div>
                     </div>
 

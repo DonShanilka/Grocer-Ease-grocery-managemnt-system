@@ -1,48 +1,60 @@
 "use client";
+
 import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+
 import Header from "@/src/components/delivery/DeliveryHeader";
-import StatsCard, {
-  DeliveryStats,
-} from "@/src/components/delivery/DeliveryStatsCard";
+import StatsCard from "@/src/components/delivery/DeliveryStatsCard";
 import ShipmentChart from "@/src/components/delivery/DeliveryShipmentChart";
 import LiveTracking from "@/src/components/delivery/LiveTracking";
 import RevenueCard from "@/src/components/delivery/RevenueCard";
-import { Calendar, Download, ChevronDown } from "lucide-react";
-import { Delivery } from "../../types/Delivery";
 import { ShipmentsTable } from "@/src/components/delivery/ShipmentsTable";
 import { DeliveryViewCard } from "@/src/components/delivery/DeliveryViewCard";
 
-const apiUrl = "http://127.0.0.1:5000";
+import { RootState, AppDispatch } from "@/src/store/Store";
+import { fetchDeliveries, updateDelivery } from "@/src/reducer/DeliverySlice";
+import type { Delivery } from "@/src/types/Delivery";
+import { DeliveryEditModal } from "@/src/components/delivery/DeliveryEditModal";
 
-function DeliveryPage() {
-  const [timeFilter, setTimeFilter] = useState("This Month");
-  const [delivery, setDelivery] = useState<Delivery[]>([]);
+
+export default function DeliveryPage() {
+  const dispatch = useDispatch<AppDispatch>();
+
+  const { deliveries, loading, error } = useSelector(
+    (state: RootState) => state.deliveries
+  );
+
   const [showModal, setShowModal] = useState(false);
   const [modalMode, setModalMode] = useState<"edit" | "view">("view");
+  const [selectedDelivery, setSelectedDelivery] = useState<Delivery | null>(null);
 
-  const [selectedDelivery, setSelectedDelivery] = useState<Delivery | null>(
-    null
-  );
+  const [timeFilter, setTimeFilter] = useState("This Month");
   const [searchTerm, setSearchTerm] = useState("");
-  const [loading, setLoading] = useState(false);
-
-  const fetchDeliveries = async () => {
-    try {
-      setLoading(true);
-      const res = await fetch(`${apiUrl}/deliveries`);
-      const data = await res.json();
-      setDelivery(data);
-    } catch (error) {
-      console.error("Error fetching delivery status:", error);
-    } finally {
-      setLoading(false);
-      console.log("Fetch delivery status attempt finished.");
-    }
-  };
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
-    fetchDeliveries();
-  }, []);
+    dispatch(fetchDeliveries());
+  }, [dispatch]);
+
+
+  const handleFormSubmit = (updatedData: Partial<Delivery>) => {
+  if (modalMode === "edit" && selectedDelivery) {
+    setIsSubmitting(true);
+    dispatch(
+      updateDelivery({
+        id: selectedDelivery.id,
+        data: updatedData,
+      })
+    )
+      .unwrap()
+      .then(() => {
+        setShowModal(false);
+      })
+      .finally(() => {
+        setIsSubmitting(false);
+      });
+  }
+};
 
   const handleEdit = (delivery: Delivery) => {
     setModalMode("edit");
@@ -56,46 +68,42 @@ function DeliveryPage() {
     setShowModal(true);
   };
 
-  const handleFormSubmit = async () => {
-    try {
-      if (modalMode === "edit" && selectedDelivery) {
-        await fetch(`${apiUrl}/deliveries/${selectedDelivery.id}`, {
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(selectedDelivery),
-        });
-      }
-    } catch (error) {
-      console.error("Error submitting form:", error);
-    } finally {
-      setShowModal(false);
-      fetchDeliveries();
-    }
-  };
+  const filteredDeliveries = deliveries.filter((d:any) =>
+    `${d.customerName || ""} ${d.status || ""} ${d.trackingNumber || ""}`
+      .toLowerCase()
+      .includes(searchTerm.toLowerCase())
+  );
 
   return (
     <div className="min-h-screen bg-gray-50">
       {/* <Header /> */}
+
       <main className="p-6">
         <div className="max-w-7xl mx-auto">
-          <StatsCard delivery={delivery} />
+          <StatsCard delivery={deliveries} />
 
-          {/* Shipment chart & Live tracking */}
+          {/* Shipment chart & Table */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
             <ShipmentChart />
 
             {loading ? (
-              <p>Loading ....</p>
+              <div className="flex items-center justify-center h-64">
+                <p className="text-lg font-medium">Loading deliveries...</p>
+              </div>
+            ) : error ? (
+              <div className="flex items-center justify-center h-64 text-red-600">
+                <p>Error: {error}</p>
+              </div>
             ) : (
               <ShipmentsTable
-                shipments={delivery}
+                shipments={filteredDeliveries}
                 onView={handleView}
                 onEdit={handleEdit}
               />
             )}
           </div>
 
-          {/* Shipments Table & Revenue */}
+          {/* Live Tracking & Revenue */}
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
             <div className="lg:col-span-2">
               <LiveTracking />
@@ -103,16 +111,26 @@ function DeliveryPage() {
             <RevenueCard />
           </div>
         </div>
-
-        {showModal && modalMode === "view" && selectedDelivery && (
-          <DeliveryViewCard
-            delivery={selectedDelivery}
-            onClose={() => setShowModal(false)}
-          />
-        )}
       </main>
+
+      {showModal && selectedDelivery && (
+  <>
+    {modalMode === "view" && (
+      <DeliveryViewCard
+        delivery={selectedDelivery}
+        onClose={() => setShowModal(false)}
+      />
+    )}
+
+    {modalMode === "edit" && (
+      <DeliveryEditModal
+        delivery={selectedDelivery}
+        onSubmit={handleFormSubmit}
+        onClose={() => setShowModal(false)}
+      />
+    )}
+  </>
+)}
     </div>
   );
 }
-
-export default DeliveryPage;

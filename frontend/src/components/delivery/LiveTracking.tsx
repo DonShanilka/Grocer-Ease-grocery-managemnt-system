@@ -28,7 +28,6 @@ const LiveTracking: React.FC = () => {
           </div>
         </div>
       </div>
-      {/* Rest of live tracking details remain unchanged */}
     </div>
   );
 };

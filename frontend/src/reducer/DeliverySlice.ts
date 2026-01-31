@@ -5,13 +5,10 @@ const API_BASE = 'http://127.0.0.1:5000';
 
 export interface Delivery {
   id: number;
-  orderId?: string;
-  customerName: string;
-  status: 'pending' | 'in-transit' | 'delivered' | 'cancelled' | string;
-  address?: string;
-  date?: string;
-  driver?: string;
-  trackingNumber?: string;
+  orderId?: string;           
+  customerName?: string;
+  delivery_status?: string;   
+  assigned_driver?: string | null;
   [key: string]: any;
 }
 
@@ -46,10 +43,21 @@ export const updateDelivery = createAsyncThunk(
     { rejectWithValue }
   ) => {
     try {
-      const response = await axios.put(`${API_BASE}/deliveries/${id}`, data);
-      return response.data;
+      const response = await axios.put(
+        `${API_BASE}/deliveries/order/${id}/update`,
+        data,
+        {
+          headers: { 'Content-Type': 'application/json' },
+        }
+      );
+      return response.data; 
     } catch (err: any) {
-      return rejectWithValue(err.response?.data?.message || 'Failed to update delivery');
+      console.error('Update failed:', err);
+      return rejectWithValue(
+        err.response?.data?.message ||
+        err.response?.data?.error ||
+        'Failed to update delivery'
+      );
     }
   }
 );
@@ -57,10 +65,8 @@ export const updateDelivery = createAsyncThunk(
 const deliverySlice = createSlice({
   name: 'deliveries',
   initialState,
-  reducers: {
-  },
+  reducers: {},
   extraReducers: (builder) => {
-    // fetchDeliveries
     builder
       .addCase(fetchDeliveries.pending, (state) => {
         state.loading = true;
@@ -72,24 +78,27 @@ const deliverySlice = createSlice({
       })
       .addCase(fetchDeliveries.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.payload as string || 'Something went wrong';
+        state.error = (action.payload as string) || 'Failed to load deliveries';
       });
 
-    // updateDelivery
     builder
       .addCase(updateDelivery.pending, (state) => {
         state.loading = true;
+        state.error = null;
       })
       .addCase(updateDelivery.fulfilled, (state, action: PayloadAction<Delivery>) => {
         state.loading = false;
         const index = state.deliveries.findIndex((d) => d.id === action.payload.id);
         if (index !== -1) {
-          state.deliveries[index] = action.payload;
+          state.deliveries[index] = {
+            ...state.deliveries[index],
+            ...action.payload,
+          };
         }
       })
       .addCase(updateDelivery.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.payload as string || 'Update failed';
+        state.error = (action.payload as string) || 'Update failed';
       });
   },
 });
