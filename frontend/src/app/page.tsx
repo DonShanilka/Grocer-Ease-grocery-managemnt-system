@@ -1,8 +1,6 @@
-import GrocerySidebar from "@/src/components/layout/GrocerySidebar";
-import Image from "next/image";
+import { redirect } from 'next/navigation';
+
 
 export default function Home() {
-  return (
-    <GrocerySidebar />
-  );
+  redirect('/dashboard');
 }

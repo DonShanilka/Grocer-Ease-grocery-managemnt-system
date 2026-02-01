@@ -1,11 +1,28 @@
 const BASE_URL = 'http://127.0.0.1:5000';
 
-export const fetchOrders = async () => {
-  const res = await fetch(`${BASE_URL}/orders`);
-  return res.json();
+export interface Order {
+  order_id: string; // or number, backend seems to map it to 'order_id'
+  customer_name: string;
+  order_type: string;
+  payment_type: string;
+  status: string;
+  total_amount: number;
+  created_at: string;
+  items: any[];
+}
+
+export const fetchOrders = async (): Promise<Order[]> => {
+  try {
+    const res = await fetch(`${BASE_URL}/orders`);
+    if (!res.ok) throw new Error('Failed to fetch orders');
+    return res.json();
+  } catch (error) {
+    console.error('fetchOrders error:', error);
+    return [];
+  }
 };
 
-export const updateOrderStatus = async (id: number, status: string) => {
+export const updateOrderStatus = async (id: number | string, status: string) => {
   await fetch(`${BASE_URL}/orders/${id}/status`, {
     method: 'PUT',
     headers: { 'Content-Type': 'application/json' },
@@ -13,7 +30,7 @@ export const updateOrderStatus = async (id: number, status: string) => {
   });
 };
 
-export const deleteOrder = async (id: number) => {
+export const deleteOrder = async (id: number | string) => {
   await fetch(`${BASE_URL}/orders/${id}`, { method: 'DELETE' });
 };
 
@@ -23,11 +40,13 @@ export interface InventoryItem {
   category: string;
   price: number;
   status: string;
+  quantity: number;
+  supplier: any;
 }
 
 export const fetchItems = async (): Promise<InventoryItem[]> => {
   try {
-    const response = await fetch('http://127.0.0.1:5000/inventory'); // your backend endpoint
+    const response = await fetch('http://127.0.0.1:5000/items'); // your backend endpoint
     if (!response.ok) {
       throw new Error('Failed to fetch inventory items');
     }
