@@ -1,7 +1,7 @@
 const BASE_URL = 'http://127.0.0.1:5000';
 
 export interface Order {
-  order_id: string; // or number, backend seems to map it to 'order_id'
+  order_id: string; 
   customer_name: string;
   order_type: string;
   payment_type: string;
@@ -46,7 +46,7 @@ export interface InventoryItem {
 
 export const fetchItems = async (): Promise<InventoryItem[]> => {
   try {
-    const response = await fetch('http://127.0.0.1:5000/items'); // your backend endpoint
+    const response = await fetch('http://127.0.0.1:5000/items'); 
     if (!response.ok) {
       throw new Error('Failed to fetch inventory items');
     }
