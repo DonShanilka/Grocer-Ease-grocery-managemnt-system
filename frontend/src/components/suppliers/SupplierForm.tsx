@@ -61,7 +61,7 @@ export default function SupplierForm({ supplier, onClose, onSubmit }: Props) {
         {/* Header */}
         <div className="sticky top-0 bg-white border-b border-gray-200 px-6 py-4 flex items-center justify-between">
           <div>
-            <h2 className="text-lg font-bold text-gray-800">
+            <h2 className="text-lg font-bold text-blue-800">
               {supplier ? "Edit Supplier" : "Add New Supplier"}
             </h2>
             <p className="text-xs text-gray-500 mt-0.5">
@@ -70,10 +70,10 @@ export default function SupplierForm({ supplier, onClose, onSubmit }: Props) {
           </div>
           <button
             onClick={onClose}
-            className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+            className="p-2 hover:bg-red-50 rounded-lg transition-colors text-red-600 hover:text-red-700"
             aria-label="Close"
           >
-            <X size={20} className="text-gray-600" />
+            <X size={20} />
           </button>
         </div>
 
@@ -84,7 +84,7 @@ export default function SupplierForm({ supplier, onClose, onSubmit }: Props) {
               const Icon = field.icon;
               return (
                 <div key={field.key} className={field.key === "address" || field.key === "supplied_items" ? "md:col-span-2" : ""}>
-                  <label className="block text-xs font-semibold text-gray-700 mb-1.5">
+                  <label className="block text-xs font-semibold text-blue-800 mb-1.5">
                     {field.label}
                     {["name", "phone", "email", "address", "supplied_items"].includes(field.key) && (
                       <span className="text-red-500 ml-1">*</span>
@@ -119,7 +119,7 @@ export default function SupplierForm({ supplier, onClose, onSubmit }: Props) {
 
             {/* Status Dropdown */}
             <div className="md:col-span-2">
-              <label className="block text-xs font-semibold text-gray-700 mb-1.5">
+              <label className="block text-xs font-semibold text-blue-800 mb-1.5">
                 Status
               </label>
               <div className="relative">
@@ -144,7 +144,7 @@ export default function SupplierForm({ supplier, onClose, onSubmit }: Props) {
         <div className="sticky bottom-0 bg-gray-50 border-t border-gray-200 px-6 py-4 flex gap-3">
           <button
             onClick={onClose}
-            className="flex-1 px-4 py-2.5 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-100 transition-colors text-sm font-medium"
+            className="flex-1 px-4 py-2.5 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition-colors text-sm font-medium"
           >
             Cancel
           </button>
