@@ -114,6 +114,12 @@ export default function OrderForm({ onSubmit }: Props) {
         price: Number(i.price),
       })),
     });
+
+    // Clear all form fields after successful order placement
+    setCustomerName("");
+    setOrderType("DELIVERY");
+    setPaymentType("CASH");
+    setItems([{ product_id: 0, item_name: "", quantity: 1, price: 0 }]);
   };
 
   const total = items.reduce((sum, i) => sum + i.quantity * i.price, 0);

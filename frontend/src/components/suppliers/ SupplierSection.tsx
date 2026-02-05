@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import SupplierTable from "./SupplierTable";
 import SupplierForm from "./SupplierForm";
 import SupplierView from "./SupplierView";
+import SupplierHeader from "./SupplierHeader";
 import { Supplier } from "@/src/types/Supplier";
 
 const API_BASE_URL = "http://127.0.0.1:5000/suppliers";
@@ -10,6 +11,8 @@ export default function SupplierSection() {
   const [suppliers, setSuppliers] = useState<Supplier[]>([]);
   const [modal, setModal] = useState<"add" | "edit" | "view" | null>(null);
   const [selected, setSelected] = useState<Supplier | null>(null);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [filterStatus, setFilterStatus] = useState("all");
 
   const load = async () => {
     const res = await fetch(API_BASE_URL);
@@ -39,20 +42,32 @@ export default function SupplierSection() {
     load();
   };
 
+  // Filter suppliers based on search and status
+  const filteredSuppliers = suppliers.filter((supplier) => {
+    const matchesSearch =
+      supplier.name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      supplier.email?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      supplier.supplied_items?.toLowerCase().includes(searchQuery.toLowerCase());
+
+    const matchesStatus =
+      filterStatus === "all" || supplier.status === filterStatus;
+
+    return matchesSearch && matchesStatus;
+  });
+
   return (
     <div className="-mt-2 px-6">
-      <div className="flex justify-between mb-4">
-        <h2 className="text-xl font-bold text-black ">Suppliers</h2>
-        <button
-          onClick={() => setModal("add")}
-          className="bg-blue-600 text-white px-4 py-2 rounded"
-        >
-          Add Supplier
-        </button>
-      </div>
+      <SupplierHeader
+        suppliers={suppliers}
+        onAdd={() => setModal("add")}
+        searchQuery={searchQuery}
+        setSearchQuery={setSearchQuery}
+        filterStatus={filterStatus}
+        setFilterStatus={setFilterStatus}
+      />
 
       <SupplierTable
-        suppliers={suppliers}
+        suppliers={filteredSuppliers}
         onView={(s) => {
           setSelected(s);
           setModal("view");
