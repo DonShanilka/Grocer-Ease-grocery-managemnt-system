@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import CustomersHeader from "../../components/customers/CustomersHeader";
 import CustomersTable from "../../components/customers/CustomersTable";
 import CustomerModal from "../../components/customers/CustomerModal";
+import Toast from "../../components/common/Toast";
 
 import { RootState, AppDispatch } from "@/src/store/Store";
 import {
@@ -45,6 +46,8 @@ export default function page() {
   const [searchQuery, setSearchQuery] = useState("");
   const [filterStatus, setFilterStatus] = useState("all");
 
+  const [toast, setToast] = useState<{ message: string; type: "success" | "error" | "warning" | "info" } | null>(null);
+
   useEffect(() => {
     dispatch(fetchCustomers());
   }, [dispatch]);
@@ -69,21 +72,43 @@ export default function page() {
 
   const handleDelete = (id: number) => {
     if (!confirm("Delete this customer?")) return;
-    dispatch(deleteCustomer(id));
+    dispatch(deleteCustomer(id))
+      .unwrap()
+      .then(() => {
+        setToast({ message: "Customer deleted successfully!", type: "success" });
+      })
+      .catch(() => {
+        setToast({ message: "Failed to delete customer. Please try again.", type: "error" });
+      });
   };
 
   const handleSubmit = (formData: any) => {
     if (modalMode === "create") {
-      dispatch(createCustomer(formData));
+      dispatch(createCustomer(formData))
+        .unwrap()
+        .then(() => {
+          setToast({ message: "Customer created successfully!", type: "success" });
+          setShowModal(false);
+        })
+        .catch(() => {
+          setToast({ message: "Failed to create customer. Please try again.", type: "error" });
+        });
     } else if (modalMode === "edit" && selectedCustomer) {
       dispatch(
         updateCustomer({
           id: selectedCustomer.id,
           data: formData,
         })
-      );
+      )
+        .unwrap()
+        .then(() => {
+          setToast({ message: "Customer updated successfully!", type: "success" });
+          setShowModal(false);
+        })
+        .catch(() => {
+          setToast({ message: "Failed to update customer. Please try again.", type: "error" });
+        });
     }
-    setShowModal(false);
   };
 
   const filteredCustomers = customers.filter((c: Customer) => {
@@ -127,6 +152,14 @@ export default function page() {
           customer={selectedCustomer}
           onClose={() => setShowModal(false)}
           onSubmit={handleSubmit}
+        />
+      )}
+
+      {toast && (
+        <Toast
+          message={toast.message}
+          type={toast.type}
+          onClose={() => setToast(null)}
         />
       )}
     </div>
