@@ -45,10 +45,7 @@ export default function CustomersTable({
           {/* Table Body */}
           <tbody>
             {customers.map((customer: any) => (
-              <tr
-                key={customer.id}
-                className="border-b border-gray-100 hover:bg-gray-50 transition"
-              >
+              <tr key={customer.id} className="border-b border-gray-100 hover:bg-gray-50 transition">
                 {/* Customer */}
                 <td className="py-3 px-4">
                   <div className="flex items-center gap-3">
@@ -56,7 +53,9 @@ export default function CustomersTable({
                       {customer.name
                         ?.split(' ')
                         .map((n: string) => n[0])
-                        .join('')}
+                        .join('')
+                        .slice(0, 2)
+                        .toUpperCase()}
                     </div>
                     <div>
                       <p className="text-sm font-medium text-gray-800">
@@ -82,11 +81,10 @@ export default function CustomersTable({
                 {/* Status */}
                 <td className="py-3 px-4">
                   <span
-                    className={`px-3 py-1 rounded-full text-xs font-medium ${
-                      customer.status === 'Active'
-                        ? 'bg-green-100 text-green-700'
-                        : 'bg-gray-100 text-gray-700'
-                    }`}
+                    className={`px-3 py-1 rounded-full text-xs font-medium ${customer.status === 'Active'
+                      ? 'bg-green-100 text-green-700'
+                      : 'bg-gray-100 text-gray-700'
+                      }`}
                   >
                     {customer.status}
                   </span>

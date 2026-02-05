@@ -7,6 +7,7 @@ import CustomersHeader from "../../components/customers/CustomersHeader";
 import CustomersTable from "../../components/customers/CustomersTable";
 import CustomerModal from "../../components/customers/CustomerModal";
 import Toast from "../../components/common/Toast";
+import ConfirmDialog from "../../components/common/ConfirmDialog";
 
 import { RootState, AppDispatch } from "@/src/store/Store";
 import {
@@ -47,6 +48,7 @@ export default function page() {
   const [filterStatus, setFilterStatus] = useState("all");
 
   const [toast, setToast] = useState<{ message: string; type: "success" | "error" | "warning" | "info" } | null>(null);
+  const [deleteConfirm, setDeleteConfirm] = useState<{ id: number; name: string } | null>(null);
 
   useEffect(() => {
     dispatch(fetchCustomers());
@@ -71,14 +73,23 @@ export default function page() {
   };
 
   const handleDelete = (id: number) => {
-    if (!confirm("Delete this customer?")) return;
-    dispatch(deleteCustomer(id))
+    const customer = customers.find((c: Customer) => c.id === id);
+    if (customer) {
+      setDeleteConfirm({ id, name: customer.name });
+    }
+  };
+
+  const confirmDelete = () => {
+    if (!deleteConfirm) return;
+    dispatch(deleteCustomer(deleteConfirm.id))
       .unwrap()
       .then(() => {
         setToast({ message: "Customer deleted successfully!", type: "success" });
+        setDeleteConfirm(null);
       })
       .catch(() => {
         setToast({ message: "Failed to delete customer. Please try again.", type: "error" });
+        setDeleteConfirm(null);
       });
   };
 
@@ -160,6 +171,18 @@ export default function page() {
           message={toast.message}
           type={toast.type}
           onClose={() => setToast(null)}
+        />
+      )}
+
+      {deleteConfirm && (
+        <ConfirmDialog
+          title="Delete Customer"
+          message={`Are you sure you want to delete "${deleteConfirm.name}"? This action cannot be undone.`}
+          confirmText="Delete"
+          cancelText="Cancel"
+          type="danger"
+          onConfirm={confirmDelete}
+          onCancel={() => setDeleteConfirm(null)}
         />
       )}
     </div>

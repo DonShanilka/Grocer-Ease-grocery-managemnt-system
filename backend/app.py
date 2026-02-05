@@ -1,4 +1,5 @@
 from flask import Flask
+from flask_cors import CORS
 
 from controller.item_controller import item_bp
 from controller.customer_controller import customer_bp
@@ -18,6 +19,9 @@ from repositories.user_repository import UserRepository
 
 def create_app():
     app = Flask(__name__)
+    
+    # Enable CORS for all routes
+    CORS(app, resources={r"/*": {"origins": "*"}})
 
     app.register_blueprint(item_bp)
     app.register_blueprint(customer_bp)
