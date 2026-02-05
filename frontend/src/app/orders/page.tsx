@@ -46,106 +46,72 @@ export default function OrdersPage() {
   );
 
   return (
-    <div className="min-h-screen bg-white font-[Outfit, sans-serif]">
-      <div className="p-8 lg:p-12">
-        <div className="max-w-[1600px] mx-auto space-y-12">
+    <div className="h-screen bg-white font-[Outfit, sans-serif] overflow-hidden flex flex-col">
+      <div className="flex-1 flex flex-col p-6 lg:p-8 overflow-hidden">
+        <div className="w-full h-full flex flex-col space-y-8 overflow-hidden">
           {/* Header & Stats Section */}
-          <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-8">
-            <div className="space-y-2">
-              <div className="flex items-center gap-2 text-blue-700 font-black uppercase tracking-[0.2em] text-[10px]">
-                <ShoppingBag className="w-3 h-3" />
+          <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 border-b border-gray-50 pb-6 shrink-0">
+            <div className="space-y-3">
+              <div className="inline-flex items-center gap-2 px-3 py-1 bg-blue-50 rounded-full text-blue-700 font-black uppercase tracking-[0.2em] text-[8px]">
+                <ShoppingBag className="w-2.5 h-2.5" />
                 Distribution Hub
               </div>
-              <h1 className="text-5xl font-black text-gray-900 tracking-tight">Order Console</h1>
+              <h1 className="text-4xl font-black text-gray-900 tracking-tighter leading-none">
+                Order <span className="text-blue-700">Console</span>
+              </h1>
             </div>
 
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-4 lg:w-1/2">
-              <div className="bg-blue-50/50 p-6 rounded-3xl border border-blue-50">
-                <div className="flex items-center gap-3 mb-3">
-                  <Package className="w-4 h-4 text-blue-700" />
-                  <span className="text-[10px] font-black text-blue-700 uppercase tracking-widest">Total</span>
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-4 lg:w-[45%]">
+              {/* Stats Cards (Resized as requested previously) */}
+              <div className="relative group overflow-hidden bg-white p-4 rounded-[1.5rem] border border-gray-100 shadow-lg shadow-blue-900/5 transition-all">
+                <div className="absolute top-0 right-0 w-20 h-20 bg-blue-50/50 rounded-full -mr-10 -mt-10" />
+                <div className="relative z-10 flex items-center gap-3 mb-2">
+                  <div className="p-1.5 bg-blue-700 rounded-lg">
+                    <Package className="w-3 h-3 text-white" />
+                  </div>
+                  <span className="text-[8px] font-black text-gray-400 uppercase tracking-widest">Gross</span>
                 </div>
-                <div className="text-3xl font-black text-gray-900">{orders.length}</div>
+                <div className="relative z-10 text-2xl font-black text-gray-900 leading-none">{orders.length}</div>
               </div>
-              <div className="bg-amber-50/50 p-6 rounded-3xl border border-amber-50">
-                <div className="flex items-center gap-3 mb-3">
-                  <Clock className="w-4 h-4 text-amber-600" />
-                  <span className="text-[10px] font-black text-amber-600 uppercase tracking-widest">Pending</span>
+
+              <div className="relative group overflow-hidden bg-white p-4 rounded-[1.5rem] border border-gray-100 shadow-lg shadow-amber-900/5 transition-all">
+                <div className="absolute top-0 right-0 w-20 h-20 bg-amber-50/50 rounded-full -mr-10 -mt-10" />
+                <div className="relative z-10 flex items-center gap-3 mb-2">
+                  <div className="p-1.5 bg-amber-500 rounded-xl">
+                    <Clock className="w-3 h-3 text-white" />
+                  </div>
+                  <span className="text-[8px] font-black text-gray-400 uppercase tracking-widest">Pending</span>
                 </div>
-                <div className="text-3xl font-black text-gray-900">
+                <div className="relative z-10 text-2xl font-black text-gray-900 leading-none">
                   {orders.filter(o => o.status === 'pending').length}
                 </div>
               </div>
-              <div className="hidden md:block bg-emerald-50/50 p-6 rounded-3xl border border-emerald-50">
-                <div className="flex items-center gap-3 mb-3">
-                  <CheckCircle2 className="w-4 h-4 text-emerald-600" />
-                  <span className="text-[10px] font-black text-emerald-600 uppercase tracking-widest">Fulfilled</span>
+
+              <div className="hidden md:block relative group overflow-hidden bg-white p-4 rounded-[1.5rem] border border-gray-100 shadow-lg shadow-emerald-900/5 transition-all">
+                <div className="absolute top-0 right-0 w-20 h-20 bg-emerald-50/50 rounded-full -mr-10 -mt-10" />
+                <div className="relative z-10 flex items-center gap-3 mb-2">
+                  <div className="p-1.5 bg-emerald-600 rounded-xl">
+                    <CheckCircle2 className="w-3 h-3 text-white" />
+                  </div>
+                  <span className="text-[8px] font-black text-gray-400 uppercase tracking-widest">Done</span>
                 </div>
-                <div className="text-3xl font-black text-gray-900">
+                <div className="relative z-10 text-2xl font-black text-gray-900 leading-none">
                   {orders.filter(o => o.status === 'completed').length}
                 </div>
               </div>
             </div>
           </div>
 
-          <div className="grid xl:grid-cols-1 gap-12">
-            {/* Create Order Section */}
-            <section className="space-y-6">
-              <div className="flex items-center justify-between px-2">
-                <h2 className="text-xl font-black text-gray-900 tracking-tight flex items-center gap-3">
-                  <span className="w-8 h-8 rounded-full bg-gray-900 text-white flex items-center justify-center text-xs font-black">01</span>
+          {/* Transaction Entry Section - Now Full Height/Width of Remaining Area */}
+          <div className="flex-1 overflow-hidden min-h-0">
+            <section className="h-full flex flex-col space-y-4">
+              <div className="px-2 shrink-0">
+                <h2 className="text-lg font-black text-gray-900 tracking-tight">
                   Transaction Entry
                 </h2>
               </div>
-              <div className="bg-white rounded-[3rem] border border-gray-100 shadow-xl overflow-hidden shadow-blue-900/5">
+              <div className="flex-1 bg-white rounded-[2.5rem] border border-gray-100 shadow-xl overflow-hidden shadow-blue-900/5 min-h-0">
                 <OrderForm onSubmit={handleCreateOrder} />
-              </div>
-            </section>
-
-            {/* List Section */}
-            <section className="space-y-6">
-              <div className="flex items-center justify-between px-2">
-                <h2 className="text-xl font-black text-gray-900 tracking-tight flex items-center gap-3">
-                  <span className="w-8 h-8 rounded-full bg-gray-900 text-white flex items-center justify-center text-xs font-black">02</span>
-                  Operation Log
-                </h2>
-
-                <div className="relative group hidden md:block">
-                  <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 group-focus-within:text-blue-700 transition-colors" />
-                  <input
-                    type="text"
-                    placeholder="Quick search records..."
-                    className="pl-12 pr-6 py-3 bg-gray-50 border-transparent focus:bg-white focus:border-blue-700 rounded-2xl outline-none text-sm font-bold w-64 transition-all border-2"
-                  />
-                </div>
-              </div>
-
-              <div className="bg-white rounded-[3rem] border border-gray-100 shadow-xl p-4 overflow-hidden shadow-blue-900/5">
-                {loading ? (
-                  <div className="flex flex-col items-center justify-center py-24 gap-4">
-                    <div className="w-12 h-12 border-4 border-blue-50 border-t-blue-700 rounded-full animate-spin"></div>
-                    <p className="text-sm font-black text-gray-400 uppercase tracking-widest">Accessing ledger...</p>
-                  </div>
-                ) : error ? (
-                  <div className="text-center py-24">
-                    <div className="bg-rose-50 text-rose-700 px-6 py-4 rounded-3xl inline-block font-bold">
-                      Connection Error: {error}
-                    </div>
-                  </div>
-                ) : orders.length === 0 ? (
-                  <div className="text-center py-24 space-y-4">
-                    <div className="w-20 h-20 bg-gray-50 rounded-full flex items-center justify-center mx-auto text-gray-200">
-                      <ShoppingBag className="w-10 h-10" />
-                    </div>
-                    <p className="text-sm font-black text-gray-400 uppercase tracking-widest">No transactions logged</p>
-                  </div>
-                ) : (
-                  <OrdersTable
-                    orders={orders as any}
-                    onView={(order) => setViewOrder(order)}
-                    onDelete={handleDeleteOrder}
-                  />
-                )}
               </div>
             </section>
           </div>
@@ -173,6 +139,9 @@ export default function OrdersPage() {
         }
         .custom-scrollbar::-webkit-scrollbar-thumb:hover {
           background: #cbd5e1;
+        }
+        body {
+          overflow: hidden !important;
         }
       `}</style>
     </div>
