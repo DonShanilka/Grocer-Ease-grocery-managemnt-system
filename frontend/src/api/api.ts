@@ -22,6 +22,33 @@ export const fetchOrders = async (): Promise<Order[]> => {
   }
 };
 
+// --- AUTH API ---
+export const loginUser = async (credentials: any) => {
+  const res = await fetch(`${BASE_URL}/auth/login`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(credentials),
+  });
+  if (!res.ok) {
+    const error = await res.json();
+    throw new Error(error.error || 'Login failed');
+  }
+  return res.json();
+};
+
+export const registerUser = async (userData: any) => {
+  const res = await fetch(`${BASE_URL}/auth/register`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(userData),
+  });
+  if (!res.ok) {
+    const error = await res.json();
+    throw new Error(error.error || 'Registration failed');
+  }
+  return res.json();
+};
+
 export const updateOrderStatus = async (id: number | string, status: string) => {
   await fetch(`${BASE_URL}/orders/${id}/status`, {
     method: 'PUT',
