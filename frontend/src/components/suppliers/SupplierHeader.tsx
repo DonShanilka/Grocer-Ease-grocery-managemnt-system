@@ -11,12 +11,12 @@ export default function SupplierHeader({
     return (
         <>
             {/* Header */}
-            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-6 gap-3">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-4 gap-3">
                 <div>
                     <h1 className="text-2xl font-bold text-gray-800">Suppliers</h1>
-                    <p className="text-sm text-gray-600 mt-1">
+                    {/* <p className="text-sm text-gray-600 mt-1">
                         Manage your supplier network
-                    </p>
+                    </p> */}
                 </div>
 
                 <button
