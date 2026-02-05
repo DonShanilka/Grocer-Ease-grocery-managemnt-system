@@ -6,6 +6,7 @@ import { ShoppingBag, ChevronRight, Package, Clock, CheckCircle2, Search } from 
 
 import OrderForm from "@/src/components/orders/OrderFormModal";
 import { OrdersTable } from "../../components/orders/OrdersTable";
+import OrdersHeader from "../../components/orders/OrdersHeader";
 import { ViewOrderCard } from "../../components/orders/ViewOrderCard";
 import { UpdateStatusModal } from "../../components/orders/UpdateStatusModal";
 import Toast from "@/src/components/common/Toast";
@@ -25,16 +26,33 @@ export default function OrdersPage() {
     dispatch(fetchOrders());
   }, [dispatch]);
 
+  // Filters
+  const [searchQuery, setSearchQuery] = useState("");
+  const [filterStatus, setFilterStatus] = useState("all");
+  const [filterType, setFilterType] = useState("all");
+  const [showCreateModal, setShowCreateModal] = useState(false);
+
+  const filteredOrders = orders.filter((order) => {
+    const matchesSearch =
+      order.customer_name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      order.id?.toString().includes(searchQuery);
+
+    const matchesStatus = filterStatus === "all" || order.status.toLowerCase() === filterStatus.toLowerCase();
+    const matchesType = filterType === "all" || order.order_type === filterType;
+
+    return matchesSearch && matchesStatus && matchesType;
+  });
+
   const handleCreateOrder = useCallback(
     async (formData: any) => {
       try {
         await dispatch(createOrder(formData)).unwrap();
-        // Custom toast logic could go here, using standard alert for now
-        alert("Transaction completed successfully");
+        setToast({ message: "Transaction completed successfully!", type: "success" });
+        setShowCreateModal(false);
       } catch (err: any) {
         console.error("Operation failed: ", err);
         const errorMessage = err.message || "Failed to process transaction";
-        alert(`Error: ${errorMessage}`);
+        setToast({ message: `Error: ${errorMessage}`, type: "error" });
       }
     },
     [dispatch]
@@ -70,106 +88,70 @@ export default function OrdersPage() {
   );
 
   return (
-    <div className="h-screen bg-white font-[Outfit, sans-serif] overflow-hidden flex flex-col">
-      <div className="flex-1 flex flex-col p-6 lg:p-8 overflow-hidden">
-        <div className="w-full h-full flex flex-col space-y-8 overflow-hidden">
-          {/* Header & Stats Section */}
-          <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 border-b border-gray-50 pb-6 shrink-0">
-            <div className="space-y-3">
-              <div className="inline-flex items-center gap-2 px-3 py-1 bg-blue-50 rounded-full text-blue-700 font-black uppercase tracking-[0.2em] text-[8px]">
-                <ShoppingBag className="w-2.5 h-2.5" />
-                Distribution Hub
-              </div>
-              <h1 className="text-4xl font-black text-gray-900 tracking-tighter leading-none">
-                Order <span className="text-blue-700">Console</span>
-              </h1>
-            </div>
+    <div className="h-screen bg-gray-50 p-6 font-[Outfit, sans-serif] flex flex-col overflow-hidden">
+      <div className="shrink-0 space-y-6 mb-6">
+        <OrdersHeader
+          orders={orders}
+          onAdd={() => setShowCreateModal(true)}
+          searchQuery={searchQuery}
+          setSearchQuery={setSearchQuery}
+          filterStatus={filterStatus}
+          setFilterStatus={setFilterStatus}
+          filterType={filterType}
+          setFilterType={setFilterType}
+        />
+      </div>
 
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-4 lg:w-[45%]">
-              {/* Stats Cards (Resized as requested previously) */}
-              <div className="relative group overflow-hidden bg-white p-4 rounded-[1.5rem] border border-gray-100 shadow-lg shadow-blue-900/5 transition-all">
-                <div className="absolute top-0 right-0 w-20 h-20 bg-blue-50/50 rounded-full -mr-10 -mt-10" />
-                <div className="relative z-10 flex items-center gap-3 mb-2">
-                  <div className="p-1.5 bg-blue-700 rounded-lg">
-                    <Package className="w-3 h-3 text-white" />
-                  </div>
-                  <span className="text-[8px] font-black text-gray-400 uppercase tracking-widest">Gross</span>
-                </div>
-                <div className="relative z-10 text-2xl font-black text-gray-900 leading-none">
-                  {orders.length}
-                </div>
-              </div>
-
-              <div className="relative group overflow-hidden bg-white p-4 rounded-[1.5rem] border border-gray-100 shadow-lg shadow-amber-900/5 transition-all">
-                <div className="absolute top-0 right-0 w-20 h-20 bg-amber-50/50 rounded-full -mr-10 -mt-10" />
-                <div className="relative z-10 flex items-center gap-3 mb-2">
-                  <div className="p-1.5 bg-amber-500 rounded-xl">
-                    <Clock className="w-3 h-3 text-white" />
-                  </div>
-                  <span className="text-[8px] font-black text-gray-400 uppercase tracking-widest">Pending</span>
-                </div>
-                <div className="relative z-10 text-2xl font-black text-gray-900 leading-none">
-                  {orders.filter(o => o.status === 'pending').length}
-                </div>
-              </div>
-
-              <div className="hidden md:block relative group overflow-hidden bg-white p-4 rounded-[1.5rem] border border-gray-100 shadow-lg shadow-emerald-900/5 transition-all">
-                <div className="absolute top-0 right-0 w-20 h-20 bg-emerald-50/50 rounded-full -mr-10 -mt-10" />
-                <div className="relative z-10 flex items-center gap-3 mb-2">
-                  <div className="p-1.5 bg-emerald-600 rounded-xl">
-                    <CheckCircle2 className="w-3 h-3 text-white" />
-                  </div>
-                  <span className="text-[8px] font-black text-gray-400 uppercase tracking-widest">Done</span>
-                </div>
-                <div className="relative z-10 text-2xl font-black text-gray-900 leading-none">
-                  {orders.filter(o => o.status === 'completed').length}
-                </div>
-              </div>
-            </div>
+      <div className="flex-1 min-h-0 bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden relative">
+        {loading ? (
+          <div className="absolute inset-0 flex items-center justify-center text-gray-500">
+            Loading orders...
           </div>
-
-          {/* Transaction Entry Section - Now Full Height/Width of Remaining Area */}
-          <div className="flex-1 overflow-hidden min-h-0">
-            <section className="h-full flex flex-col space-y-4">
-              <div className="px-2 shrink-0">
-                <h2 className="text-lg font-black text-gray-900 tracking-tight">
-                  Transaction Entry
-                </h2>
-              </div>
-              <div className="flex-1 bg-white rounded-[2.5rem] border border-gray-100 shadow-xl overflow-hidden shadow-blue-900/5 min-h-0">
-                <OrderForm onSubmit={handleCreateOrder} />
-              </div>
-            </section>
+        ) : error ? (
+          <div className="absolute inset-0 flex items-center justify-center text-red-600">
+            Error: {error}
           </div>
-        </div>
-
-        {/* View Modal */}
-        {viewOrder && (
-          <ViewOrderCard
-            order={viewOrder}
-            onClose={() => setViewOrder(null)}
-          />
+        ) : (
+          <div className="absolute inset-0 overflow-y-auto custom-scrollbar">
+            <OrdersTable
+              orders={filteredOrders}
+              onView={setViewOrder}
+              onEdit={handleEditOrder}
+              onDelete={handleDeleteOrder}
+            />
+          </div>
         )}
       </div>
 
-      <style jsx global>{`
-        .custom-scrollbar::-webkit-scrollbar {
-          width: 5px;
-        }
-        .custom-scrollbar::-webkit-scrollbar-track {
-          background: transparent;
-        }
-        .custom-scrollbar::-webkit-scrollbar-thumb {
-          background: #e2e8f0;
-          border-radius: 10px;
-        }
-        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-          background: #cbd5e1;
-        }
-        body {
-          overflow: hidden !important;
-        }
-      `}</style>
+      {/* Create Order Modal (Full Screen Overlay) */}
+      {showCreateModal && (
+        <div className="fixed inset-0 bg-white z-[100] animate-in slide-in-from-bottom duration-300 flex flex-col">
+          <div className="px-6 py-4 border-b border-gray-100 flex items-center justify-between bg-white shrink-0">
+            <h2 className="text-xl font-black text-gray-900">New Transaction</h2>
+            <button
+              onClick={() => setShowCreateModal(false)}
+              className="p-2 hover:bg-gray-100 rounded-full transition-colors"
+            >
+              <span className="sr-only">Close</span>
+              <svg className="w-6 h-6 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          </div>
+          <div className="flex-1 overflow-hidden">
+            <OrderForm onSubmit={handleCreateOrder} />
+          </div>
+        </div>
+      )}
+
+      {/* View Modal */}
+      {viewOrder && (
+        <ViewOrderCard
+          order={viewOrder}
+          onClose={() => setViewOrder(null)}
+        />
+      )}
+
       {/* Update Status Modal */}
       {updateOrderModal && (
         <UpdateStatusModal
@@ -187,6 +169,22 @@ export default function OrdersPage() {
           onClose={() => setToast(null)}
         />
       )}
+
+      <style jsx global>{`
+        .custom-scrollbar::-webkit-scrollbar {
+          width: 5px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+          background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+          background: #e2e8f0;
+          border-radius: 10px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+          background: #cbd5e1;
+        }
+      `}</style>
     </div>
   );
 }
