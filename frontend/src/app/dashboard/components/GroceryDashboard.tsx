@@ -5,7 +5,7 @@ import { Search } from 'lucide-react';
 import { fetchOrders, fetchItems, Order, InventoryItem } from '@/src/api/api';
 import StatsGrid from './widgets/StatsGrid';
 import OrderSourcesChart from './widgets/OrderSourcesChart';
-import DeliveryTracker from './widgets/DeliveryTracker';
+import TotalRevenueChart from './widgets/TotalRevenueChart';
 import RecentStockTable from './widgets/RecentStockTable';
 
 export default function GroceryDashboard() {
@@ -57,7 +57,7 @@ export default function GroceryDashboard() {
       {/* Charts Row */}
       <div className="flex flex-col lg:flex-row gap-6 px-6 mb-6">
         <OrderSourcesChart orders={orders} />
-        <DeliveryTracker />
+        <TotalRevenueChart orders={orders} />
       </div>
 
       {/* Table */}
