@@ -80,7 +80,7 @@ export const ItemForm = ({ mode, item, onClose, onSubmit }: Props) => {
               const Icon = field.icon;
               return (
                 <div key={field.key} className={field.fullWidth ? 'md:col-span-2' : ''}>
-                  <label className="block text-xs font-semibold text-blue-800 mb-1.5">
+                  <label className="block text-xs font-semibold text-gray-800 mb-1.5">
                     {field.label}
                     {field.required && <span className="text-red-500 ml-1">*</span>}
                   </label>
@@ -95,7 +95,7 @@ export const ItemForm = ({ mode, item, onClose, onSubmit }: Props) => {
                           setFormData({ ...formData, [field.key]: e.target.value });
                           if (errors[field.key]) setErrors({ ...errors, [field.key]: '' });
                         }}
-                        className={`w-full pl-10 pr-4 py-2.5 border rounded-lg text-sm focus:outline-none focus:ring-2 transition-all appearance-none bg-white ${errors[field.key] ? 'border-red-300 focus:ring-red-500' : 'border-gray-200 focus:ring-blue-500'
+                        className={`w-full pl-10 pr-4 py-2.5 border rounded-lg text-sm text-blue-800 focus:outline-none focus:ring-2 transition-all appearance-none bg-white ${errors[field.key] ? 'border-red-300 focus:ring-red-500' : 'border-gray-200 focus:ring-blue-500'
                           }`}
                       >
                         <option value="">Select {field.label.toLowerCase()}</option>
@@ -109,7 +109,7 @@ export const ItemForm = ({ mode, item, onClose, onSubmit }: Props) => {
                         onChange={(e) => setFormData({ ...formData, [field.key]: e.target.value })}
                         rows={3}
                         placeholder={field.placeholder}
-                        className="w-full pl-10 pr-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
+                        className="w-full pl-10 pr-4 py-2.5 border border-gray-200 rounded-lg text-sm text-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
                       />
                     ) : (
                       <input
@@ -121,7 +121,7 @@ export const ItemForm = ({ mode, item, onClose, onSubmit }: Props) => {
                           if (errors[field.key]) setErrors({ ...errors, [field.key]: '' });
                         }}
                         placeholder={field.placeholder}
-                        className={`w-full pl-10 pr-4 py-2.5 border rounded-lg text-sm focus:outline-none focus:ring-2 transition-all ${errors[field.key] ? 'border-red-300 focus:ring-red-500' : 'border-gray-200 focus:ring-blue-500'
+                        className={`w-full pl-10 pr-4 py-2.5 border rounded-lg text-sm text-blue-800 focus:outline-none focus:ring-2 transition-all ${errors[field.key] ? 'border-red-300 focus:ring-red-500' : 'border-gray-200 focus:ring-blue-500'
                           }`}
                       />
                     )}

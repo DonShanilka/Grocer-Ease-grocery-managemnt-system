@@ -84,7 +84,7 @@ export default function SupplierForm({ supplier, onClose, onSubmit }: Props) {
               const Icon = field.icon;
               return (
                 <div key={field.key} className={field.key === "address" || field.key === "supplied_items" ? "md:col-span-2" : ""}>
-                  <label className="block text-xs font-semibold text-blue-800 mb-1.5">
+                  <label className="block text-xs font-semibold text-gray-800 mb-1.5">
                     {field.label}
                     {["name", "phone", "email", "address", "supplied_items"].includes(field.key) && (
                       <span className="text-red-500 ml-1">*</span>
@@ -104,9 +104,9 @@ export default function SupplierForm({ supplier, onClose, onSubmit }: Props) {
                           setErrors({ ...errors, [field.key]: "" });
                         }
                       }}
-                      className={`w-full pl-10 pr-4 py-2.5 border rounded-lg text-sm focus:outline-none focus:ring-2 transition-all ${errors[field.key]
-                          ? "border-red-300 focus:ring-red-500"
-                          : "border-gray-200 focus:ring-blue-500"
+                      className={`w-full pl-10 pr-4 py-2.5 border rounded-lg text-sm text-blue-800 focus:outline-none focus:ring-2 transition-all ${errors[field.key]
+                        ? "border-red-300 focus:ring-red-500"
+                        : "border-gray-200 focus:ring-blue-500"
                         }`}
                     />
                   </div>
@@ -119,7 +119,7 @@ export default function SupplierForm({ supplier, onClose, onSubmit }: Props) {
 
             {/* Status Dropdown */}
             <div className="md:col-span-2">
-              <label className="block text-xs font-semibold text-blue-800 mb-1.5">
+              <label className="block text-xs font-semibold text-gray-800 mb-1.5">
                 Status
               </label>
               <div className="relative">
@@ -129,7 +129,7 @@ export default function SupplierForm({ supplier, onClose, onSubmit }: Props) {
                 <select
                   value={form.status}
                   onChange={(e) => setForm({ ...form, status: e.target.value })}
-                  className="w-full pl-10 pr-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 appearance-none bg-white"
+                  className="w-full pl-10 pr-4 py-2.5 border border-gray-200 rounded-lg text-sm text-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-500 appearance-none bg-white"
                 >
                   <option value="Active">Active</option>
                   <option value="Inactive">Inactive</option>

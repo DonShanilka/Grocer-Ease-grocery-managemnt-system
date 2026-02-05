@@ -97,8 +97,8 @@ export default function CustomerModal({
                   </h3>
                   <span
                     className={`inline-block px-3 py-1 rounded-full text-xs font-medium mt-1 ${customer.status === 'Active'
-                        ? 'bg-green-100 text-green-700'
-                        : 'bg-gray-100 text-gray-700'
+                      ? 'bg-green-100 text-green-700'
+                      : 'bg-gray-100 text-gray-700'
                       }`}
                   >
                     {customer.status}
@@ -157,7 +157,7 @@ export default function CustomerModal({
                 const Icon = field.icon;
                 return (
                   <div key={field.key} className={field.fullWidth ? 'md:col-span-2' : ''}>
-                    <label className="block text-xs font-semibold text-blue-800 mb-1.5">
+                    <label className="block text-xs font-semibold text-gray-800 mb-1.5">
                       {field.label}
                       {field.required && <span className="text-red-500 ml-1">*</span>}
                     </label>
@@ -174,7 +174,7 @@ export default function CustomerModal({
                             if (errors[field.key]) setErrors({ ...errors, [field.key]: '' });
                           }}
                           placeholder={field.placeholder}
-                          className={`w-full pl-10 pr-4 py-2.5 border rounded-lg text-sm focus:outline-none focus:ring-2 transition-all ${errors[field.key] ? 'border-red-300 focus:ring-red-500' : 'border-gray-200 focus:ring-blue-500'
+                          className={`w-full pl-10 pr-4 py-2.5 border rounded-lg text-sm text-blue-800 focus:outline-none focus:ring-2 transition-all ${errors[field.key] ? 'border-red-300 focus:ring-red-500' : 'border-gray-200 focus:ring-blue-500'
                             }`}
                         />
                       ) : (
@@ -186,7 +186,7 @@ export default function CustomerModal({
                             if (errors[field.key]) setErrors({ ...errors, [field.key]: '' });
                           }}
                           placeholder={field.placeholder}
-                          className={`w-full pl-10 pr-4 py-2.5 border rounded-lg text-sm focus:outline-none focus:ring-2 transition-all ${errors[field.key] ? 'border-red-300 focus:ring-red-500' : 'border-gray-200 focus:ring-blue-500'
+                          className={`w-full pl-10 pr-4 py-2.5 border rounded-lg text-sm text-blue-800 focus:outline-none focus:ring-2 transition-all ${errors[field.key] ? 'border-red-300 focus:ring-red-500' : 'border-gray-200 focus:ring-blue-500'
                             }`}
                         />
                       )}
@@ -198,7 +198,7 @@ export default function CustomerModal({
 
               {/* Status Dropdown */}
               <div className="md:col-span-2">
-                <label className="block text-xs font-semibold text-blue-800 mb-1.5">
+                <label className="block text-xs font-semibold text-gray-800 mb-1.5">
                   Status
                 </label>
                 <div className="relative">
@@ -208,7 +208,7 @@ export default function CustomerModal({
                   <select
                     value={formData.status}
                     onChange={(e) => setFormData({ ...formData, status: e.target.value })}
-                    className="w-full pl-10 pr-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 appearance-none bg-white"
+                    className="w-full pl-10 pr-4 py-2.5 border border-gray-200 rounded-lg text-sm text-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-500 appearance-none bg-white"
                   >
                     <option value="Active">Active</option>
                     <option value="Inactive">Inactive</option>
