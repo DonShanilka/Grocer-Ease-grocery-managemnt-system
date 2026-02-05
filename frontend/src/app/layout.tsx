@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist, Geist_Mono, Outfit } from "next/font/google";
 import "./globals.css";
 
 import StoreProvider from "@/src/store/StoreProvider";
@@ -15,6 +15,11 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+const outfit = Outfit({
+  subsets: ["latin"],
+  variable: "--font-outfit",
+});
+
 export const metadata: Metadata = {
   title: "GrocerEase",
   description: "Grocery Management System",
@@ -28,7 +33,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-gray-50`}
+        className={`${geistSans.variable} ${geistMono.variable} ${outfit.variable} antialiased bg-gray-50`}
       >
         <StoreProvider>
           <div className="flex min-h-screen">
