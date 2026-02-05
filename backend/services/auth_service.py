@@ -27,15 +27,22 @@ class AuthService:
 
     @staticmethod
     def login(data):
-        if not data.get("username") or not data.get("password"):
-            raise ValueError("Username and password are required")
+        identifier = data.get("username") or data.get("email")
+        password = data.get("password")
 
-        user_data = UserRepository.find_by_username(data["username"])
+        if not identifier or not password:
+            raise ValueError("Username/Email and password are required")
+
+        # Search by username first, then email if not found
+        user_data = UserRepository.find_by_username(identifier)
+        if not user_data:
+            user_data = UserRepository.find_by_email(identifier)
+        
         if not user_data:
             raise ValueError("Invalid credentials")
 
         # Check password
-        if not bcrypt.checkpw(data["password"].encode('utf-8'), user_data["password"].encode('utf-8')):
+        if not bcrypt.checkpw(password.encode('utf-8'), user_data["password"].encode('utf-8')):
             raise ValueError("Invalid credentials")
 
         # Generate Token
