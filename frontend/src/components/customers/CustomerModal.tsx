@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { X, User, Mail, Phone, MapPin, CheckCircle } from 'lucide-react';
+import { X, User, Mail, Phone, MapPin, CheckCircle, Info, ShoppingCart, DollarSign, Calendar } from 'lucide-react';
 
 export default function CustomerModal({
   mode,
@@ -53,6 +53,19 @@ export default function CustomerModal({
     }
   };
 
+  const getInitials = (name: string) => {
+    return name?.split(' ').map((n: string) => n[0]).join('').toUpperCase().slice(0, 2) || "C";
+  };
+
+  const getStatusColor = (status: string) => {
+    switch (status) {
+      case "Active": return "bg-green-100 text-green-700";
+      case "active": return "bg-green-100 text-green-700";
+      case "Inactive": return "bg-gray-100 text-gray-700";
+      default: return "bg-gray-100 text-gray-700";
+    }
+  };
+
   const formFields = [
     { key: 'name', label: 'Full Name', icon: User, type: 'text', placeholder: 'Enter customer name', required: true },
     { key: 'email', label: 'Email Address', icon: Mail, type: 'email', placeholder: 'customer@email.com', required: true },
@@ -61,101 +74,132 @@ export default function CustomerModal({
   ];
 
   return (
-    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-      <div className="bg-white rounded-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto">
-        {/* Header */}
-        <div className="sticky top-0 bg-white border-b border-gray-200 px-6 py-4 flex items-center justify-between">
-          <div>
-            <h2 className="text-lg font-bold text-blue-800">
-              {mode === 'create' && 'Add New Customer'}
-              {mode === 'edit' && 'Edit Customer'}
-              {mode === 'view' && 'Customer Details'}
-            </h2>
-            <p className="text-xs text-gray-500 mt-0.5">
-              {mode === 'view' ? 'View customer information' : mode === 'create' ? 'Fill in customer details' : 'Update customer information'}
-            </p>
-          </div>
-          <button
-            onClick={onClose}
-            className="p-2 hover:bg-red-50 rounded-lg transition-colors text-red-600 hover:text-red-700"
-          >
-            <X size={20} />
-          </button>
-        </div>
+    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4 backdrop-blur-sm">
+      <div className={`bg-white rounded-xl w-full ${mode === 'view' ? 'max-w-lg' : 'max-w-2xl'} shadow-2xl overflow-hidden animate-in fade-in zoom-in duration-200`}>
+        {mode === 'view' ? (
+          /* VIEW MODE - Re-styled to match SupplierView */
+          <>
+            <div className="relative h-24 bg-gradient-to-r from-blue-700 to-blue-900 px-6 flex items-end">
+              <button
+                onClick={onClose}
+                className="absolute top-4 right-4 p-2 bg-white/20 hover:bg-red-500 rounded-full transition-all text-white hover:scale-110"
+                aria-label="Close"
+              >
+                <X size={18} />
+              </button>
 
-        <div className="px-6 py-4">
-          {/* VIEW MODE */}
-          {mode === 'view' ? (
-            <div className="space-y-4">
-              <div className="flex items-center gap-4 pb-4 border-b">
-                <div className="w-20 h-20 bg-gradient-to-br from-blue-500 to-purple-500 rounded-full flex items-center justify-center text-white font-bold text-2xl">
-                  {customer.name.split(' ').map((n: string) => n[0]).join('')}
-                </div>
-                <div>
-                  <h3 className="text-xl font-bold text-gray-800">
-                    {customer.name}
-                  </h3>
-                  <span
-                    className={`inline-block px-3 py-1 rounded-full text-xs font-medium mt-1 ${customer.status === 'Active'
-                      ? 'bg-green-100 text-green-700'
-                      : 'bg-gray-100 text-gray-700'
-                      }`}
-                  >
-                    {customer.status}
-                  </span>
-                </div>
-              </div>
-
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <p className="text-xs text-gray-600 mb-1">Email</p>
-                  <p className="text-sm font-medium text-gray-800">
-                    {customer.email}
-                  </p>
-                </div>
-
-                <div>
-                  <p className="text-xs text-gray-600 mb-1">Phone</p>
-                  <p className="text-sm font-medium text-gray-800">
-                    {customer.phone}
-                  </p>
-                </div>
-
-                <div className="col-span-2">
-                  <p className="text-xs text-gray-600 mb-1">Address</p>
-                  <p className="text-sm font-medium text-gray-800">
-                    {customer.address}
-                  </p>
-                </div>
-
-                <div>
-                  <p className="text-xs text-gray-600 mb-1">Total Orders</p>
-                  <p className="text-sm font-medium text-gray-800">
-                    {customer.totalOrders}
-                  </p>
-                </div>
-
-                <div>
-                  <p className="text-xs text-gray-600 mb-1">Total Spent</p>
-                  <p className="text-sm font-medium text-gray-800">
-                    {customer.totalSpent}
-                  </p>
-                </div>
-
-                <div>
-                  <p className="text-xs text-gray-600 mb-1">Joined Date</p>
-                  <p className="text-sm font-medium text-gray-800">
-                    {customer.joinedDate}
-                  </p>
+              <div className="absolute -bottom-10 left-6 flex items-end gap-4">
+                <div className="w-20 h-20 bg-white rounded-2xl shadow-lg border-4 border-white flex items-center justify-center text-blue-800 font-bold text-2xl">
+                  {getInitials(customer.name)}
                 </div>
               </div>
             </div>
-          ) : (
-            /* CREATE & EDIT MODE */
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {formFields.map((field) => {
-                const Icon = field.icon;
-                return (
+
+            <div className="pt-14 px-6 pb-6 text-gray-800">
+              <div className="flex justify-between items-start mb-6">
+                <div>
+                  <h2 className="text-2xl font-bold tracking-tight">{customer.name}</h2>
+                  <div className="flex items-center gap-2 mt-1">
+                    <span className={`px-3 py-1 rounded-full text-xs font-semibold ${getStatusColor(customer.status)}`}>
+                      {customer.status}
+                    </span>
+                    <span className="text-gray-400 text-xs">• Joined: {customer.joinedDate}</span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="space-y-6">
+                <div>
+                  <h3 className="text-xs font-bold text-blue-800 uppercase tracking-wider mb-3 flex items-center gap-2">
+                    <Info size={14} /> Contact Details
+                  </h3>
+                  <div className="grid grid-cols-1 gap-4">
+                    <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
+                      <div className="p-2 bg-blue-100 text-blue-600 rounded-md">
+                        <Mail size={16} />
+                      </div>
+                      <div>
+                        <p className="text-[10px] text-gray-500 uppercase font-bold">Email Address</p>
+                        <p className="text-sm font-medium">{customer.email}</p>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
+                      <div className="p-2 bg-purple-100 text-purple-600 rounded-md">
+                        <Phone size={16} />
+                      </div>
+                      <div>
+                        <p className="text-[10px] text-gray-500 uppercase font-bold">Phone Number</p>
+                        <p className="text-sm font-medium">{customer.phone}</p>
+                      </div>
+                    </div>
+                    <div className="col-span-1 flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
+                      <div className="p-2 bg-orange-100 text-orange-600 rounded-md">
+                        <MapPin size={16} />
+                      </div>
+                      <div>
+                        <p className="text-[10px] text-gray-500 uppercase font-bold">Billing Address</p>
+                        <p className="text-sm font-medium">{customer.address}</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div>
+                  <h3 className="text-xs font-bold text-blue-800 uppercase tracking-wider mb-3 flex items-center gap-2">
+                    <ShoppingCart size={14} /> Activity Metrics
+                  </h3>
+                  <div className="bg-gray-50 rounded-lg p-4 grid grid-cols-2 gap-y-4">
+                    <div>
+                      <p className="text-[10px] text-gray-500 uppercase font-bold mb-1">Total Orders</p>
+                      <div className="flex items-center gap-2 text-sm font-bold">
+                        <ShoppingCart size={14} className="text-blue-600" />
+                        {customer.totalOrders}
+                      </div>
+                    </div>
+                    <div>
+                      <p className="text-[10px] text-gray-500 uppercase font-bold mb-1">Total Lifetime Spent</p>
+                      <div className="flex items-center gap-2 text-sm font-bold">
+                        <DollarSign size={14} className="text-green-600" />
+                        {customer.totalSpent}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-gray-50 px-6 py-4 flex justify-end">
+              <button
+                onClick={onClose}
+                className="px-6 py-2 bg-gray-500 hover:bg-gray-600 text-white rounded-lg transition-colors text-sm font-bold shadow-sm"
+              >
+                Close
+              </button>
+            </div>
+          </>
+        ) : (
+          /* CREATE & EDIT MODE - Keeping existing improved layout */
+          <>
+            <div className="sticky top-0 bg-white border-b border-gray-200 px-6 py-4 flex items-center justify-between z-10">
+              <div>
+                <h2 className="text-lg font-bold text-blue-800">
+                  {mode === 'create' ? 'Add New Customer' : 'Edit Customer'}
+                </h2>
+                <p className="text-xs text-gray-500 mt-0.5">
+                  {mode === 'create' ? 'Fill in customer details' : 'Update customer information'}
+                </p>
+              </div>
+              <button
+                onClick={onClose}
+                className="p-2 hover:bg-red-50 rounded-lg transition-colors text-red-600 hover:text-red-700"
+              >
+                <X size={20} />
+              </button>
+            </div>
+
+            <div className="px-6 py-4 overflow-y-auto max-h-[calc(90vh-120px)]">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {formFields.map((field) => (
                   <div key={field.key} className={field.fullWidth ? 'md:col-span-2' : ''}>
                     <label className="block text-xs font-semibold text-gray-800 mb-1.5">
                       {field.label}
@@ -163,7 +207,7 @@ export default function CustomerModal({
                     </label>
                     <div className="relative">
                       <div className="absolute left-3 top-3 text-gray-400">
-                        <Icon size={16} />
+                        <field.icon size={16} />
                       </div>
                       {field.type === 'textarea' ? (
                         <textarea
@@ -174,8 +218,7 @@ export default function CustomerModal({
                             if (errors[field.key]) setErrors({ ...errors, [field.key]: '' });
                           }}
                           placeholder={field.placeholder}
-                          className={`w-full pl-10 pr-4 py-2.5 border rounded-lg text-sm text-blue-800 focus:outline-none focus:ring-2 transition-all ${errors[field.key] ? 'border-red-300 focus:ring-red-500' : 'border-gray-200 focus:ring-blue-500'
-                            }`}
+                          className={`w-full pl-10 pr-4 py-2.5 border rounded-lg text-sm text-blue-800 focus:outline-none focus:ring-2 transition-all ${errors[field.key] ? 'border-red-300 focus:ring-red-500' : 'border-gray-200 focus:ring-blue-500'}`}
                         />
                       ) : (
                         <input
@@ -186,55 +229,48 @@ export default function CustomerModal({
                             if (errors[field.key]) setErrors({ ...errors, [field.key]: '' });
                           }}
                           placeholder={field.placeholder}
-                          className={`w-full pl-10 pr-4 py-2.5 border rounded-lg text-sm text-blue-800 focus:outline-none focus:ring-2 transition-all ${errors[field.key] ? 'border-red-300 focus:ring-red-500' : 'border-gray-200 focus:ring-blue-500'
-                            }`}
+                          className={`w-full pl-10 pr-4 py-2.5 border rounded-lg text-sm text-blue-800 focus:outline-none focus:ring-2 transition-all ${errors[field.key] ? 'border-red-300 focus:ring-red-500' : 'border-gray-200 focus:ring-blue-500'}`}
                         />
                       )}
                     </div>
                     {errors[field.key] && <p className="text-xs text-red-600 mt-1">{errors[field.key]}</p>}
                   </div>
-                );
-              })}
+                ))}
 
-              {/* Status Dropdown */}
-              <div className="md:col-span-2">
-                <label className="block text-xs font-semibold text-gray-800 mb-1.5">
-                  Status
-                </label>
-                <div className="relative">
-                  <div className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
-                    <CheckCircle size={16} />
+                <div className="md:col-span-2">
+                  <label className="block text-xs font-semibold text-gray-800 mb-1.5">Status</label>
+                  <div className="relative">
+                    <div className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
+                      <CheckCircle size={16} />
+                    </div>
+                    <select
+                      value={formData.status}
+                      onChange={(e) => setFormData({ ...formData, status: e.target.value })}
+                      className="w-full pl-10 pr-4 py-2.5 border border-gray-200 rounded-lg text-sm text-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-500 appearance-none bg-white"
+                    >
+                      <option value="Active">Active</option>
+                      <option value="Inactive">Inactive</option>
+                    </select>
                   </div>
-                  <select
-                    value={formData.status}
-                    onChange={(e) => setFormData({ ...formData, status: e.target.value })}
-                    className="w-full pl-10 pr-4 py-2.5 border border-gray-200 rounded-lg text-sm text-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-500 appearance-none bg-white"
-                  >
-                    <option value="Active">Active</option>
-                    <option value="Inactive">Inactive</option>
-                  </select>
                 </div>
               </div>
             </div>
-          )}
-        </div>
 
-        {/* Footer */}
-        {mode !== 'view' && (
-          <div className="sticky bottom-0 bg-gray-50 border-t border-gray-200 px-6 py-4 flex gap-3">
-            <button
-              onClick={onClose}
-              className="flex-1 px-4 py-2.5 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition-colors text-sm font-medium"
-            >
-              Cancel
-            </button>
-            <button
-              onClick={handleSubmit}
-              className="flex-1 px-4 py-2.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm font-medium"
-            >
-              {mode === 'create' ? 'Add Customer' : 'Save Changes'}
-            </button>
-          </div>
+            <div className="sticky bottom-0 bg-gray-50 border-t border-gray-200 px-6 py-4 flex gap-3 z-10">
+              <button
+                onClick={onClose}
+                className="flex-1 px-4 py-2.5 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition-colors text-sm font-medium"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleSubmit}
+                className="flex-1 px-4 py-2.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm font-medium"
+              >
+                {mode === 'create' ? 'Add Customer' : 'Save Changes'}
+              </button>
+            </div>
+          </>
         )}
       </div>
     </div>

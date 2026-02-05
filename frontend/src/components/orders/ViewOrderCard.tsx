@@ -1,6 +1,6 @@
 "use client";
 
-import { X, Calendar, User, CreditCard, Activity, PackageCheck } from "lucide-react";
+import { X, Calendar, User, CreditCard, Activity, PackageCheck, Info, MapPin, Hash, ShoppingBag, Clock } from "lucide-react";
 import { Order } from "../../types/Order";
 
 interface Props {
@@ -9,96 +9,117 @@ interface Props {
 }
 
 export const ViewOrderCard = ({ order, onClose }: Props) => {
+  const getStatusColor = (status: string) => {
+    switch (status.toLowerCase()) {
+      case 'completed': return 'bg-green-100 text-green-700';
+      case 'pending': return 'bg-yellow-100 text-yellow-700';
+      case 'cancelled': return 'bg-red-100 text-red-700';
+      default: return 'bg-gray-100 text-gray-700';
+    }
+  };
+
+  const getInitials = (name: string) => {
+    return name?.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2) || "O";
+  };
+
   return (
-    <div className="fixed inset-0 bg-gray-900/40 backdrop-blur-sm flex justify-center items-center z-50 p-4 transition-all duration-300">
-      <div
-        className="bg-white rounded-[2.5rem] shadow-2xl w-full max-w-lg overflow-hidden border border-gray-100 animate-in fade-in zoom-in duration-300"
-      >
-        {/* Header */}
-        <div className="bg-blue-700 p-8 text-white relative">
+    <div className="fixed inset-0 bg-black/50 flex justify-center items-center z-50 p-4 backdrop-blur-sm">
+      <div className="bg-white rounded-xl w-full max-w-lg shadow-2xl overflow-hidden animate-in fade-in zoom-in duration-200 text-gray-800">
+        {/* Header with Background Gradient */}
+        <div className="relative h-24 bg-gradient-to-r from-blue-700 to-blue-900 px-6 flex items-end">
           <button
             onClick={onClose}
-            className="absolute top-6 right-6 p-2 bg-white/10 hover:bg-white/20 rounded-full transition-colors"
+            className="absolute top-4 right-4 p-2 bg-white/20 hover:bg-red-500 rounded-full transition-all text-white hover:scale-110"
+            aria-label="Close"
           >
-            <X className="w-5 h-5" />
+            <X size={18} />
           </button>
 
-          <div className="flex items-center gap-4 mb-2">
-            <div className="p-3 bg-white/10 rounded-2xl">
-              <PackageCheck className="w-8 h-8 text-white" />
-            </div>
-            <div>
-              <p className="text-blue-100 text-xs font-black uppercase tracking-widest">Order Receipt</p>
-              <h2 className="text-3xl font-black tracking-tight mt-1">
-                #{order.id.toString().padStart(4, '0')}
-              </h2>
+          <div className="absolute -bottom-10 left-6 flex items-end gap-4">
+            <div className="w-20 h-20 bg-white rounded-2xl shadow-lg border-4 border-white flex items-center justify-center text-blue-800">
+              <PackageCheck size={40} />
             </div>
           </div>
         </div>
 
         {/* Content */}
-        <div className="p-10 space-y-8">
-          <div className="grid grid-cols-2 gap-8">
-            <div className="space-y-4">
-              <div className="flex items-center gap-2 text-gray-400">
-                <User className="w-4 h-4" />
-                <span className="text-[10px] font-black uppercase tracking-wider">Customer</span>
-              </div>
-              <p className="text-xl font-bold text-gray-900">{order.customer_name}</p>
-            </div>
-
-            <div className="space-y-4">
-              <div className="flex items-center gap-2 text-gray-400">
-                <Activity className="w-4 h-4" />
-                <span className="text-[10px] font-black uppercase tracking-wider">Status</span>
-              </div>
-              <div>
-                <span className={`inline-flex items-center px-4 py-1.5 rounded-full text-xs font-black uppercase border ${order.status === 'completed' ? 'bg-emerald-50 text-emerald-700 border-emerald-100' :
-                    order.status === 'pending' ? 'bg-amber-50 text-amber-700 border-amber-100' :
-                      'bg-rose-50 text-rose-700 border-rose-100'
-                  }`}>
+        <div className="pt-14 px-6 pb-6">
+          <div className="flex justify-between items-start mb-6">
+            <div>
+              <h2 className="text-2xl font-bold tracking-tight">Order #{order.id.toString().padStart(4, '0')}</h2>
+              <div className="flex items-center gap-2 mt-1">
+                <span className={`px-3 py-1 rounded-full text-xs font-semibold ${getStatusColor(order.status)}`}>
                   {order.status}
                 </span>
+                <span className="text-gray-400 text-xs">• Type: {order.order_type}</span>
               </div>
             </div>
           </div>
 
-          <div className="grid grid-cols-2 gap-8">
-            <div className="space-y-4">
-              <div className="flex items-center gap-2 text-gray-400">
-                <Calendar className="w-4 h-4" />
-                <span className="text-[10px] font-black uppercase tracking-wider">Placement Date</span>
+          <div className="space-y-6">
+            {/* Customer Information Section */}
+            <div>
+              <h3 className="text-xs font-bold text-blue-800 uppercase tracking-wider mb-3 flex items-center gap-2">
+                <User size={14} /> Customer Information
+              </h3>
+              <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
+                <div className="p-3 bg-blue-100 text-blue-600 rounded-full font-bold text-sm">
+                  {getInitials(order.customer_name)}
+                </div>
+                <div>
+                  <p className="text-[10px] text-gray-500 uppercase font-bold">Ordered By</p>
+                  <p className="text-sm font-medium">{order.customer_name}</p>
+                </div>
               </div>
-              <p className="text-lg font-bold text-gray-800">
-                {new Date(order.created_at || "").toLocaleDateString('en-US', {
-                  month: 'long',
-                  day: 'numeric',
-                  year: 'numeric'
-                })}
-              </p>
             </div>
 
-            <div className="space-y-4">
-              <div className="flex items-center gap-2 text-gray-400">
-                <CreditCard className="w-4 h-4" />
-                <span className="text-[10px] font-black uppercase tracking-wider">Total Amount</span>
+            {/* Financials & Logistics Section */}
+            <div>
+              <h3 className="text-xs font-bold text-blue-800 uppercase tracking-wider mb-3 flex items-center gap-2">
+                <Info size={14} /> Order Financials
+              </h3>
+              <div className="bg-gray-50 rounded-lg p-4 grid grid-cols-2 gap-y-4">
+                <div>
+                  <p className="text-[10px] text-gray-500 uppercase font-bold mb-1">Total Amount</p>
+                  <div className="flex items-center gap-2 text-lg font-bold text-blue-800">
+                    <CreditCard size={18} />
+                    Rs. {parseFloat(order.total_amount.toString()).toLocaleString()}
+                  </div>
+                </div>
+                <div>
+                  <p className="text-[10px] text-gray-500 uppercase font-bold mb-1">Payment Type</p>
+                  <div className="flex items-center gap-2 text-sm font-bold">
+                    <ShoppingBag size={14} className="text-purple-600" />
+                    {order.payment_type}
+                  </div>
+                </div>
+                <div className="col-span-2 pt-2 border-t border-gray-200">
+                  <div className="flex justify-between items-center text-xs">
+                    <div className="flex items-center gap-2">
+                      <Calendar size={14} className="text-gray-400" />
+                      <span className="text-gray-500 uppercase font-bold">Placement Date:</span>
+                    </div>
+                    <span className="font-bold text-gray-800">
+                      {new Date(order.created_at || "").toLocaleDateString('en-US', {
+                        month: 'long',
+                        day: 'numeric',
+                        year: 'numeric'
+                      })}
+                    </span>
+                  </div>
+                </div>
               </div>
-              <p className="text-2xl font-black text-blue-700">
-                Rs. {parseFloat(order.total_amount.toString()).toLocaleString()}
-              </p>
             </div>
           </div>
+        </div>
 
-          <div className="pt-8 border-t border-gray-50 flex items-center justify-between text-gray-400 text-[10px] font-bold uppercase tracking-widest">
-            <span>Powered by GrocerEase Enterprise</span>
-            <span>Digital Copy</span>
-          </div>
-
+        {/* Footer Actions */}
+        <div className="bg-gray-50 px-6 py-4 flex justify-end">
           <button
             onClick={onClose}
-            className="w-full py-5 bg-gray-900 hover:bg-black text-white font-black rounded-2xl transition-all transform hover:shadow-xl active:scale-[0.98] text-lg mt-4"
+            className="px-6 py-2 bg-gray-500 hover:bg-gray-600 text-white rounded-lg transition-colors text-sm font-bold shadow-sm"
           >
-            Close Invoice
+            Close Receipt
           </button>
         </div>
       </div>
