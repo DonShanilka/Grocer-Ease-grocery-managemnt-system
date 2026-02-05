@@ -1,91 +1,86 @@
-
-import { 
-    Search, 
-    Filter, 
-    ChevronLeft, 
-    ChevronRight 
-} from 'lucide-react';
+import { Package } from 'lucide-react';
 import { InventoryItem } from '@/src/api/api';
 
 interface RecentStockTableProps {
-    inventory: InventoryItem[];
+  inventory: InventoryItem[];
 }
 
 export default function RecentStockTable({ inventory }: RecentStockTableProps) {
-  // Simple pagination logic could go here, but for now just show all or top 10
-  const displayItems = inventory.slice(0, 10);
+  const dummyInventory = [
+    { id: 101, name: "Premium Basmati Rice", category: "Grains", price: 12.50, quantity: 450, status: "In Stock", supplier: "AgroCorp" },
+    { id: 102, name: "Organic Olive Oil", category: "Oils", price: 24.99, quantity: 12, status: "Low Stock", supplier: "Mediterra" },
+    { id: 103, name: "Whole Wheat Flour", category: "Grains", price: 8.75, quantity: 0, status: "Out of Stock", supplier: "Global Mills" },
+    { id: 104, name: "Arabica Coffee Beans", category: "Beverages", price: 18.20, quantity: 85, status: "In Stock", supplier: "RoastMasters" },
+    { id: 105, name: "Sea Salt Grinder", category: "Spices", price: 5.40, quantity: 210, status: "In Stock", supplier: "SaltWorks" }
+  ];
+
+  const displayItems = inventory.length > 0 ? inventory.slice(0, 10) : dummyInventory;
+
+  const getStatusColor = (status: string) => {
+    const s = status.toLowerCase();
+    if (s.includes('out')) return 'bg-red-100 text-red-700';
+    if (s.includes('low')) return 'bg-yellow-100 text-yellow-700';
+    return 'bg-green-100 text-green-700';
+  };
 
   return (
-      <div className="bg-white p-4 rounded-lg border border-gray-200">
-        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-4 gap-3">
-          <h2 className="text-sm font-bold text-gray-800">Current Stock Overview</h2>
-          <div className="flex flex-wrap items-center gap-2 w-full sm:w-auto">
-            <div className="relative flex-1 sm:flex-initial">
-              <Search className="absolute left-2 top-1/2 -translate-y-1/2 text-gray-400" size={14} />
-              <input
-                type="text"
-                placeholder="Search..."
-                className="pl-7 pr-3 py-1.5 w-full border border-gray-200 rounded-lg text-xs focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
-            </div>
-            <button className="flex items-center gap-1.5 px-3 py-1.5 border border-gray-200 rounded-lg hover:bg-gray-50 text-xs">
-              <Filter size={14} />
-              <span>Filters</span>
-            </button>
-            <div className="flex gap-1">
-              <button className="p-1.5 hover:bg-gray-50 rounded-lg">
-                <ChevronLeft size={16} />
-              </button>
-              <button className="p-1.5 hover:bg-gray-50 rounded-lg">
-                <ChevronRight size={16} />
-              </button>
-            </div>
-          </div>
-        </div>
+    <div className="bg-white rounded-lg border border-gray-50 overflow-hidden px-6 mb-6">
+      <div className="overflow-x-scroll">
+        <table className="w-full border-collapse">
+          <thead className="bg-white sticky top-0 z-10">
+            <tr className="border-b border-gray-200">
+              {["Name", "Category", "Price", "Stock", "Status"].map((h) => (
+                <th
+                  key={h}
+                  className="text-left py-3 px-4 text-xs font-semibold text-black"
+                >
+                  {h}
+                </th>
+              ))}
+            </tr>
+          </thead>
+        </table>
 
-        <div className="overflow-x-auto">
-          <table className="w-full min-w-max">
-            <thead>
-              <tr className="border-b border-gray-200">
-                <th className="text-left py-2 px-3 text-xs font-semibold text-gray-600">#</th>
-                <th className="text-left py-2 px-3 text-xs font-semibold text-gray-600">Product</th>
-                <th className="text-left py-2 px-3 text-xs font-semibold text-gray-600">Category</th>
-                <th className="text-left py-2 px-3 text-xs font-semibold text-gray-600">Price</th>
-                <th className="text-left py-2 px-3 text-xs font-semibold text-gray-600">Stock</th>
-                <th className="text-left py-2 px-3 text-xs font-semibold text-gray-600">Status</th>
-                <th className="text-left py-2 px-3 text-xs font-semibold text-gray-600">Supplier</th>
-              </tr>
-            </thead>
+        <div className="max-h-[280px] overflow-y-auto">
+          <table className="w-full border-collapse">
             <tbody>
-              {displayItems.length > 0 ? displayItems.map((item, index) => (
-                   <tr key={item.id} className="border-b border-gray-100 hover:bg-gray-50">
-                    <td className="py-3 px-3 text-xs text-gray-800">{index + 1}</td>
-                    <td className="py-3 px-3 text-xs text-gray-800 font-medium">{item.name}</td>
-                    <td className="py-3 px-3 text-xs text-gray-800">{item.category}</td>
-                    <td className="py-3 px-3 text-xs text-gray-800">${item.price}</td>
-                    <td className="py-3 px-3 text-xs text-gray-800">
-                        {/* Assuming Item model has quantity, if not defined in API interface previously we might default to 0 */}
-                        {(item as any).quantity || 0}
-                    </td>
-                    <td className="py-3 px-3">
-                      <span className={`px-2 py-1 rounded-full text-xs font-medium whitespace-nowrap 
-                        ${item.status === 'In Stock' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>
-                        {item.status || 'Unknown'}
-                      </span>
-                    </td>
-                    <td className="py-3 px-3 text-xs text-gray-800">
-                        {/* Provide safe access if supplier is an object or string */}
-                        {typeof item.supplier === 'object' ? (item.supplier as any)?.name : item.supplier}
-                    </td>
-                  </tr>
-              )) : (
-                  <tr>
-                      <td colSpan={7} className="text-center py-4 text-sm text-gray-500">No inventory items found</td>
-                  </tr>
-              )}
+              {displayItems.map((item) => (
+                <tr
+                  key={item.id}
+                  className="border-b border-gray-100 hover:bg-gray-50"
+                >
+                  <td className="py-3 px-4 text-xs font-medium text-gray-800">
+                    {item.name}
+                  </td>
+                  <td className="py-3 px-4 text-xs text-gray-800">
+                    {item.category}
+                  </td>
+                  <td className="py-3 px-4 text-xs font-medium text-gray-800">
+                    {item.price}
+                  </td>
+                  <td className="py-3 px-4 text-xs text-gray-800">
+                    {item.quantity}
+                  </td>
+                  <td className="py-3 px-4">
+                    <span
+                      className={`px-3 py-1 rounded-full text-xs font-medium ${getStatusColor(item.status)}`}
+                    >
+                      {item.status}
+                    </span>
+                  </td>
+                </tr>
+              ))}
             </tbody>
           </table>
+
+          {displayItems.length === 0 && (
+            <div className="text-center py-12">
+              <Package size={48} className="mx-auto text-gray-400 mb-4" />
+              <p className="text-gray-600">No items found</p>
+            </div>
+          )}
         </div>
       </div>
+    </div>
   );
 }
