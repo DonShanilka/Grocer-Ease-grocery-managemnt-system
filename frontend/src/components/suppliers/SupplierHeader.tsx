@@ -8,15 +8,6 @@ export default function SupplierHeader({
     filterStatus,
     setFilterStatus,
 }: any) {
-    const totalSuppliers = suppliers.length;
-    const activeSuppliers = suppliers.filter((s: any) => s.status === "Active").length;
-    const totalItems = suppliers.reduce((sum: number, s: any) => sum + (parseInt(s.qty) || 0), 0);
-    const totalValue = suppliers.reduce((sum: number, s: any) => {
-        const price = parseFloat(s.price_per_unit) || 0;
-        const qty = parseInt(s.qty) || 0;
-        return sum + (price * qty);
-    }, 0);
-
     return (
         <>
             {/* Header */}
@@ -35,65 +26,6 @@ export default function SupplierHeader({
                     <Truck size={18} />
                     <span>Add New Supplier</span>
                 </button>
-            </div>
-
-            {/* Stats Cards */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 mb-6">
-                <div className="bg-white p-4 rounded-lg">
-                    <div className="flex items-start justify-between">
-                        <div>
-                            <p className="text-xs text-gray-600 mb-1">Total Suppliers</p>
-                            <h3 className="text-2xl font-bold text-gray-800">
-                                {totalSuppliers}
-                            </h3>
-                        </div>
-                        <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
-                            <Truck size={20} className="text-blue-600" />
-                        </div>
-                    </div>
-                </div>
-
-                <div className="bg-white p-4 rounded-lg">
-                    <div className="flex items-start justify-between">
-                        <div>
-                            <p className="text-xs text-gray-600 mb-1">Active Suppliers</p>
-                            <h3 className="text-2xl font-bold text-gray-800">
-                                {activeSuppliers}
-                            </h3>
-                        </div>
-                        <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
-                            <TrendingUp size={20} className="text-green-600" />
-                        </div>
-                    </div>
-                </div>
-
-                <div className="bg-white p-4 rounded-lg">
-                    <div className="flex items-start justify-between">
-                        <div>
-                            <p className="text-xs text-gray-600 mb-1">Total Items</p>
-                            <h3 className="text-2xl font-bold text-gray-800">
-                                {totalItems.toLocaleString()}
-                            </h3>
-                        </div>
-                        <div className="w-10 h-10 bg-purple-100 rounded-full flex items-center justify-center">
-                            <Package size={20} className="text-purple-600" />
-                        </div>
-                    </div>
-                </div>
-
-                <div className="bg-white p-4 rounded-lg">
-                    <div className="flex items-start justify-between">
-                        <div>
-                            <p className="text-xs text-gray-600 mb-1">Total Value</p>
-                            <h3 className="text-2xl font-bold text-gray-800">
-                                Rs. {totalValue.toLocaleString()}
-                            </h3>
-                        </div>
-                        <div className="w-10 h-10 bg-yellow-100 rounded-full flex items-center justify-center">
-                            <DollarSign size={20} className="text-yellow-600" />
-                        </div>
-                    </div>
-                </div>
             </div>
 
             {/* Search & Filter */}

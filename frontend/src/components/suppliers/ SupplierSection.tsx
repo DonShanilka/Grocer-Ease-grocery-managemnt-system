@@ -3,6 +3,7 @@ import SupplierTable from "./SupplierTable";
 import SupplierForm from "./SupplierForm";
 import SupplierView from "./SupplierView";
 import SupplierHeader from "./SupplierHeader";
+import SupplierStatsCard from "./SupplierStatsCard";
 import { Supplier } from "@/src/types/Supplier";
 
 const API_BASE_URL = "http://127.0.0.1:5000/suppliers";
@@ -66,18 +67,29 @@ export default function SupplierSection() {
         setFilterStatus={setFilterStatus}
       />
 
-      <SupplierTable
-        suppliers={filteredSuppliers}
-        onView={(s) => {
-          setSelected(s);
-          setModal("view");
-        }}
-        onEdit={(s) => {
-          setSelected(s);
-          setModal("edit");
-        }}
-        onDelete={remove}
-      />
+      {/* Two Column Layout: Stats Card (Left) and Table (Right) */}
+      <div className="flex flex-col lg:flex-row gap-6">
+        {/* Left Side: Stats Card */}
+        <div className="lg:w-1/3">
+          <SupplierStatsCard suppliers={suppliers} />
+        </div>
+
+        {/* Right Side: Supplier Table */}
+        <div className="lg:w-2/3">
+          <SupplierTable
+            suppliers={filteredSuppliers}
+            onView={(s) => {
+              setSelected(s);
+              setModal("view");
+            }}
+            onEdit={(s) => {
+              setSelected(s);
+              setModal("edit");
+            }}
+            onDelete={remove}
+          />
+        </div>
+      </div>
 
       {modal === "add" && (
         <SupplierForm onClose={() => setModal(null)} onSubmit={save} />
