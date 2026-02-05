@@ -7,15 +7,19 @@ import { ShoppingBag, ChevronRight, Package, Clock, CheckCircle2, Search } from 
 import OrderForm from "@/src/components/orders/OrderFormModal";
 import { OrdersTable } from "../../components/orders/OrdersTable";
 import { ViewOrderCard } from "../../components/orders/ViewOrderCard";
+import { UpdateStatusModal } from "../../components/orders/UpdateStatusModal";
+import Toast from "@/src/components/common/Toast";
 
 import { RootState, AppDispatch } from "@/src/store/Store";
-import { fetchOrders, createOrder, deleteOrder } from "@/src/reducer/OrderSlice";
+import { fetchOrders, createOrder, deleteOrder, updateOrder } from "@/src/reducer/OrderSlice";
 import type { Order } from "@/src/types/Order";
 
 export default function OrdersPage() {
   const dispatch = useDispatch<AppDispatch>();
   const { orders, loading, error } = useSelector((state: RootState) => state.orders);
   const [viewOrder, setViewOrder] = useState<Order | null>(null);
+  const [updateOrderModal, setUpdateOrderModal] = useState<Order | null>(null);
+  const [toast, setToast] = useState<{ message: string; type: "success" | "error" | "warning" | "info" } | null>(null);
 
   useEffect(() => {
     dispatch(fetchOrders());
@@ -45,6 +49,26 @@ export default function OrdersPage() {
     [dispatch]
   );
 
+  const handleEditOrder = (order: Order) => {
+    setUpdateOrderModal(order);
+  };
+
+  const handleUpdateStatus = useCallback(
+    async (status: string) => {
+      if (!updateOrderModal) return;
+
+      try {
+        await dispatch(updateOrder({ id: updateOrderModal.id, status })).unwrap();
+        setToast({ message: "Order status updated successfully!", type: "success" });
+        setUpdateOrderModal(null);
+      } catch (err: any) {
+        console.error("Update failed:", err);
+        setToast({ message: "Failed to update order. Please try again.", type: "error" });
+      }
+    },
+    [dispatch, updateOrderModal]
+  );
+
   return (
     <div className="h-screen bg-white font-[Outfit, sans-serif] overflow-hidden flex flex-col">
       <div className="flex-1 flex flex-col p-6 lg:p-8 overflow-hidden">
@@ -71,7 +95,9 @@ export default function OrdersPage() {
                   </div>
                   <span className="text-[8px] font-black text-gray-400 uppercase tracking-widest">Gross</span>
                 </div>
-                <div className="relative z-10 text-2xl font-black text-gray-900 leading-none">{orders.length}</div>
+                <div className="relative z-10 text-2xl font-black text-gray-900 leading-none">
+                  {orders.length}
+                </div>
               </div>
 
               <div className="relative group overflow-hidden bg-white p-4 rounded-[1.5rem] border border-gray-100 shadow-lg shadow-amber-900/5 transition-all">
@@ -144,6 +170,23 @@ export default function OrdersPage() {
           overflow: hidden !important;
         }
       `}</style>
+      {/* Update Status Modal */}
+      {updateOrderModal && (
+        <UpdateStatusModal
+          order={updateOrderModal}
+          onSave={handleUpdateStatus}
+          onClose={() => setUpdateOrderModal(null)}
+        />
+      )}
+
+      {/* Toast Notification */}
+      {toast && (
+        <Toast
+          message={toast.message}
+          type={toast.type}
+          onClose={() => setToast(null)}
+        />
+      )}
     </div>
   );
 }

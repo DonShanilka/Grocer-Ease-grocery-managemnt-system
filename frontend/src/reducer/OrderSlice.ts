@@ -89,6 +89,20 @@ export const deleteOrder = createAsyncThunk(
     }
 )
 
+export const updateOrder = createAsyncThunk(
+    'orders/updateOrder',
+    async ({ id, status }: { id: number; status: string }, { rejectWithValue }) => {
+        try {
+            await axios.put(`${API_BASE}/orders/${id}/status`, { status });
+            return { id, status };
+        } catch (err: any) {
+            return rejectWithValue(
+                err.response?.data?.message || 'Failed to update order'
+            );
+        }
+    }
+);
+
 
 const ordersSlice = createSlice({
   name: 'orders',
@@ -136,6 +150,23 @@ const ordersSlice = createSlice({
       .addCase(deleteOrder.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string || 'Delete failed';
+      });
+
+    // update
+    builder
+      .addCase(updateOrder.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(updateOrder.fulfilled, (state, action: PayloadAction<{ id: number; status: string }>) => {
+        state.loading = false;
+        const order = state.orders.find((o) => o.id === action.payload.id);
+        if (order) {
+          order.status = action.payload.status;
+        }
+      })
+      .addCase(updateOrder.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string || 'Update failed';
       });
   },
 });

@@ -1,15 +1,16 @@
 "use client";
 
-import { Eye, Trash2, MoreVertical, ShoppingBag, Truck, Package } from "lucide-react";
+import { Eye, Trash2, MoreVertical, ShoppingBag, Truck, Package, Edit } from "lucide-react";
 import { Order } from "../../types/Order";
 
 interface Props {
   orders: Order[];
   onView: (o: Order) => void;
+  onEdit: (o: Order) => void;
   onDelete: (id: number) => void;
 }
 
-export const OrdersTable = ({ orders, onView, onDelete }: Props) => {
+export const OrdersTable = ({ orders, onView, onEdit, onDelete }: Props) => {
   const getStatusDisplay = (order: Order) => {
     const status = order.status.toLowerCase();
     const isDelivery = order.order_type === "DELIVERY";
@@ -133,6 +134,13 @@ export const OrdersTable = ({ orders, onView, onDelete }: Props) => {
                       title="View Details"
                     >
                       <Eye className="w-4 h-4" />
+                    </button>
+                    <button
+                      onClick={() => onEdit(o)}
+                      className="p-2 text-green-600 hover:bg-green-100 rounded-xl transition-colors group-hover:shadow-sm"
+                      title="Update Status"
+                    >
+                      <Edit className="w-4 h-4" />
                     </button>
                     <button
                       onClick={() => onDelete(o.id)}

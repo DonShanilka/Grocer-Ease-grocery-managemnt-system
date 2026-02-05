@@ -60,6 +60,7 @@ def get_order_by_id(order_id):
 def update_order_status(order_id):
     try:
         status = request.json.get("status")
+        print(f"DEBUG: Attempting to update order {order_id} with status '{status}'")
         OrderService.update_order_status(order_id, status)
 
         return jsonify({"message": "Order status updated successfully"}), 200

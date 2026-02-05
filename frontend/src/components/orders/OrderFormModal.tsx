@@ -15,6 +15,8 @@ import {
   Wallet,
   MoreVertical,
 } from "lucide-react";
+import { UpdateStatusModal } from "./UpdateStatusModal";
+import Toast from "../common/Toast";
 
 interface OrderItem {
   product_id: number;
@@ -39,6 +41,8 @@ export default function OrderForm({ onSubmit }: Props) {
   const [paymentType, setPaymentType] = useState("CASH");
   const [showTable, setShowTable] = useState(false);
   const [orders, setOrders] = useState<Order[]>([]);
+  const [editingOrder, setEditingOrder] = useState<Order | null>(null);
+  const [toast, setToast] = useState<{ message: string; type: "success" | "error" | "warning" | "info" } | null>(null);
 
   const [items, setItems] = useState<OrderItem[]>([
     { product_id: 0, item_name: "", quantity: 1, price: 0 },
@@ -90,6 +94,29 @@ export default function OrderForm({ onSubmit }: Props) {
 
   const removeItem = (index: number) => {
     setItems(items.length > 1 ? items.filter((_, i) => i !== index) : items);
+  };
+
+  const handleUpdateStatus = async (status: string) => {
+    if (!editingOrder) return;
+
+    try {
+      const response = await fetch(`http://127.0.0.1:5000/orders/${editingOrder.id}/status`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ status }),
+      });
+
+      if (!response.ok) throw new Error("Update failed");
+
+      setOrders((prev) =>
+        prev.map((o) => (o.id === editingOrder.id ? { ...o, status } : o))
+      );
+      setToast({ message: "Archive record updated successfully", type: "success" });
+      setEditingOrder(null);
+    } catch (err) {
+      console.error(err);
+      setToast({ message: "Failed to update record", type: "error" });
+    }
   };
 
   const handleSubmit = () => {
@@ -403,7 +430,8 @@ export default function OrderForm({ onSubmit }: Props) {
             <div className="flex-1 overflow-y-auto p-10 custom-scrollbar">
               <OrdersTable
                 orders={orders}
-                onView={(o) => console.log("view", o)}
+                onView={(o) => console.log("view", o)} // View logic unimplemented for now as per user request scope
+                onEdit={setEditingOrder}
                 onDelete={async (id) => {
                   if (confirm("Permanently wipe this record?")) {
                     await fetch(`http://127.0.0.1:5000/orders/${id}`, { method: "DELETE" });
@@ -414,6 +442,23 @@ export default function OrderForm({ onSubmit }: Props) {
             </div>
           </div>
         </div>
+      )}
+
+      {/* Modals & Toasts */}
+      {editingOrder && (
+        <UpdateStatusModal
+          order={editingOrder}
+          onSave={handleUpdateStatus}
+          onClose={() => setEditingOrder(null)}
+        />
+      )}
+
+      {toast && (
+        <Toast
+          message={toast.message}
+          type={toast.type}
+          onClose={() => setToast(null)}
+        />
       )}
     </div>
   );
