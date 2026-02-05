@@ -10,6 +10,10 @@ import {
   User,
   CreditCard,
   Package,
+  History,
+  Store,
+  Wallet,
+  MoreVertical,
 } from "lucide-react";
 
 interface OrderItem {
@@ -85,7 +89,7 @@ export default function OrderForm({ onSubmit }: Props) {
   };
 
   const removeItem = (index: number) => {
-    setItems(items.filter((_, i) => i !== index));
+    setItems(items.length > 1 ? items.filter((_, i) => i !== index) : items);
   };
 
   const handleSubmit = () => {
@@ -116,304 +120,289 @@ export default function OrderForm({ onSubmit }: Props) {
   const itemCount = items.reduce((sum, i) => sum + i.quantity, 0);
 
   return (
-    <div className="min-h-screen p-6">
-      <div className="">
-        {/* <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-gray-800 mb-2">Create New Order</h1>
-          <p className="text-gray-600">Fill in the details to process your order</p>
-        </div> */}
-
-        <div className="grid lg:grid-cols-3 gap-6">
-          {/* LEFT SIDE - Order Form */}
-          <div className="lg:col-span-2 space-y-6">
-            {/* Customer Information Card */}
-            <div className="bg-white rounded-2xl p-6">
-              <div className="flex items-center gap-2 mb-4">
-                <User className="w-5 h-5 text-indigo-600" />
-                <h2 className="text-xl font-semibold text-gray-800">
-                  Customer Information
-                </h2>
+    <div className="h-full flex flex-col bg-white overflow-hidden">
+      <div className="flex-1 flex flex-col lg:flex-row overflow-hidden min-h-0">
+        {/* LEFT SIDE: Entry Fields - Occupies 65% on desktop */}
+        <div className="flex-[0.65] flex flex-col border-r border-gray-100 overflow-hidden">
+          {/* Scrollable Form Content */}
+          <div className="flex-1 overflow-y-auto p-10 space-y-12 custom-scrollbar">
+            {/* Customer Details section */}
+            <div className="space-y-8">
+              <div className="flex items-center gap-3">
+                <div className="p-2.5 bg-blue-50 rounded-xl">
+                  <User className="w-5 h-5 text-blue-700" />
+                </div>
+                <h2 className="text-2xl font-black text-gray-900 tracking-tight">Customer Information</h2>
               </div>
 
-              <div className="space-y-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Customer Name <span className="text-red-500">*</span>
-                  </label>
+              <div className="grid gap-6">
+                <div className="space-y-2">
+                  <label className="text-xs font-black text-gray-400 uppercase tracking-widest ml-1">Full Name</label>
                   <input
                     type="text"
                     value={customerName}
                     onChange={(e) => setCustomerName(e.target.value)}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-indigo-600 focus:border-transparent transition-all text-gray-800"
-                    placeholder="Enter customer name"
+                    placeholder="Search or enter customer name..."
+                    className="w-full px-6 py-4 bg-gray-50 border-2 border-transparent focus:border-blue-700 focus:bg-white rounded-2xl transition-all outline-none font-bold text-gray-900"
                   />
                 </div>
 
-                <div className="grid md:grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      <Package className="w-4 h-4 inline mr-1" />
-                      Order Type
-                    </label>
-                    <select
-                      value={orderType}
-                      onChange={(e) => setOrderType(e.target.value)}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all text-gray-800 bg-white"
-                    >
-                      <option value="DINE_IN">🍽️ Dine In</option>
-                      <option value="TAKE_AWAY">🥡 Take Away</option>
-                      <option value="DELIVERY">🚚 Delivery</option>
-                    </select>
+                <div className="grid md:grid-cols-2 gap-6">
+                  <div className="space-y-2">
+                    <label className="text-xs font-black text-gray-400 uppercase tracking-widest ml-1">Distribution Method</label>
+                    <div className="relative">
+                      <select
+                        value={orderType}
+                        onChange={(e) => setOrderType(e.target.value)}
+                        className="w-full px-6 py-4 bg-gray-50 border-2 border-transparent focus:border-blue-700 focus:bg-white rounded-2xl transition-all outline-none font-bold text-gray-900 appearance-none cursor-pointer"
+                      >
+                        <option value="DINE_IN">Dining In</option>
+                        <option value="TAKE_AWAY">Take Away</option>
+                        <option value="DELIVERY">Direct Delivery</option>
+                      </select>
+                      <MoreVertical className="absolute right-6 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 rotate-90 pointer-events-none" />
+                    </div>
                   </div>
 
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      <CreditCard className="w-4 h-4 inline mr-1" />
-                      Payment Type
-                    </label>
-                    <select
-                      value={paymentType}
-                      onChange={(e) => setPaymentType(e.target.value)}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all text-gray-800 bg-white"
-                    >
-                      <option value="CASH">💵 Cash</option>
-                      <option value="CARD">💳 Card</option>
-                      <option value="ONLINE">🌐 Online</option>
-                    </select>
+                  <div className="space-y-2">
+                    <label className="text-xs font-black text-gray-400 uppercase tracking-widest ml-1">Settlement Method</label>
+                    <div className="relative">
+                      <select
+                        value={paymentType}
+                        onChange={(e) => setPaymentType(e.target.value)}
+                        className="w-full px-6 py-4 bg-gray-50 border-2 border-transparent focus:border-blue-700 focus:bg-white rounded-2xl transition-all outline-none font-bold text-gray-900 appearance-none cursor-pointer"
+                      >
+                        <option value="CASH">Cash Settlement</option>
+                        <option value="CARD">Digital Card</option>
+                        <option value="ONLINE">Transfer / Wallet</option>
+                      </select>
+                      <MoreVertical className="absolute right-6 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 rotate-90 pointer-events-none" />
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
 
-            {/* Order Items Card */}
-            <div className="bg-white rounded-2xl p-6">
-              <div className="flex items-center justify-between mb-4">
-                <div className="flex items-center gap-2">
-                  <ShoppingCart className="w-5 h-5 text-indigo-600" />
-                  <h2 className="text-xl font-semibold text-gray-800">
-                    Order Items
-                  </h2>
+            {/* Order Items section */}
+            <div className="space-y-8">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <div className="p-2.5 bg-blue-50 rounded-xl">
+                    <ShoppingCart className="w-5 h-5 text-blue-700" />
+                  </div>
+                  <h2 className="text-2xl font-black text-gray-900 tracking-tight">Basket Items</h2>
                 </div>
                 <button
                   onClick={addItem}
-                  className="flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors"
+                  className="flex items-center gap-2 px-6 py-3 bg-gray-900 text-white rounded-xl hover:bg-black transition-all font-bold text-sm"
                 >
                   <Plus className="w-4 h-4" />
-                  Add Item
+                  Add Row
                 </button>
               </div>
 
-              <div className="space-y-3 max-h-[400px] overflow-y-auto pr-2">
+              <div className="space-y-4">
                 {items.map((item, index) => (
-                  <div key={index} className="p-4 rounded-xl border">
-                    <div className="grid grid-cols-12 gap-3 items-center">
-                      <div className="col-span-2">
-                        <label className="block text-xs text-gray-600 mb-1">
-                          ID
-                        </label>
+                  <div key={index} className="group relative grid grid-cols-12 gap-4 items-end bg-white border border-gray-100 p-6 rounded-3xl transition-all hover:border-blue-200 hover:shadow-lg hover:shadow-blue-900/5">
+                    <div className="col-span-2 space-y-2">
+                      <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">SKU ID</label>
+                      <input
+                        type="number"
+                        value={item.product_id || ""}
+                        onChange={(e) => updateItem(index, "product_id", Number(e.target.value))}
+                        className="w-full px-4 py-3 bg-gray-50 rounded-xl outline-none font-bold text-gray-900 focus:bg-blue-50/50 transition-colors"
+                        placeholder="000"
+                      />
+                    </div>
+                    <div className="col-span-4 space-y-2">
+                      <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Product Desc</label>
+                      <input
+                        type="text"
+                        value={item.item_name}
+                        onChange={(e) => updateItem(index, "item_name", e.target.value)}
+                        className="w-full px-4 py-3 bg-gray-50 rounded-xl outline-none font-bold text-gray-900 focus:bg-blue-50/50 transition-colors"
+                        placeholder="Inventory name"
+                      />
+                    </div>
+                    <div className="col-span-2 space-y-2">
+                      <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Qty</label>
+                      <input
+                        type="number"
+                        min="1"
+                        value={item.quantity}
+                        onChange={(e) => updateItem(index, "quantity", Number(e.target.value))}
+                        className="w-full px-4 py-3 bg-gray-50 rounded-xl outline-none font-bold text-gray-900 focus:bg-blue-50/50 transition-colors"
+                      />
+                    </div>
+                    <div className="col-span-3 space-y-2">
+                      <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Unit Price</label>
+                      <div className="relative">
+                        <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 font-bold text-sm">Rs.</span>
                         <input
                           type="number"
-                          placeholder="ID"
-                          value={item.product_id || 0}
-                          onChange={(e) =>
-                            updateItem(
-                              index,
-                              "product_id",
-                              Number(e.target.value)
-                            )
-                          }
-                          className="w-full px-3 py-2 border border-gray-300 rounded-lg text-gray-800 text-sm focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
-                        />
-                      </div>
-
-                      <div className="col-span-4">
-                        <label className="block text-xs text-gray-600 mb-1">
-                          Item Name
-                        </label>
-                        <input
-                          placeholder="Item name"
-                          value={item.item_name}
-                          onChange={(e) =>
-                            updateItem(index, "item_name", e.target.value)
-                          }
-                          className="w-full px-3 py-2 border border-gray-300 rounded-lg text-gray-800 text-sm focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
-                        />
-                      </div>
-
-                      <div className="col-span-2">
-                        <label className="block text-xs text-gray-600 mb-1">
-                          Qty
-                        </label>
-                        <input
-                          type="number"
-                          min="1"
-                          value={item.quantity}
-                          onChange={(e) =>
-                            updateItem(
-                              index,
-                              "quantity",
-                              Number(e.target.value)
-                            )
-                          }
-                          className="w-full px-3 py-2 border border-gray-300 rounded-lg text-gray-800 text-sm focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
-                        />
-                      </div>
-
-                      <div className="col-span-3">
-                        <label className="block text-xs text-gray-600 mb-1">
-                          Price
-                        </label>
-                        <input
-                          type="number"
-                          placeholder="0.00"
                           value={item.price || ""}
-                          onChange={(e) =>
-                            updateItem(index, "price", Number(e.target.value))
-                          }
-                          className="w-full px-3 py-2 border border-gray-300 rounded-lg text-gray-800 text-sm focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                          onChange={(e) => updateItem(index, "price", Number(e.target.value))}
+                          className="w-full pl-12 pr-4 py-3 bg-gray-50 rounded-xl outline-none font-bold text-gray-900 focus:bg-blue-50/50 transition-colors"
+                          placeholder="0.00"
                         />
                       </div>
-
-                      <div className="col-span-1 flex justify-center pt-5">
-                        <button
-                          onClick={() => removeItem(index)}
-                          className="p-2 text-red-600 hover:bg-red-100 rounded-lg transition-colors"
-                          title="Remove item"
-                        >
-                          <Trash2 className="w-4 h-4" />
-                        </button>
-                      </div>
+                    </div>
+                    <div className="col-span-1 flex justify-center pb-1">
+                      <button
+                        onClick={() => removeItem(index)}
+                        className="p-3 text-gray-300 hover:text-red-500 hover:bg-red-50 rounded-xl transition-all"
+                      >
+                        <Trash2 className="w-5 h-5" />
+                      </button>
                     </div>
                   </div>
                 ))}
               </div>
             </div>
-            {/* Left: SHOW BUTTON */}
-            <div className="">
-              <button
-                onClick={() => setShowTable(true)}
-                className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
-              >
-                Show All Orders
-              </button>
-            </div>
           </div>
 
-          {/* RIGHT SIDE - Order Summary */}
-          <div className="lg:col-span-1">
-            <div className="bg-white rounded-2xl p-6 sticky top-6">
-              <h2 className="text-xl font-semibold text-gray-800 mb-4 flex items-center gap-2">
-                <ShoppingCart className="w-5 h-5 text-indigo-600" />
-                Order Summary
-              </h2>
+          {/* Fixed Footer within Left Column */}
+          <div className="p-6 border-t border-gray-100 bg-gray-50/30 flex items-center justify-between">
+            <button
+              onClick={() => setShowTable(true)}
+              className="flex items-center gap-2 text-gray-500 hover:text-blue-700 font-bold text-sm transition-colors group"
+            >
+              <History className="w-4 h-4 group-hover:rotate-12 transition-transform" />
+              Access Archive Records
+            </button>
+            <div className="text-xs font-black text-gray-400 uppercase tracking-[0.2em]">
+              Draft System Ver 4.0.2
+            </div>
+          </div>
+        </div>
 
-              <div className="space-y-3 mb-6">
-                <div className=" rounded-lg p-3 border border-gray-100">
-                  <div className="text-sm text-gray-600">Customer Name</div>
-                  <div className="font-semibold text-gray-800 truncate">
-                    {customerName || "Not specified"}
-                  </div>
+        {/* RIGHT SIDE: Summary Panel - Occupies 35% on desktop */}
+        <div className="flex-[0.35] flex flex-col bg-gray-50/50">
+          <div className="flex-1 overflow-y-auto p-10 space-y-10 custom-scrollbar">
+            <div className="flex items-center gap-3">
+              <div className="p-2.5 bg-blue-700 rounded-xl shadow-lg shadow-blue-200">
+                <Store className="w-5 h-5 text-white" />
+              </div>
+              <h2 className="text-2xl font-black text-gray-900 tracking-tight">Receipt</h2>
+            </div>
+
+            <div className="bg-white rounded-[2.5rem] border border-gray-100 shadow-xl shadow-blue-900/[0.02] p-8 space-y-8">
+              {/* Header Details */}
+              <div className="grid grid-cols-2 gap-6">
+                <div className="space-y-1">
+                  <div className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Entry Agent</div>
+                  <div className="text-sm font-bold text-gray-900">Nishith S.</div>
                 </div>
-
-                <div className="grid grid-cols-2 gap-3">
-                  <div className="rounded-lg p-3 border border-gray-100">
-                    <div className="text-xs text-gray-600">Order Type</div>
-                    <div className="font-semibold text-sm text-gray-800">
-                      {orderType.replace("_", " ")}
-                    </div>
-                  </div>
-                  <div className="rounded-lg p-3 border border-gray-100">
-                    <div className="text-xs text-gray-600">Payment</div>
-                    <div className="font-semibold text-sm text-gray-800">
-                      {paymentType}
-                    </div>
-                  </div>
+                <div className="space-y-1 text-right">
+                  <div className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Protocol</div>
+                  <div className="text-sm font-bold text-blue-700 uppercase">{orderType.replace("_", " ")}</div>
                 </div>
               </div>
 
-              <div className="border-t border-gray-200 pt-4 mb-4">
-                <h3 className="font-semibold text-gray-800 mb-3">
-                  Items ({items.length})
-                </h3>
-                <div className="space-y-2 max-h-[300px] overflow-y-auto">
-                  {items
-                    .filter((i) => i.item_name)
-                    .map((item, index) => (
-                      <div
-                        key={index}
-                        className="flex justify-between items-start text-sm bg-gray-50 p-3 rounded-lg"
-                      >
-                        <div className="flex-1">
-                          <div className="font-medium text-gray-800">
-                            {item.item_name}
-                          </div>
-                          <div className="text-xs text-gray-500">
-                            {item.quantity} × Rs. {item.price}
-                          </div>
-                        </div>
-                        <div className="font-semibold text-gray-800">
-                          Rs. {item.quantity * item.price}
-                        </div>
+              <div className="h-px bg-gray-100 w-full" />
+
+              {/* Items List in Summary */}
+              <div className="space-y-4">
+                <div className="flex justify-between items-center text-[10px] font-black text-gray-400 uppercase tracking-widest px-1">
+                  <span>Line Item</span>
+                  <span>Extended</span>
+                </div>
+                <div className="space-y-3">
+                  {items.filter(i => i.item_name).map((item, idx) => (
+                    <div key={idx} className="flex justify-between items-center">
+                      <div className="flex flex-col">
+                        <span className="text-sm font-bold text-gray-900 leading-none">{item.item_name}</span>
+                        <span className="text-[10px] text-gray-400">Qty: {item.quantity}</span>
                       </div>
-                    ))}
-                  {items.filter((i) => i.item_name).length === 0 && (
-                    <div className="text-center text-gray-400 py-8 text-sm">
-                      No items added yet
+                      <span className="text-sm font-black text-gray-900">Rs. {item.quantity * item.price}</span>
                     </div>
+                  ))}
+                  {items.filter(i => i.item_name).length === 0 && (
+                    <div className="text-center py-6 text-gray-300 font-bold text-sm italic">Pending Inventory Entry...</div>
                   )}
                 </div>
               </div>
 
-              <div className="border-t border-gray-200 pt-4 space-y-2 mb-6">
-                <div className="flex justify-between text-sm text-gray-600">
-                  <span>Subtotal</span>
-                  <span>Rs. {total}</span>
+              <div className="h-px bg-gray-100 w-full" />
+
+              {/* Totals */}
+              <div className="space-y-4">
+                <div className="flex justify-between items-center">
+                  <span className="text-sm font-bold text-gray-500">Gross Total</span>
+                  <span className="text-sm font-bold text-gray-500">Rs. {total}</span>
                 </div>
-                <div className="flex justify-between text-sm text-gray-600">
-                  <span>Total Items</span>
-                  <span>{itemCount}</span>
+                <div className="flex justify-between items-center">
+                  <span className="text-sm font-bold text-cyan-600">Tax Relief (0%)</span>
+                  <span className="text-sm font-bold text-cyan-600">Rs. 0.00</span>
                 </div>
-                <div className="flex justify-between text-lg font-bold text-gray-800 pt-2 border-t">
-                  <span>Total</span>
-                  <span className="text-indigo-600">Rs. {total}</span>
+                <div className="flex justify-between items-center pt-4">
+                  <div className="flex flex-col">
+                    <span className="text-sm font-black text-gray-900 leading-none">Net Payable</span>
+                    <span className="text-[10px] text-gray-400 uppercase tracking-widest mt-1">Settlement required</span>
+                  </div>
+                  <div className="text-3xl font-black text-blue-700 tracking-tighter leading-none">Rs. {total}</div>
                 </div>
               </div>
-
-              <button
-                onClick={handleSubmit}
-                className="w-full bg-blue-700 text-white px-4 py-2 rounded-xl font-semibold hover:from-indigo-700 transition-all transform hover:scale-105 shadow-lg"
-              >
-                Place Order
-              </button>
             </div>
+
+            <div className="flex items-center gap-3 bg-blue-50/50 p-6 rounded-3xl border border-blue-50/50">
+              <div className="w-10 h-10 rounded-2xl bg-white flex items-center justify-center text-blue-700 shadow-sm">
+                <Wallet className="w-5 h-5" />
+              </div>
+              <div>
+                <div className="text-[10px] font-black text-blue-700 uppercase tracking-widest">Active Wallet</div>
+                <div className="text-sm font-bold text-gray-900">Corporate Terminal #09</div>
+              </div>
+            </div>
+          </div>
+
+          {/* Action Button */}
+          <div className="p-8 mt-auto">
+            <button
+              onClick={handleSubmit}
+              className="group relative w-full h-14 overflow-hidden bg-blue-700 text-white rounded-[2rem]  transition-all hover:bg-blue-800 active:scale-[0.98] shadow-2xl shadow-blue-700/20"
+            >
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-in-out" />
+              <div className="relative flex items-center justify-center gap-4">
+                <span className="text-lg font-black tracking-widest uppercase">Validate & Seal Transaction</span>
+                <Package className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+              </div>
+            </button>
           </div>
         </div>
       </div>
 
-      {/* SHOW ALL ORDERS MODAL */}
+      {/* MODAL / ARCHIVE VIEW */}
       {showTable && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-          <div className="bg-white w-11/12 lg:w-4/5 rounded-2xl shadow-xl p-6">
-            <div className="flex justify-between items-center mb-4">
-              <h2 className="text-xl font-semibold">All Orders</h2>
+        <div className="fixed inset-0 bg-gray-900/60 backdrop-blur-md flex items-center justify-center z-[100] p-10 animate-in fade-in zoom-in duration-300">
+          <div className="bg-white w-full max-w-6xl rounded-[4rem] shadow-[0_32px_128px_-12px_rgba(0,0,0,0.4)] overflow-hidden flex flex-col h-[85vh]">
+            <div className="p-10 border-b border-gray-100 flex justify-between items-center shrink-0">
+              <div className="flex items-center gap-4">
+                <div className="p-3 bg-gray-900 rounded-2xl">
+                  <History className="w-6 h-6 text-white" />
+                </div>
+                <div>
+                  <h2 className="text-3xl font-black text-gray-900 tracking-tight leading-none">Archive Ledger</h2>
+                  <p className="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] mt-2">Verified Transaction History</p>
+                </div>
+              </div>
               <button
                 onClick={() => setShowTable(false)}
-                className="text-gray-500 hover:text-black text-xl"
+                className="w-12 h-12 rounded-full border-2 border-gray-100 flex items-center justify-center text-gray-400 hover:text-red-500 hover:border-red-100 transition-all active:scale-95"
               >
                 ✕
               </button>
             </div>
 
-            {/* TABLE */}
-            <div className="max-h-[70vh] overflow-y-auto">
+            <div className="flex-1 overflow-y-auto p-10 custom-scrollbar">
               <OrdersTable
                 orders={orders}
                 onView={(o) => console.log("view", o)}
                 onDelete={async (id) => {
-                  await fetch(`http://127.0.0.1:5000/orders/${id}`, {
-                    method: "DELETE",
-                  });
-                  setOrders((prev) => prev.filter((o) => o.id !== id));
+                  if (confirm("Permanently wipe this record?")) {
+                    await fetch(`http://127.0.0.1:5000/orders/${id}`, { method: "DELETE" });
+                    setOrders((prev) => prev.filter((o) => o.id !== id));
+                  }
                 }}
               />
             </div>
