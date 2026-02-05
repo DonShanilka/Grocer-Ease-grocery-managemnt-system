@@ -29,7 +29,7 @@ export default function RegisterPage() {
     return (
         <div className="min-h-screen flex bg-white font-[Outfit, sans-serif]">
             {/* Left Side: Branding / Illustration */}
-            <div className="hidden lg:flex lg:w-1/2 bg-[#2563eb] relative items-center justify-center overflow-hidden">
+            <div className="hidden lg:flex lg:w-1/2 bg-blue-700 relative items-center justify-center overflow-hidden">
                 {/* Decorative Elements */}
                 <div className="absolute top-0 left-0 w-full h-full opacity-10">
                     <div className="absolute top-[-10%] right-[-10%] w-[60%] h-[60%] bg-white rounded-full blur-[100px]"></div>
