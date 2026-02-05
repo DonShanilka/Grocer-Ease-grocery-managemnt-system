@@ -12,9 +12,15 @@ export default function SupplierTable({ suppliers, onView, onEdit, onDelete }: P
     switch (status) {
       case "Active":
         return "bg-green-100 text-green-700";
+      case "active":
+        return "bg-green-100 text-green-700";
       case "Inactive":
-        return "bg-gray-100 text-gray-700";
+        return "bg-red-100 text-red-700";
+      case "inactive":
+        return "bg-red-100 text-red-700";
       case "Pending":
+        return "bg-yellow-100 text-yellow-700";
+      case "pending":
         return "bg-yellow-100 text-yellow-700";
       default:
         return "bg-gray-100 text-gray-700";
@@ -24,7 +30,7 @@ export default function SupplierTable({ suppliers, onView, onEdit, onDelete }: P
   return (
     <div className="bg-white rounded-lg border border-gray-50 overflow-hidden">
       <div className="overflow-x-auto">
-        {/* TABLE */}
+        {/* HEADER TABLE */}
         <table className="w-full border-collapse">
           <thead className="bg-white sticky top-0 z-10">
             <tr className="border-b border-gray-200">
@@ -38,7 +44,7 @@ export default function SupplierTable({ suppliers, onView, onEdit, onDelete }: P
         </table>
 
         {/* SCROLL BODY */}
-        <div className="max-h-[400px] overflow-y-auto">
+        <div className="max-h-[240px] overflow-y-auto">
           <table className="w-full border-collapse">
             <tbody>
               {suppliers.map(s => (
@@ -130,12 +136,12 @@ export default function SupplierTable({ suppliers, onView, onEdit, onDelete }: P
               ))}
             </tbody>
           </table>
+
+          {suppliers.length === 0 && (
+            <p className="text-center py-6 text-gray-500">No suppliers found</p>
+          )}
         </div>
       </div>
-
-      {suppliers.length === 0 && (
-        <p className="text-center py-6 text-gray-500">No suppliers found</p>
-      )}
     </div>
   );
 }
