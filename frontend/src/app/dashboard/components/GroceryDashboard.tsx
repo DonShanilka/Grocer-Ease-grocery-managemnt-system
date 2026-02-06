@@ -61,7 +61,9 @@ export default function GroceryDashboard() {
       </div>
 
       {/* Table */}
-      <RecentStockTable inventory={inventory} />
+      <div className='p-6'>
+        <RecentStockTable inventory={inventory} />
+      </div>
     </div>
   );
 }
