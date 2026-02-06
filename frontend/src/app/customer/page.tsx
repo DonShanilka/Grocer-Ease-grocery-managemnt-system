@@ -144,6 +144,7 @@ export default function page() {
             type: "success",
           });
           setShowModal(false);
+          dispatch(fetchCustomers());
         })
         .catch(() => {
           setToast({

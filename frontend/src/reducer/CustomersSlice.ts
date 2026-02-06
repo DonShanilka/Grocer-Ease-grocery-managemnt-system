@@ -65,8 +65,8 @@ export const createCustomer = createAsyncThunk(
 export const updateCustomer = createAsyncThunk(
   'customers/updateCustomer',
   async ({ id, data }: { id: number; data: any }) => {
-    const res = await axios.put(`${API_BASE}/customers/${id}`, data);
-    return { id, ...res.data };
+    await axios.put(`${API_BASE}/customers/${id}`, data);
+    return { id, ...data };
   }
 );
 
