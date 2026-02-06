@@ -3,6 +3,7 @@ from enum import Enum
 class OrderType(Enum):
     TAKEAWAY = "TAKEAWAY"
     DELIVERY = "DELIVERY"
+    DINE_IN = "DINE_IN"
 
 class PaymentType(Enum):
     CASH = "CASH"
