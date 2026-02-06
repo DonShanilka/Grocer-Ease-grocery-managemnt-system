@@ -84,7 +84,7 @@ export default function DeliveryPage() {
 
           {/* Shipment chart & Table */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
-            <ShipmentChart />
+            <RevenueCard/>
 
             {loading ? (
               <div className="flex items-center justify-center h-64">
@@ -104,11 +104,8 @@ export default function DeliveryPage() {
           </div>
 
           {/* Live Tracking & Revenue */}
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
-            <div className="lg:col-span-2">
-              <LiveTracking />
-            </div>
-            <RevenueCard />
+          <div className="gap-4">
+            <ShipmentChart />
           </div>
         </div>
       </main>

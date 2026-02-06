@@ -59,7 +59,7 @@ const DeliveryShipmentChart: React.FC = () => {
 
   const yAxisSteps = 5;
   const yAxisValues = Array.from({ length: yAxisSteps + 1 }, (_, i) =>
-    Math.round((maxCount / yAxisSteps) * i)
+    Math.round((maxCount / yAxisSteps) * i),
   ).reverse();
 
   return (
@@ -112,24 +112,11 @@ const DeliveryShipmentChart: React.FC = () => {
                     className="flex-1 flex flex-col items-center"
                   >
                     {/* Bar */}
-                    <div className="relative w-full h-56 flex items-end">
+                    <div className="relative w-10 h-56 flex items-end">
                       <div
-                        className="
-  w-full
-  rounded-t-md
-  transition-all
-  bg-gradient-to-t
-  from-blue-700
-  via-blue-600
-  to-blue-500
-  hover:from-blue-900
-  hover:via-blue-700
-  hover:to-blue-600
-  shadow-md
-"
+                        className="w-full rounded-t-md transition-all bg-gradient-to-t from-blue-700 via-blue-600 to-blue-500 hover:from-blue-900 hover:via-blue-700 hover:to-blue-600 shadow-md"
                         style={{ height: `${height}%` }}
-                      >
-                      </div>
+                      ></div>
                     </div>
 
                     {/* X Axis Label */}
