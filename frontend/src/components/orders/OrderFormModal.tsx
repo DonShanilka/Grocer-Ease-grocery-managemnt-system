@@ -190,7 +190,7 @@ export default function OrderForm({ onSubmit }: Props) {
                         className="w-full px-6 py-4 bg-gray-50 border-2 border-transparent focus:border-blue-700 focus:bg-white rounded-2xl transition-all outline-none font-bold text-gray-900 appearance-none cursor-pointer"
                       >
                         <option value="DINE_IN">Dining In</option>
-                        <option value="TAKE_AWAY">Take Away</option>
+                        <option value="TAKEAWAY">Take Away</option>
                         <option value="DELIVERY">Direct Delivery</option>
                       </select>
                       <MoreVertical className="absolute right-6 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 rotate-90 pointer-events-none" />
@@ -430,7 +430,7 @@ export default function OrderForm({ onSubmit }: Props) {
             <div className="flex-1 overflow-y-auto p-10 custom-scrollbar">
               <OrdersTable
                 orders={orders}
-                onView={(o) => console.log("view", o)} // View logic unimplemented for now as per user request scope
+                onView={(o) => console.log("view", o)} 
                 onEdit={setEditingOrder}
                 onDelete={async (id) => {
                   if (confirm("Permanently wipe this record?")) {

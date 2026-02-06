@@ -27,8 +27,8 @@ export default function OrdersHeader({
     0
   );
 
-  const pendingCount = orders.filter((o) => o.status.toLowerCase() === "pending").length;
-  const completedCount = orders.filter((o) => o.status.toLowerCase() === "completed").length;
+  const pendingCount = orders.filter((o) => o.status.toLocaleLowerCase() === "pending").length;
+  const completedCount = orders.filter((o) => o.status.toLocaleLowerCase() === "completed").length;
 
   return (
     <>
