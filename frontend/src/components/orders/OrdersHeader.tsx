@@ -53,7 +53,7 @@ export default function OrdersHeader({
       {/* Stats Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
         {/* Total Orders */}
-        <div className="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm">
+        <div className="bg-white p-5 rounded-xl">
           <div className="flex items-start justify-between">
             <div>
               <p className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">Total Orders</p>
@@ -68,7 +68,7 @@ export default function OrdersHeader({
         </div>
 
         {/* Pending */}
-        <div className="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm">
+        <div className="bg-white p-5 rounded-xl">
           <div className="flex items-start justify-between">
             <div>
               <p className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">Pending</p>
@@ -83,7 +83,7 @@ export default function OrdersHeader({
         </div>
 
         {/* Completed */}
-        <div className="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm">
+        <div className="bg-white p-5 rounded-xl">
           <div className="flex items-start justify-between">
             <div>
               <p className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">Completed</p>
@@ -98,7 +98,7 @@ export default function OrdersHeader({
         </div>
 
         {/* Revenue */}
-        <div className="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm">
+        <div className="bg-white p-5 rounded-xl">
           <div className="flex items-start justify-between">
             <div>
               <p className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">Total Revenue</p>
@@ -114,7 +114,7 @@ export default function OrdersHeader({
       </div>
 
       {/* Search & Filter */}
-      <div className="bg-white p-4 rounded-xl border border-gray-100 shadow-sm mb-6">
+      <div className="bg-white p-4 rounded-xl border border-gray-50 shadow mb-6">
         <div className="flex flex-col sm:flex-row gap-4">
           <div className="relative flex-1">
             <Search

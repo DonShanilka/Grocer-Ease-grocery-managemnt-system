@@ -51,9 +51,8 @@ export const OrdersTable = ({ orders, onView, onEdit, onDelete }: Props) => {
       ? "bg-purple-50 text-purple-700 border-purple-200"
       : "bg-green-50 text-green-700 border-green-200";
   };
-
   return (
-    <div className="overflow-x-auto rounded-2xl border border-gray-100 bg-white">
+    <div className="overflow-x-auto rounded-xl">
       <table className="w-full text-left border-collapse">
         <thead>
           <tr className="border-b border-gray-50 bg-gray-50/50">
@@ -130,21 +129,21 @@ export const OrdersTable = ({ orders, onView, onEdit, onDelete }: Props) => {
                   <div className="flex items-center justify-end gap-2">
                     <button
                       onClick={() => onView(o)}
-                      className="p-2 text-blue-600 hover:bg-blue-100 rounded-xl transition-colors group-hover:shadow-sm"
+                      className="p-2 text-blue-600 hover:bg-blue-50 rounded-xl transition-colors"
                       title="View Details"
                     >
                       <Eye className="w-4 h-4" />
                     </button>
                     <button
                       onClick={() => onEdit(o)}
-                      className="p-2 text-green-600 hover:bg-green-100 rounded-xl transition-colors group-hover:shadow-sm"
+                      className="p-2 text-green-600 hover:bg-green-50 rounded-xl transition-colors"
                       title="Update Status"
                     >
                       <Edit className="w-4 h-4" />
                     </button>
                     <button
                       onClick={() => onDelete(o.id)}
-                      className="p-2 text-rose-600 hover:bg-rose-100 rounded-xl transition-colors group-hover:shadow-sm"
+                      className="p-2 text-rose-600 hover:bg-rose-50 rounded-xl transition-colors"
                       title="Delete Order"
                     >
                       <Trash2 className="w-4 h-4" />
