@@ -13,7 +13,7 @@ import {
     AreaChart,
 } from "recharts";
 import { TrendingUp, DollarSign } from "lucide-react";
-import { Order } from "../../../../api/api"; // Assuming api.ts has Order type or use local type
+import { Order } from "../../../../api/api"; 
 
 interface TotalRevenueChartProps {
     orders: Order[];
@@ -41,10 +41,7 @@ const TotalRevenueChart: React.FC<TotalRevenueChartProps> = ({ orders }) => {
         return Object.entries(revenueByDate).map(([date, total]) => ({
             date,
             total,
-        })).sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()); // Basic sort, might need better date parsing for sort if format is localized
-        // Better sort approach: keep keys as ISO, sort, then format for display. 
-        // For simplicity, let's rely on API sending chronological or just simple sort if dates are comparable.
-        // If created_at is ISO, simple string sort works.
+        })).sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
     }, [orders]);
 
     // Robust sort fix:
