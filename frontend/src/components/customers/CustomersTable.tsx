@@ -81,11 +81,12 @@ export default function CustomersTable({
                 {/* Status */}
                 <td className="py-3 px-4">
                   <span
-                    className={`px-3 py-1 rounded-full text-xs font-medium ${customer.status === 'Active'
-                      ? 'bg-green-100 text-green-700'
-                      : 'bg-gray-100 text-gray-700'
+                    className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-bold border ${customer.status === 'Active'
+                      ? 'bg-green-50 text-green-700 border-green-100'
+                      : 'bg-gray-50 text-red-700 border-red-100'
                       }`}
                   >
+                    <span className="w-1.5 h-1.5 rounded-full bg-current mr-1.5 opacity-60"></span>
                     {customer.status}
                   </span>
                 </td>

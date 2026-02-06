@@ -7,6 +7,7 @@ class OrderType(Enum):
 class PaymentType(Enum):
     CASH = "CASH"
     CARD = "CARD"
+    ONLINE = "ONLINE"
 
 class OrderStatus(Enum):
     PENDING = "PENDING"

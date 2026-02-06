@@ -13,15 +13,15 @@ export const InventoryTable = ({ items, onView, onEdit, onDelete }: Props) => {
   const getStatusColor = (status: string) => {
     switch (status.toLowerCase()) {
       case "available":
-        return "bg-green-100 text-green-700";
+        return "bg-green-50 text-green-700 border-green-100";
       case "low stock":
-        return "bg-yellow-100 text-yellow-700";
+        return "bg-yellow-50 text-yellow-700 border-yellow-100";
       case "out of stock":
-        return "bg-red-100 text-red-700";
+        return "bg-red-50 text-red-700 border-red-100";
       case "reorder needed":
-        return "bg-orange-100 text-orange-700";
+        return "bg-orange-50 text-orange-700 border-orange-100";
       default:
-        return "bg-gray-100 text-gray-700";
+        return "bg-gray-50 text-gray-700 border-gray-100";
     }
   };
 
@@ -64,10 +64,11 @@ export const InventoryTable = ({ items, onView, onEdit, onDelete }: Props) => {
                   </td>
                   <td className="py-3 px-4">
                     <span
-                      className={`px-3 py-1 rounded-full text-xs font-medium ${getStatusColor(
+                      className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-bold border ${getStatusColor(
                         item.status
                       )}`}
                     >
+                      <span className="w-1.5 h-1.5 rounded-full bg-current mr-1.5 opacity-60"></span>
                       {item.status}
                     </span>
                   </td>

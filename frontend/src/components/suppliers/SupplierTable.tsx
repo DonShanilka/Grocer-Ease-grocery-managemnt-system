@@ -11,19 +11,19 @@ export default function SupplierTable({ suppliers, onView, onEdit, onDelete }: P
   const getStatusColor = (status: string) => {
     switch (status) {
       case "Active":
-        return "bg-green-100 text-green-700";
+        return "bg-green-50 text-green-700 border-green-100";
       case "active":
-        return "bg-green-100 text-green-700";
+        return "bg-green-50 text-green-700 border-green-100";
       case "Inactive":
-        return "bg-red-100 text-red-700";
+        return "bg-red-50 text-red-700 border-red-100";
       case "inactive":
-        return "bg-red-100 text-red-700";
+        return "bg-red-50 text-red-700 border-red-100";
       case "Pending":
-        return "bg-yellow-100 text-yellow-700";
+        return "bg-yellow-50 text-yellow-700 border-yellow-100";
       case "pending":
-        return "bg-yellow-100 text-yellow-700";
+        return "bg-yellow-50 text-yellow-700 border-yellow-100";
       default:
-        return "bg-gray-100 text-gray-700";
+        return "bg-gray-50 text-gray-700 border-gray-100";
     }
   };
 
@@ -55,8 +55,9 @@ export default function SupplierTable({ suppliers, onView, onEdit, onDelete }: P
                   <td className="px-4 py-3 text-xs text-gray-800">{s.supplied_items}</td>
                   <td className="px-4 py-3 text-xs text-gray-800">{s.qty}</td>
                   <td className="px-4 py-3 text-xs font-medium text-gray-800">Rs. {s.price_per_unit}</td>
-                  <td className="px-4 py-3">
-                    <span className={`px-3 py-1 rounded-full text-xs font-medium ${getStatusColor(s.status)}`}>
+                  <td className="py-3 px-4">
+                    <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-bold border ${getStatusColor(s.status)}`}>
+                      <span className="w-1.5 h-1.5 rounded-full bg-current mr-1.5 opacity-60"></span>
                       {s.status}
                     </span>
                   </td>

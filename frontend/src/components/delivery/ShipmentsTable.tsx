@@ -13,15 +13,15 @@ export const ShipmentsTable = ({ shipments, onView, onEdit }: Props) => {
   const getStatusColor = (status: string) => {
     switch (status.toLowerCase()) {
       case "completed":
-        return "bg-green-100 text-green-500";
+        return "bg-green-50 text-green-700 border-green-100";
       case "pending":
-        return "bg-blue-100 text-blue-500";
+        return "bg-blue-50 text-blue-700 border-blue-100";
       case "cancelled":
-        return "bg-red-100 text-red-500";
+        return "bg-red-50 text-red-700 border-red-100";
       case "returned":
-        return "bg-yellow-100 text-yellow-500";
+        return "bg-yellow-50 text-yellow-700 border-yellow-100";
       default:
-        return "bg-gray-100 text-gray-700";
+        return "bg-gray-50 text-gray-700 border-gray-100";
     }
   };
 
@@ -68,10 +68,11 @@ export const ShipmentsTable = ({ shipments, onView, onEdit }: Props) => {
 
                   <td className="py-3 px-4">
                     <span
-                      className={`px-3 py-1 rounded-full text-xs font-medium ${getStatusColor(
+                      className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-bold border border-opacity-90 ${getStatusColor(
                         shipment.delivery_status
                       )}`}
                     >
+                      <span className="w-1.5 h-1.5 rounded-full bg-current mr-1.5 opacity-60"></span>
                       {shipment.delivery_status}
                     </span>
                   </td>
