@@ -33,22 +33,28 @@ export default function page() {
   const dispatch = useDispatch<AppDispatch>();
 
   const { customers, loading, error } = useSelector(
-    (state: RootState) => state.customers
+    (state: RootState) => state.customers,
   );
 
   const [showModal, setShowModal] = useState(false);
   const [modalMode, setModalMode] = useState<"create" | "edit" | "view">(
-    "create"
+    "create",
   );
   const [selectedCustomer, setSelectedCustomer] = useState<Customer | null>(
-    null
+    null,
   );
 
   const [searchQuery, setSearchQuery] = useState("");
   const [filterStatus, setFilterStatus] = useState("all");
 
-  const [toast, setToast] = useState<{ message: string; type: "success" | "error" | "warning" | "info" } | null>(null);
-  const [deleteConfirm, setDeleteConfirm] = useState<{ id: number; name: string } | null>(null);
+  const [toast, setToast] = useState<{
+    message: string;
+    type: "success" | "error" | "warning" | "info";
+  } | null>(null);
+  const [deleteConfirm, setDeleteConfirm] = useState<{
+    id: number;
+    name: string;
+  } | null>(null);
 
   useEffect(() => {
     dispatch(fetchCustomers());
@@ -84,11 +90,17 @@ export default function page() {
     dispatch(deleteCustomer(deleteConfirm.id))
       .unwrap()
       .then(() => {
-        setToast({ message: "Customer deleted successfully!", type: "success" });
+        setToast({
+          message: "Customer deleted successfully!",
+          type: "success",
+        });
         setDeleteConfirm(null);
       })
       .catch(() => {
-        setToast({ message: "Failed to delete customer. Please try again.", type: "error" });
+        setToast({
+          message: "Failed to delete customer. Please try again.",
+          type: "error",
+        });
         setDeleteConfirm(null);
       });
   };
@@ -98,15 +110,24 @@ export default function page() {
       dispatch(createCustomer(formData))
         .unwrap()
         .then(() => {
-          setToast({ message: "Customer created successfully!", type: "success" });
+          setToast({
+            message: "Customer created successfully!",
+            type: "success",
+          });
           setShowModal(false);
         })
         .catch(() => {
-          setToast({ message: "Failed to create customer. Please try again.", type: "error" });
+          setToast({
+            message: "Failed to create customer. Please try again.",
+            type: "error",
+          });
         });
     } else if (modalMode === "edit" && selectedCustomer) {
       if (!selectedCustomer.id) {
-        setToast({ message: "Error: Customer ID missing. Please refresh the page.", type: "error" });
+        setToast({
+          message: "Error: Customer ID missing. Please refresh the page.",
+          type: "error",
+        });
         return;
       }
 
@@ -114,15 +135,21 @@ export default function page() {
         updateCustomer({
           id: selectedCustomer.id,
           data: formData,
-        })
+        }),
       )
         .unwrap()
         .then(() => {
-          setToast({ message: "Customer updated successfully!", type: "success" });
+          setToast({
+            message: "Customer updated successfully!",
+            type: "success",
+          });
           setShowModal(false);
         })
         .catch(() => {
-          setToast({ message: "Failed to update customer. Please try again.", type: "error" });
+          setToast({
+            message: "Failed to update customer. Please try again.",
+            type: "error",
+          });
         });
     }
   };
