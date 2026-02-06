@@ -14,6 +14,7 @@ def add_customer():
         return jsonify({
             "message": "Customer saved successfully",
             "customer": {
+                "id": customer.id,
                 "name": customer.name,
                 "email": customer.email,    
                 "phone": customer.phone,

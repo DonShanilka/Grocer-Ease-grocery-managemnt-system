@@ -27,7 +27,7 @@ const initialState: CustomersState = {
   error: null,
 };
 
-// ─── Async thunks ───
+
 export const fetchCustomers = createAsyncThunk(
   'customers/fetchCustomers',
   async () => {
@@ -53,7 +53,7 @@ export const createCustomer = createAsyncThunk(
     const res = await axios.post(`${API_BASE}/customers`, data);
     return {
       ...data,
-      id: res.data.id,                    // assuming backend returns new id
+      id: res.data.customer.id,
       totalOrders: 0,
       totalSpent: '$0',
       status: 'Active',

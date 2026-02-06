@@ -105,6 +105,11 @@ export default function page() {
           setToast({ message: "Failed to create customer. Please try again.", type: "error" });
         });
     } else if (modalMode === "edit" && selectedCustomer) {
+      if (!selectedCustomer.id) {
+        setToast({ message: "Error: Customer ID missing. Please refresh the page.", type: "error" });
+        return;
+      }
+
       dispatch(
         updateCustomer({
           id: selectedCustomer.id,
